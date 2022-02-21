@@ -3,10 +3,12 @@ package com.blackshirts.movieshelf.entity;
 
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -18,7 +20,7 @@ public class User implements UserDetails {
     @Column(name = "user_id")
     private Long userId;
 
-    @Column(name = "user_email", nullable = false)
+    @Column(name = "user_email", nullable = false, unique = true)
     private String userEmail;
 
     @Column(name = "user_password", nullable = false)
@@ -47,7 +49,6 @@ public class User implements UserDetails {
 
     @Column(name = "user_grade", nullable = false)
     private String userGrade;
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
