@@ -14,14 +14,13 @@ public class UserService {
     private UserRepository userRepository;
     private JwtTokenProvider jwtTokenProvider;
 
-
-    public Optional<User> findUser(String email) throws Exception {
-        return userRepository.findByEmail(email);
+    public Optional<User> findUserByEmail(String email) {
+        return userRepository.findByUserEmail(email);
     }
 
-    public Boolean existsUser(String email) throws Exception {
-        return userRepository.existsByEmail(email);
-    }
+//    public Optional<Boolean> existsUser(String email) {
+//        return userRepository.existsByEmail(email);
+//    }
 
 //    public
 

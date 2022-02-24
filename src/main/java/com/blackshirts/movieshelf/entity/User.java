@@ -10,9 +10,8 @@ import javax.persistence.*;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-@Entity
 @Getter
-@Table(name = "users") // table name
+@Entity(name = "users")
 public class User implements UserDetails {
 
     @Id
