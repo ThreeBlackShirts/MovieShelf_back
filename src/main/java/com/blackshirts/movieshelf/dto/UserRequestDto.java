@@ -14,17 +14,21 @@ public class UserRequestDto {
 
     private String userEmail;
     private String userName;
+    private String userNickname;
 
     @Builder
-    public UserRequestDto(String userEmail, String userName){
+    public UserRequestDto(String userEmail, String userName, String userNickname) {
         this.userEmail = userEmail;
         this.userName = userName;
+        this.userNickname = userNickname;
     }
 
-//    public User toEntity() {
-//        return User.builder()
-//                .
-//    }
-
+    // dto -> entity
+    public User toEntity() {
+        return User.builder()
+                .userEmail(userEmail)
+                .userName(userName)
+                .build();
+    }
 
 }

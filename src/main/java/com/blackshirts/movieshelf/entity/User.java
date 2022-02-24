@@ -1,6 +1,7 @@
 package com.blackshirts.movieshelf.entity;
 
 
+import lombok.Builder;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -34,12 +35,6 @@ public class User implements UserDetails {
     @Column(name = "user_phone", nullable = false)
     private String userPhone;
 
-    @Column(name = "user_gender", nullable = false)
-    private String userGender;
-
-    @Column(name = "user_birth", nullable = false)
-    private String userBirth;
-
     @Column(name = "user_register_date", nullable = false)
     private String userRegisterDate;
 
@@ -49,8 +44,25 @@ public class User implements UserDetails {
     @Column(name = "user_grade", nullable = false)
     private String userGrade;
 
-//    public User(String ){
-//    }
+    @Builder
+    public User(String userEmail, String userPassword, String userName) {
+        this.userEmail = userEmail;
+        this.userPassword = userPassword;
+        this.userName = userName;
+    }
+
+    public User() {
+
+    }
+
+    //Setter를 사용하지 않고 의미있는 메소드를 사용하여 변경
+    public void updatePassword(String userPassword){
+        this.userPassword = userPassword;
+    }
+
+    public void updateUserNickname(String userNickname){
+        this.userNickname = userNickname;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
