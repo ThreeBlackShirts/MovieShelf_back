@@ -49,6 +49,9 @@ public class User implements UserDetails {
     @Column(name = "user_grade", nullable = false)
     private String userGrade;
 
+//    public User(String ){
+//    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
