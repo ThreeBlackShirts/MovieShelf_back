@@ -40,6 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests() // 요청에 대한 사용권한 체크
                 .antMatchers("/api/**").authenticated()
+                .antMatchers("/exception/**","/item/**", "/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll()
                 .antMatchers("/register/**", "/login/**", "/logout/**").permitAll() // 로그인, 회원가입은 누구나 접근 가능
                 .antMatchers( "/login/google").anonymous()
                 .anyRequest().authenticated()

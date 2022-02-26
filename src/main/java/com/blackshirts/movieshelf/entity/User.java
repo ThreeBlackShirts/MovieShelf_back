@@ -1,16 +1,16 @@
 package com.blackshirts.movieshelf.entity;
 
 
+import io.swagger.annotations.ApiModel;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.stream.Collectors;
 
+@ApiModel
 @Getter
 @Entity(name = "users")
 public class User implements UserDetails {
