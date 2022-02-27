@@ -1,20 +1,23 @@
 package com.blackshirts.movieshelf.exception;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.http.HttpStatus;
 
 @Getter
 @Setter
-public class CommonResult {
+@AllArgsConstructor
+public class CommonResult<T> {
 
     @ApiModelProperty(value = "응답 성공 여부: T/F")
-    private int code;
-
-    @ApiModelProperty(value = "응답 코드 : >= 0 정상, < 0 비정상 ")
-    private boolean success;
+    private HttpStatus status;
 
     @ApiModelProperty(value = "응답 메시지")
     private String msg;
+
+    @ApiModelProperty(value = "응답 result")
+    private T data;
 
 }

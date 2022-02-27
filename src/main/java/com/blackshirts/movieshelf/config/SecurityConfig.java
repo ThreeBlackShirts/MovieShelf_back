@@ -37,14 +37,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .httpBasic().disable()
-                .csrf().disable()
                 .authorizeRequests() // 요청에 대한 사용권한 체크
+//                .antMatchers("/**").permitAll()
                 .antMatchers("/api/**").authenticated()
-                .antMatchers("/exception/**","/item/**", "/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll()
-                .antMatchers("/register/**", "/login/**", "/logout/**").permitAll() // 로그인, 회원가입은 누구나 접근 가능
-                .antMatchers( "/login/google").anonymous()
+                .antMatchers("/exception/**", "/item/**", "/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll()
+                .antMatchers("/v1/register/**", "/v1/login/**", "/v1/logout/**").permitAll() // 로그인, 회원가입은 누구나 접근 가능
+                .antMatchers("/google/**").permitAll()
+                .antMatchers("/oauth/**").permitAll()
+//                .antMatchers("/api/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
+                .csrf().disable()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
     }
 }

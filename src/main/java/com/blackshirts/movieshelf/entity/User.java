@@ -29,26 +29,24 @@ public class User implements UserDetails {
     @Column(name = "user_name", nullable = false)
     private String userName;
 
-    @Column(name = "user_nickname", nullable = false)
-    private String userNickname;
+//    @Column(name = "user_nickname", nullable = false)
+//    private String userNickname;
 
-    @Column(name = "user_phone", nullable = false)
-    private String userPhone;
+//    @Column(name = "user_phone", nullable = false)
+//    private String userPhone;
 
-    @Column(name = "user_register_date", nullable = false)
-    private String userRegisterDate;
+//    @Column(name = "user_register_date", nullable = false)
+//    private String userRegisterDate;
 
-    @Column(name = "user_filename", nullable = false)
-    private String userFilename;
+//    @Column(name = "user_filename", nullable = false)
+//    private String userFilename;
 
-    @Column(name = "user_grade", nullable = false)
-    private String userGrade;
 
     @Builder
-    public User(String userEmail, String userPassword, String userName) {
+    public User(String userEmail, String userName, String userPassword) {
         this.userEmail = userEmail;
-        this.userPassword = userPassword;
         this.userName = userName;
+        this.userPassword = userPassword;
     }
 
     public User() {
@@ -60,9 +58,9 @@ public class User implements UserDetails {
         this.userPassword = userPassword;
     }
 
-    public void updateUserNickname(String userNickname){
-        this.userNickname = userNickname;
-    }
+//    public void updateUserNickname(String userNickname){
+//        this.userNickname = userNickname;
+//    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
