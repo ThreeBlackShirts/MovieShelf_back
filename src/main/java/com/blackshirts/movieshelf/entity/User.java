@@ -1,18 +1,18 @@
 package com.blackshirts.movieshelf.entity;
 
 
+import io.swagger.annotations.ApiModel;
+import lombok.Builder;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.stream.Collectors;
 
-@Entity
+@ApiModel
 @Getter
-@Table(name = "users") // table name
+@Entity(name = "users")
 public class User implements UserDetails {
 
     @Id
@@ -35,12 +35,6 @@ public class User implements UserDetails {
     @Column(name = "user_phone", nullable = false)
     private String userPhone;
 
-    @Column(name = "user_gender", nullable = false)
-    private String userGender;
-
-    @Column(name = "user_birth", nullable = false)
-    private String userBirth;
-
     @Column(name = "user_register_date", nullable = false)
     private String userRegisterDate;
 
@@ -49,6 +43,26 @@ public class User implements UserDetails {
 
     @Column(name = "user_grade", nullable = false)
     private String userGrade;
+
+    @Builder
+    public User(String userEmail, String userPassword, String userName) {
+        this.userEmail = userEmail;
+        this.userPassword = userPassword;
+        this.userName = userName;
+    }
+
+    public User() {
+
+    }
+
+    //Setter를 사용하지 않고 의미있는 메소드를 사용하여 변경
+    public void updatePassword(String userPassword){
+        this.userPassword = userPassword;
+    }
+
+    public void updateUserNickname(String userNickname){
+        this.userNickname = userNickname;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -67,21 +81,21 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }
