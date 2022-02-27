@@ -2,6 +2,7 @@ package com.blackshirts.movieshelf.entity;
 
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,31 +11,37 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Collection;
 
-@ApiModel
+@ApiModel(value = "회원 정보", description = "아이디, 이메일, 비밀번호 등 회원 정보를 가진 Class")
 @Getter
 @Entity(name = "users")
 public class User implements UserDetails {
 
+    @ApiModelProperty(value = "아이디")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long userId;
 
+    @ApiModelProperty(value = "이메일")
     @Column(name = "user_email", nullable = false, unique = true)
     private String userEmail;
 
+    @ApiModelProperty(value = "비밀번호")
     @Column(name = "user_password", nullable = false)
     private String userPassword;
 
+    @ApiModelProperty(value = "이름")
     @Column(name = "user_name", nullable = false)
     private String userName;
 
+//    @ApiModelProperty(value = "별명")
 //    @Column(name = "user_nickname", nullable = false)
 //    private String userNickname;
 
 //    @Column(name = "user_phone", nullable = false)
 //    private String userPhone;
 
+//    @ApiModelProperty(value = "가입일")
 //    @Column(name = "user_register_date", nullable = false)
 //    private String userRegisterDate;
 

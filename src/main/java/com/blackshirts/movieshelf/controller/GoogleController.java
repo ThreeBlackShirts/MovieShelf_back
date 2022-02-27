@@ -9,6 +9,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +22,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+@Api(tags = {"1-1. SocialLogin-Google"})
 @Controller
 @RequestMapping(value = "/google")
 public class GoogleController {
@@ -30,6 +33,7 @@ public class GoogleController {
         this.configUtils = configUtils;
     }
 
+    @ApiOperation(value = "구글 로그인", notes = "구글 회원 로그인.")
     @GetMapping(value = "/login")
     public ResponseEntity<Object> moveGoogleInitUrl() {
         String authUrl = configUtils.googleInitUrl();
@@ -46,6 +50,7 @@ public class GoogleController {
         return ResponseEntity.badRequest().build();
     }
 
+    @ApiOperation(value = "구글 로그인 redirect", notes = "구글 로그인 redirect.")
     @GetMapping(value = "/login/redirect")
     public ResponseEntity<GoogleLoginDto> redirectGoogleLogin(
             @RequestParam(value = "code") String authCode
