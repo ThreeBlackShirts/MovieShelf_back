@@ -1,5 +1,6 @@
 package com.blackshirts.movieshelf.util;
 
+import com.blackshirts.movieshelf.service.UserDetailService;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -32,22 +33,22 @@ public class JwtTokenProvider {
 
     private String secretKey;
 
-    private final UserDetailsService userDetailsService;
+    private final UserDetailService userDetailService;
 
     // 토큰 유효시간 30분
     private long tokenValidTime = 30 * 60 * 1000L;
 
     // 객체 초기화, secretKey를 Base64로 인코딩한다.
-    public JwtTokenProvider(@Value("&{security.jwt.token.secret-key}") String secretKey, UserDetailsService userDetailsService, @Value("${security.jwt.token.expire-length}") long tokenValidTime) {
+    public JwtTokenProvider(@Value("&{security.jwt.token.secret-key}") String secretKey, UserDetailService userDetailService, @Value("${security.jwt.token.expire-length}") long tokenValidTime) {
         this.secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
         this.tokenValidTime = tokenValidTime;
-        this.userDetailsService = userDetailsService;
+        this.userDetailService = userDetailService;
     }
 
     // 토큰 생성
-    public String createToken(String id, List<String> roles) {
-        Claims claims = Jwts.claims().setSubject(String.valueOf(id)); // JWT payload에 저장되는 정보 단위
-        claims.put("roles", roles); // key/ value 쌍으로 저장
+    public String createToken(String userPk) {
+        Claims claims = Jwts.claims().setSubject(String.valueOf(userPk)); // JWT payload에 저장되는 정보 단위
+        claims.put("userPk", userPk); // key/ value 쌍으로 저장
 
         Date now = new Date();
         Date validity = new Date(now.getTime() + tokenValidTime); // set Expire Time
@@ -80,7 +81,7 @@ public class JwtTokenProvider {
 
     // 인증 성공시 SecurityContextHolder에 저장할 Authentication 객체 생성
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
+        UserDetails userDetails = userDetailService.loadUserByUsername(this.getUserPk(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
