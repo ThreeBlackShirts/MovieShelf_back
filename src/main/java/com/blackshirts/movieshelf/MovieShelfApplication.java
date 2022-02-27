@@ -1,5 +1,6 @@
 package com.blackshirts.movieshelf;
 
+import com.blackshirts.movieshelf.util.NaverMovieCrawling;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -12,6 +13,7 @@ public class MovieShelfApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(MovieShelfApplication.class, args);
+        NaverMovieCrawling.movieCrawling();
     }
 
 }
