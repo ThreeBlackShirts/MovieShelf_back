@@ -1,5 +1,6 @@
 package com.blackshirts.movieshelf.util;
 
+import com.blackshirts.movieshelf.service.MovieService;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -20,7 +21,7 @@ public class NaverMovieCrawling {
 
             int i = 1;
             for (Element elements : movie_elements.select("a")) {
-                String movie_name = elements.text();
+                String movie_title = elements.text();
                 int movie_rank = i;
                 i++;
 
@@ -35,17 +36,18 @@ public class NaverMovieCrawling {
                     int j = 0;
                     for (Element poster_elements : movie_poster_elements.select("img")) {
                         if(j != 0) {
-                            String poster_url = poster_elements.attr("src");
+                            String movie_poster = poster_elements.attr("src");
 
                             Elements movie_content_elements_bold = document_detail.getElementsByClass("h_tx_story");
-                            String content_bold = movie_content_elements_bold.text();
+                            String movie_content_bold = movie_content_elements_bold.text();
 
                             Elements movie_content_elements = document_detail.getElementsByClass("story_area");
-                            String content_detail = movie_content_elements.select("p").text(); //text() > toString() : <br>등이 포함된 내용 가져올 수 있음
+                            String movie_content_detail = movie_content_elements.select("p").text(); //text() > toString() : <br>등이 포함된 내용 가져올 수 있음
 
-                            //System.out.println(movie_rank + "\t" + movie_name + "\t" + poster_url);
-                            //System.out.println(content_bold);  //영화 줄거리 첫 줄 굵은 글씨
-                            //System.out.println(content_detail); //영화 줄거리
+                            //System.out.println(movie_rank + "\t" + movie_title + "\t" + movie_poster);
+                            //System.out.println(movie_content_bold);  //영화 줄거리 첫 줄 굵은 글씨
+                            //System.out.println(movie_content_detail); //영화 줄거리
+                            //MovieService.saveMovie(movie_title, movie_rank, movie_poster, movie_content_bold, movie_content_detail);
                         }
                         else
                             j++;
