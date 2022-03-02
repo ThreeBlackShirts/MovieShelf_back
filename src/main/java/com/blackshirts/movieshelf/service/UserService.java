@@ -1,11 +1,9 @@
 package com.blackshirts.movieshelf.service;
 
-import com.blackshirts.movieshelf.dto.UserLoginRequestDto;
-import com.blackshirts.movieshelf.dto.UserLoginResponseDto;
-import com.blackshirts.movieshelf.dto.UserRequestDto;
-import com.blackshirts.movieshelf.dto.UserResponseDto;
+import com.blackshirts.movieshelf.dto.*;
 import com.blackshirts.movieshelf.entity.User;
-import com.blackshirts.movieshelf.exception.CommonResult;
+import com.blackshirts.movieshelf.exception.BaseException;
+import com.blackshirts.movieshelf.exception.BaseResponseCode;
 import com.blackshirts.movieshelf.repository.UserRepository;
 import com.blackshirts.movieshelf.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,6 +32,11 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
+    public boolean existsByUserEmail(String email) {
+        return userRepository.existsByUserEmail(email).orElseThrow(() -> new BaseException(BaseResponseCode.DUPLICATE_EMAIL));
+    }
+
+    @Transactional(readOnly = true)
     public UserResponseDto findUserById(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("해당하는 유저를 찾을 수 없습니다."));
         return new UserResponseDto(user);
@@ -40,7 +44,7 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public UserResponseDto findUserByEmail(String email) {
-        User user = userRepository.findByUserEmail(email).orElseThrow(()->new UsernameNotFoundException("해당하는 유저를 찾을 수 없습니다."));
+        User user = userRepository.findByUserEmail(email).orElseThrow(() -> new UsernameNotFoundException("해당하는 유저를 찾을 수 없습니다."));
 
         return new UserResponseDto(user);
     }
@@ -63,6 +67,13 @@ public class UserService {
 //        newUser.updateUserNickname(userRequestDto.getUserName());
 //        return id;
 //    }
+
+    @Transactional(readOnly = true)
+    public Long signUp(UserSignupRequestDto userSignupRequestDto) {
+        userSignupRequestDto.setUserPassword(passwordEncoder.encode(userSignupRequestDto.getUserPassword()));
+        userRepository.save(userSignupRequestDto.toEntity());
+        return userRepository.findByUserEmail(userSignupRequestDto.getUserEmail()).get().getUserId();
+    }
 
     @Transactional
     public void delete(Long id) {

@@ -41,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/**").permitAll()
                 .antMatchers("/api/**").authenticated()
                 .antMatchers("/exception/**", "/item/**", "/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll() // For Swagger
-                .antMatchers("/v1/register/**", "/v1/login/**", "/v1/logout/**").permitAll() // 로그인, 회원가입은 누구나 접근 가능
+                .antMatchers("/v1/register/**", "/v1/signup/**", "/v1/login/**", "/v1/logout/**").permitAll() // 로그인, 회원가입은 누구나 접근 가능
                 .antMatchers("/google/**").permitAll()
                 .antMatchers("/oauth/**").permitAll()
 //                .antMatchers("/api/**").permitAll()
