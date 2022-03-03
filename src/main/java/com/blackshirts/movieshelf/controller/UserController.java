@@ -51,7 +51,7 @@ public class UserController {
 
     @ApiImplicitParams({
             @ApiImplicitParam(
-                    name="X-AUTH-TOKEN",
+                    name = "X-AUTH-TOKEN",
                     value = "로그인 성공 후 AccessToken",
                     required = true, dataType = "String", paramType = "header")
     })
@@ -63,7 +63,7 @@ public class UserController {
 
     @ApiImplicitParams({
             @ApiImplicitParam(
-                    name="X-AUTH-TOKEN",
+                    name = "X-AUTH-TOKEN",
                     value = "로그인 성공 후 AccessToken",
                     required = true, dataType = "String", paramType = "header")
     })
@@ -71,6 +71,31 @@ public class UserController {
     @GetMapping("/user/email/{userEmail}")
     public BaseResponse<UserResponseDto> findUserByEmail(@ApiParam(value = "회원 이메일", required = true) @PathVariable String userEmail) {
         return new BaseResponse<>(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), userService.findUserByEmail(userEmail));
+    }
+
+    @ApiImplicitParams({
+            @ApiImplicitParam(
+                    name = "X-AUTH-TOKEN",
+                    value = "로그인 성공 후 AccessToken",
+                    required = true, dataType = "String", paramType = "header")
+    })
+    @ApiOperation(value = "회원 수정", notes = "회원 정보를 수정합니다.")
+    @PutMapping("/user")
+    public BaseResponse<Long> update(@ApiParam(value = "회원 한 명의 정보를 갖는 객체", required = true) @RequestBody UserRequestDto userRequestDto) throws Exception {
+        return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), userService.update(userRequestDto).get());
+    }
+
+    @ApiImplicitParams({
+            @ApiImplicitParam(
+                    name = "X-AUTH-TOKEN",
+                    value = "로그인 성공 후 AccessToken",
+                    required = true, dataType = "String", paramType = "header")
+    })
+    @ApiOperation(value = "회원 삭제", notes = "회원을 삭제합니다.")
+    @DeleteMapping("/user/{userId}")
+    public BaseResponse<UserResponseDto> delete(@ApiParam(value = "회원 Id", required = true) @PathVariable Long userId) {
+        userService.delete(userId);
+        return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), BaseResponseCode.OK.getMessage());
     }
 
 

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -83,9 +84,27 @@ public class UserService {
         return userRepository.findByUserEmail(userSignupRequestDto.getUserEmail()).get().getUserId();
     }
 
-    @Transactional
-    public void delete(Long id) {
-        userRepository.deleteById(id);
+    public Optional<User> update(UserRequestDto userRequestDto) throws BaseException {
+        Optional<User> user = userRepository.findById(userRequestDto.getUserId());
+        try {
+            user.ifPresent(selectUser -> {
+                selectUser.setUserNickname(userRequestDto.getUserNickname());
+                selectUser.setUserFilename(userRequestDto.getUserFilename());
+                userRepository.save(selectUser);
+            });
+        } catch (Exception e) {
+            throw new BaseException(BaseResponseCode.METHOD_NOT_ALLOWED);
+        }
+        return user;
+    }
+
+    public Long delete(Long id) throws BaseException {
+        try {
+            userRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new BaseException(BaseResponseCode.USER_NOT_FOUND);
+        }
+        return id;
     }
 
 //    public Optional<Boolean> existsUser(String email) {

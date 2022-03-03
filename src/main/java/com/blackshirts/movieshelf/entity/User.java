@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -43,8 +44,25 @@ public class User extends BaseTimeEntity implements UserDetails {
     private String userFilename;
 
 
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setUserNickname(String userNickname) {
+        this.userNickname = userNickname;
+    }
+
+    public void setUserFilename(String userFilename) {
+        this.userFilename = userFilename;
+    }
+
     @Builder
-    public User(String userEmail, String userName, String userPassword, String userNickname, String userFilename) {
+    public User(Long userId, String userEmail, String userName, String userPassword, String userNickname, String userFilename) {
+        this.userId = userId;
         this.userEmail = userEmail;
         this.userName = userName;
         this.userPassword = userPassword;
