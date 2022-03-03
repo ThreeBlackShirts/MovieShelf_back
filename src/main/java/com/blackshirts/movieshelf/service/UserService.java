@@ -72,11 +72,14 @@ public class UserService {
 //    }
 
     @Transactional(readOnly = true)
-    public Long signUp(UserSignupRequestDto userSignupRequestDto) {
-        if(!userRepository.existsByUserEmail(userSignupRequestDto.getUserEmail()).orElseThrow(() -> new BaseException(BaseResponseCode.DUPLICATE_EMAIL)))
-            throw new BaseException(BaseResponseCode.DUPLICATE_EMAIL);
-
-        userRepository.save(userSignupRequestDto.toEntity());
+    public Long signUp(UserSignupRequestDto userSignupRequestDto) throws BaseException {
+        userRepository.existsByUserEmail(userSignupRequestDto.getUserEmail()).orElseThrow(() -> new BaseException(BaseResponseCode.DUPLICATE_EMAIL));
+        userSignupRequestDto.setUserPassword(passwordEncoder.encode(userSignupRequestDto.getUserPassword()));
+        try {
+            userRepository.save(userSignupRequestDto.toEntity());
+        } catch (Exception e) {
+            throw new BaseException(BaseResponseCode.FAILED_TO_SAVE_USER);
+        }
         return userRepository.findByUserEmail(userSignupRequestDto.getUserEmail()).get().getUserId();
     }
 
