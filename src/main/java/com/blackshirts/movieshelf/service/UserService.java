@@ -75,7 +75,7 @@ public class UserService {
     public Long signUp(UserSignupRequestDto userSignupRequestDto) {
         if(!userRepository.existsByUserEmail(userSignupRequestDto.getUserEmail()).orElseThrow(() -> new BaseException(BaseResponseCode.DUPLICATE_EMAIL)))
             throw new BaseException(BaseResponseCode.DUPLICATE_EMAIL);
-        userSignupRequestDto.setUserPassword(passwordEncoder.encode(userSignupRequestDto.getUserPassword()));
+
         userRepository.save(userSignupRequestDto.toEntity());
         return userRepository.findByUserEmail(userSignupRequestDto.getUserEmail()).get().getUserId();
     }
