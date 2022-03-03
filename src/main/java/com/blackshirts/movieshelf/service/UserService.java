@@ -4,6 +4,7 @@ import com.blackshirts.movieshelf.dto.*;
 import com.blackshirts.movieshelf.entity.User;
 import com.blackshirts.movieshelf.exception.BaseException;
 import com.blackshirts.movieshelf.exception.BaseResponseCode;
+import com.blackshirts.movieshelf.exception.EmailLoginFailedCException;
 import com.blackshirts.movieshelf.repository.UserRepository;
 import com.blackshirts.movieshelf.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,12 +24,12 @@ public class UserService {
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
 
-    @Transactional(readOnly = true)
-    public Long saveUser(UserRequestDto userRequestDto) {
-        userRequestDto.setUserPassword(passwordEncoder.encode(userRequestDto.getUserPassword()));
-        userRepository.save(userRequestDto.toEntity());
-        return userRepository.findByUserEmail(userRequestDto.getUserEmail()).get().getUserId();
-    }
+//    @Transactional(readOnly = true)
+//    public Long saveUser(UserRequestDto userRequestDto) {
+//        userRequestDto.setUserPassword(passwordEncoder.encode(userRequestDto.getUserPassword()));
+//        userRepository.save(userRequestDto.toEntity());
+//        return userRepository.findByUserEmail(userRequestDto.getUserEmail()).get().getUserId();
+//    }
 
     @Transactional(readOnly = true)
     public boolean existsByUserEmail(String email) {
@@ -45,7 +45,6 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserResponseDto findUserByEmail(String email) {
         User user = userRepository.findByUserEmail(email).orElseThrow(() -> new UsernameNotFoundException("해당하는 유저를 찾을 수 없습니다."));
-
         return new UserResponseDto(user);
     }
 
@@ -57,8 +56,12 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public UserLoginResponseDto login(UserLoginRequestDto userLoginDto) {
-        String token = jwtTokenProvider.createToken(userLoginDto.getUserEmail());
+    public UserLoginResponseDto login(UserLoginRequestDto userLoginRequestDto) {
+        User user = userRepository.findByUserEmail(userLoginRequestDto.getUserEmail()).orElseThrow(EmailLoginFailedCException::new);
+        if (!passwordEncoder.matches(userLoginRequestDto.getUserPassword(), user.getPassword()))
+            throw new BaseException(BaseResponseCode.INVALID_PASSWORD);
+
+        String token = jwtTokenProvider.createToken(userLoginRequestDto.getUserEmail());
         return new UserLoginResponseDto(HttpStatus.OK, token);
     }
 
@@ -70,6 +73,8 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public Long signUp(UserSignupRequestDto userSignupRequestDto) {
+        if(!userRepository.existsByUserEmail(userSignupRequestDto.getUserEmail()).orElseThrow(() -> new BaseException(BaseResponseCode.DUPLICATE_EMAIL)))
+            throw new BaseException(BaseResponseCode.DUPLICATE_EMAIL);
         userSignupRequestDto.setUserPassword(passwordEncoder.encode(userSignupRequestDto.getUserPassword()));
         userRepository.save(userSignupRequestDto.toEntity());
         return userRepository.findByUserEmail(userSignupRequestDto.getUserEmail()).get().getUserId();

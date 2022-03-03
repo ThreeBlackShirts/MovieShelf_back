@@ -4,14 +4,14 @@ import com.blackshirts.movieshelf.entity.User;
 import lombok.Getter;
 
 @Getter
-public class UserResponseDto {
+public class UserInfoDto {
     private final Long userId;
     private final String userEmail;
     private final String userName;
     private final String userNickname;
     private final String userFilename;
 
-    public UserResponseDto(User user) {
+    public UserInfoDto(User user) {
         this.userId = user.getUserId();
         this.userEmail = user.getUserEmail();
         this.userName = user.getUsername();

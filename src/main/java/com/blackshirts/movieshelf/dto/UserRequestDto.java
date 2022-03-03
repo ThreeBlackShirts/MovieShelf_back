@@ -14,20 +14,11 @@ public class UserRequestDto {
 
     private String userEmail;
     private String userName;
-    private String userPassword;
-
-
-//    @Builder
-//    public UserRequestDto(String userEmail, String userName) {
-//        this.userEmail = userEmail;
-//        this.userName = userName;
-//    }
 
     @Builder
-    public UserRequestDto(String userEmail, String userName, String userPassword) {
+    public UserRequestDto(String userEmail, String userName) {
         this.userEmail = userEmail;
         this.userName = userName;
-        this.userPassword = userPassword;
     }
 
     // dto -> entity
@@ -35,7 +26,6 @@ public class UserRequestDto {
         return User.builder()
                 .userEmail(userEmail)
                 .userName(userName)
-                .userPassword(userPassword)
                 .build();
     }
 
