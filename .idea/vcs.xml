@@ -2,7 +2,6 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/MovieShelf_front" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/src/main/resources/MovieShelf_front" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../MovieShelf_front" vcs="Git" />
   </component>
 </project>

@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public class NaverMovieCrawling {
 
-    public static void movieCrawling(){
+    public void movieCrawling(){
         final String naver_movie_url = "https://movie.naver.com/movie/sdb/rank/rmovie.naver?sel=cnt&date=20220225";
         Connection conn = Jsoup.connect(naver_movie_url);
 
@@ -47,7 +47,7 @@ public class NaverMovieCrawling {
                             //System.out.println(movie_rank + "\t" + movie_title + "\t" + movie_poster);
                             //System.out.println(movie_content_bold);  //영화 줄거리 첫 줄 굵은 글씨
                             //System.out.println(movie_content_detail); //영화 줄거리
-                            //MovieService.saveMovie(movie_title, movie_rank, movie_poster, movie_content_bold, movie_content_detail);
+                            //MovieService.dtoSet(movie_title, movie_rank, movie_poster, movie_content_bold, movie_content_detail);
                         }
                         else
                             j++;
