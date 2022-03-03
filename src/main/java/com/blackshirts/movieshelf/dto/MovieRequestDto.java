@@ -16,13 +16,6 @@ public class MovieRequestDto {
     private String movieContentDetail;
     private int movieRank;
 
-
-//    @Builder
-//    public UserRequestDto(String userEmail, String userName) {
-//        this.userEmail = userEmail;
-//        this.userName = userName;
-//    }
-
     @Builder
     public MovieRequestDto(String movieTitle, int movieRank, String moviePoster, String movieContentBold, String movieContentDetail) {
         this.movieTitle = movieTitle;
@@ -32,7 +25,6 @@ public class MovieRequestDto {
         this.movieContentDetail = movieContentDetail;
     }
 
-    // dto -> entity
     public Movie toEntity() {
         return Movie.builder()
                 .movieTitle(movieTitle)
