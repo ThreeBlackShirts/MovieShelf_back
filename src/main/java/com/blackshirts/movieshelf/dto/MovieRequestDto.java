@@ -14,15 +14,17 @@ public class MovieRequestDto {
     private String moviePoster;
     private String movieContentBold;
     private String movieContentDetail;
+    private String movieContentDetailLong;
     private int movieRank;
 
     @Builder
-    public MovieRequestDto(String movieTitle, int movieRank, String moviePoster, String movieContentBold, String movieContentDetail) {
+    public MovieRequestDto(String movieTitle, int movieRank, String moviePoster, String movieContentBold, String movieContentDetail, String movieContentDetailLong) {
         this.movieTitle = movieTitle;
         this.movieRank = movieRank;
         this.moviePoster = moviePoster;
         this.movieContentBold = movieContentBold;
         this.movieContentDetail = movieContentDetail;
+        this.movieContentDetailLong = movieContentDetailLong;
     }
 
     public Movie toEntity() {
@@ -32,6 +34,7 @@ public class MovieRequestDto {
                 .moviePoster(moviePoster)
                 .movieContentBold(movieContentBold)
                 .movieContentDetail(movieContentDetail)
+                .movieContentDetailLong(movieContentDetailLong)
                 .build();
     }
 }

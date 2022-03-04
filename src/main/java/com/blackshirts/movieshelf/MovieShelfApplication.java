@@ -1,11 +1,8 @@
 package com.blackshirts.movieshelf;
 
-import com.blackshirts.movieshelf.controller.MovieController;
-import com.blackshirts.movieshelf.util.NaverMovieCrawling;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 //@EnableSwagger2
 @EnableWebMvc

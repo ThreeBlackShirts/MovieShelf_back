@@ -1,7 +1,6 @@
 package com.blackshirts.movieshelf.repository;
 
 import com.blackshirts.movieshelf.entity.Movie;
-import org.jsoup.Connection;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MovieRepository extends JpaRepository<Movie, Long> {

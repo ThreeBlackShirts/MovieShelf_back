@@ -42,14 +42,19 @@ public class Movie {
     @Column(name = "movie_content_detail")
     private String movieContentDetail;
 
+    @ApiModelProperty(value = "자세한 줄거리2")
+    @Column(name = "movie_content_detail_long")
+    private String movieContentDetailLong;
+
 
     @Builder
-    public Movie(String movieTitle, int movieRank, String moviePoster, String movieContentBold, String movieContentDetail) {
+    public Movie(String movieTitle, int movieRank, String moviePoster, String movieContentBold, String movieContentDetail, String movieContentDetailLong) {
         this.movieTitle = movieTitle;
         this.movieRank = movieRank;
         this.moviePoster = moviePoster;
         this.movieContentBold = movieContentBold;
         this.movieContentDetail = movieContentDetail;
+        this.movieContentDetailLong = movieContentDetailLong;
     }
 
     public Movie() {
