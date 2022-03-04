@@ -7,11 +7,15 @@ import lombok.Getter;
 public class UserResponseDto {
     private final Long userId;
     private final String userEmail;
-    private final String userPassword;
+    private final String userName;
+    private final String userNickname;
+    private final String userFilename;
 
     public UserResponseDto(User user) {
         this.userId = user.getUserId();
         this.userEmail = user.getUserEmail();
-        this.userPassword = user.getUserPassword();
+        this.userName = user.getUsername();
+        this.userNickname = user.getUserNickname();
+        this.userFilename = user.getUserFilename();
     }
 }

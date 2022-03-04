@@ -12,30 +12,23 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserRequestDto {
 
-    private String userEmail;
-    private String userName;
-    private String userPassword;
-
-
-//    @Builder
-//    public UserRequestDto(String userEmail, String userName) {
-//        this.userEmail = userEmail;
-//        this.userName = userName;
-//    }
+    private Long userId;
+    private String userNickname;
+    private String userFilename;
 
     @Builder
-    public UserRequestDto(String userEmail, String userName, String userPassword) {
-        this.userEmail = userEmail;
-        this.userName = userName;
-        this.userPassword = userPassword;
+    public UserRequestDto(Long userId, String userNickname, String userFilename) {
+        this.userId = userId;
+        this.userNickname = userNickname;
+        this.userFilename = userFilename;
     }
 
     // dto -> entity
     public User toEntity() {
         return User.builder()
-                .userEmail(userEmail)
-                .userName(userName)
-                .userPassword(userPassword)
+                .userId(userId)
+                .userNickname(userNickname)
+                .userFilename(userFilename)
                 .build();
     }
 

@@ -2,10 +2,12 @@ package com.blackshirts.movieshelf;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 //@EnableSwagger2
 @EnableWebMvc
+@EnableJpaAuditing
 @SpringBootApplication
 public class MovieShelfApplication {
 
