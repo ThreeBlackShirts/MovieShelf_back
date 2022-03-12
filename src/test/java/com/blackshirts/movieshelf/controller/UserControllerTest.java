@@ -4,13 +4,16 @@ import com.blackshirts.movieshelf.dto.UserLoginRequestDto;
 import com.blackshirts.movieshelf.dto.UserSignupRequestDto;
 import com.blackshirts.movieshelf.entity.User;
 import com.blackshirts.movieshelf.repository.UserRepository;
+import com.blackshirts.movieshelf.service.UserDetailService;
 import com.blackshirts.movieshelf.service.UserService;
+import com.blackshirts.movieshelf.util.JwtTokenProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -34,6 +37,11 @@ public class UserControllerTest {
 
     @Autowired
     ObjectMapper objectMapper;
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
+    private UserDetailService userDetailService;
 
     private UserService userService = Mockito.mock(UserService.class);
 
@@ -67,6 +75,10 @@ public class UserControllerTest {
 
     @Test
     public void getUserAll() throws Exception {
+//        String token = jwtTokenProvider.createToken("john");
+
+//        assertNotNull(token);
+
         mockMvc.perform(get("/v1/users")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .accept(MediaType.APPLICATION_JSON_VALUE))
