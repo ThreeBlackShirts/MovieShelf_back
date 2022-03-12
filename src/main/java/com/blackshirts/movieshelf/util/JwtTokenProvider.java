@@ -46,7 +46,7 @@ public class JwtTokenProvider {
     }
 
     // 토큰 생성
-    public String createToken(String userPk) {
+    public String createToken(String userPk) { //email 받음
         Claims claims = Jwts.claims().setSubject(String.valueOf(userPk)); // JWT payload에 저장되는 정보 단위
         claims.put("userPk", userPk); // key/ value 쌍으로 저장
 
