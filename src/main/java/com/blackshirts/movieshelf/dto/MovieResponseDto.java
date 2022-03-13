@@ -20,4 +20,7 @@ public class MovieResponseDto {
         this.movieContentDetail = movie.getMovieContentDetail();
         this.movieContentDetailLong = movie.getMovieContentDetailLong();
     }
+
+    public MovieResponseDto(int movieRank, String movieTitle, String moviePoster, String movieContentBold, String movieContentDetail, String movieContentDetailLong) {
+    }
 }
