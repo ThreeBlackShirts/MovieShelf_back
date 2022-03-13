@@ -22,7 +22,6 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
 
 //    @ApiOperation(value = "회원 등록", notes = "회원을 등록합니다.")
 //    @PostMapping("/register")
