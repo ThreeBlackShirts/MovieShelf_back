@@ -58,7 +58,7 @@ public class UserService {
     }
 
     public UserLoginResponseDto login(UserLoginRequestDto userLoginRequestDto) {
-        User user = userRepository.findByUserEmail(userLoginRequestDto.getUserEmail()).orElseThrow(EmailLoginFailedCException::new);
+        User user = userRepository.findByUserEmail(userLoginRequestDto.getUserEmail()).orElseThrow(()-> new BaseException(BaseResponseCode.USER_NOT_FOUND));
         if (!passwordEncoder.matches(userLoginRequestDto.getUserPassword(), user.getPassword()))
             throw new BaseException(BaseResponseCode.INVALID_PASSWORD);
 

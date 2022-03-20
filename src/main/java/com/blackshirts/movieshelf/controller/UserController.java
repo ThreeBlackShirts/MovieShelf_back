@@ -1,16 +1,12 @@
 package com.blackshirts.movieshelf.controller;
 
 import com.blackshirts.movieshelf.dto.*;
-import com.blackshirts.movieshelf.entity.User;
-import com.blackshirts.movieshelf.exception.BaseException;
 import com.blackshirts.movieshelf.exception.BaseResponse;
 import com.blackshirts.movieshelf.exception.BaseResponseCode;
 import com.blackshirts.movieshelf.service.UserService;
-import com.blackshirts.movieshelf.util.JwtTokenProvider;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
