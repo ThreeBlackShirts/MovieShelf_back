@@ -4,8 +4,6 @@ import com.blackshirts.movieshelf.dto.MovieRequestDto;
 import com.blackshirts.movieshelf.dto.MovieResponseDto;
 import com.blackshirts.movieshelf.dto.MovieSearchResponseDto;
 import com.blackshirts.movieshelf.entity.Movie;
-import com.blackshirts.movieshelf.entity.SearchMovie;
-import com.blackshirts.movieshelf.exception.BaseException;
 import com.blackshirts.movieshelf.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Connection;
@@ -123,16 +121,16 @@ public class MovieService {
 
     @Transactional(readOnly = true)
     public List<MovieSearchResponseDto> serachMovie(String input) {
-        //List<SearchMovie> movies = MovieRepository.findByMovieTitleContaining(input);
+        List<Movie> movies = movieRepository.findByMovieTitleContaining(input);
         List<MovieSearchResponseDto> movie_list = new ArrayList<>();
-        if (movie_list.isEmpty() || movie_list == null){
+        if (movies.isEmpty() || movies == null){
             return movie_list;
         }
         else{
-//            for (SearchMovie movie : movies){
-//                movie_list.add(MovieSearchResponseDto.convertEntityToDto(movie));
+//            for (Movie dto : movies) {
+//                log.info(dto.getMovieTitle() + "\t" + dto.getMoviePoster()); repository contains 확인
 //            }
-            return movie_list;
+            return movies.stream().map(MovieSearchResponseDto::new).collect(Collectors.toList());
         }
     }
 }

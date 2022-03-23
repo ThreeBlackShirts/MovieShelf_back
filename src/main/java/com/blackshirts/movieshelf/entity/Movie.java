@@ -60,4 +60,11 @@ public class Movie {
     public Movie() {
 
     }
+
+    public String getMovieTitle() {
+        return this.movieTitle;
+    }
+    public String getMoviePoster() {
+        return this.moviePoster;
+    }
 }
