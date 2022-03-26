@@ -18,7 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,12 +39,13 @@ public class MovieService {
     }
 
     @Transactional(readOnly = true)
-    public void dtoSet(String movie_title, int movie_rank, String movie_poster, String movie_content_bold, String movie_content_detail){
+    public void dtoSet(String movie_title, int movie_rank, String movie_poster, Set<String> movie_genres, String movie_content_bold, String movie_content_detail){
         //log.info(movie_rank + "\t" + movie_title + "\t" + movie_poster + "\t" + movie_content_bold);
         MovieRequestDto movieRequestDto = new MovieRequestDto();
         movieRequestDto.setMovieTitle(movie_title);
         movieRequestDto.setMovieRank(movie_rank);
         movieRequestDto.setMoviePoster(movie_poster);
+        movieRequestDto.setMovieGenres(movie_genres);
         movieRequestDto.setMovieContentBold(movie_content_bold);
         if(movie_content_detail.length() > 255) {
             String movie_content_details = movie_content_detail.substring(0, 255);
@@ -86,6 +89,23 @@ public class MovieService {
                         if(j != 0) {
                             String movie_poster = poster_elements.attr("src");
 
+                            Elements movie_genre = document_detail.getElementsByClass("info_spec");
+                            int k = 0;
+                            Set<String> movie_genres = new HashSet<>();
+                            for (Element genres : movie_genre.tagName("span")) {
+                                if (k == 0) {
+                                    for (Element genres_elements : genres.select("a")) {
+                                        //System.out.println(genres_elements.text()); //영화 장르
+                                        movie_genres.add(genres_elements.text());
+                                    }
+                                    k++;
+                                }
+                                else{
+                                    //제조국, 상영시간, 개봉일자 등 가져올 것.
+                                }
+                            }
+                            //System.out.println(movie_genres); //영화 장르
+
                             Elements movie_content_elements_bold = document_detail.getElementsByClass("h_tx_story");
                             String movie_content_bold = movie_content_elements_bold.text();
 
@@ -95,7 +115,7 @@ public class MovieService {
                             //System.out.println(movie_rank + "\t" + movie_title + "\t" + movie_poster);
                             //System.out.println(movie_content_bold);  //영화 줄거리 첫 줄 굵은 글씨
                             //System.out.println(movie_content_detail); //영화 줄거리
-                            dtoSet(movie_title, movie_rank, movie_poster, movie_content_bold, movie_content_detail);
+                            dtoSet(movie_title, movie_rank, movie_poster, movie_genres, movie_content_bold, movie_content_detail);
                         }
                         else
                             j++;
