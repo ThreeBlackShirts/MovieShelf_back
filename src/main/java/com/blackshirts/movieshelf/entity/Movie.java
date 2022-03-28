@@ -8,8 +8,6 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @ApiModel(value = "영화", description = "영화 제목, 포스터url, 줄거리 등을 가진 Class")
 @Getter
@@ -37,9 +35,20 @@ public class Movie {
     private String moviePoster;
 
     @ApiModelProperty(value = "장르 리스트")
-    @ElementCollection
     @Column(name = "movie_genres")
-    private Set<String> movieGenres= new HashSet<>();
+    private String movieGenres;
+
+    @ApiModelProperty(value = "제조국")
+    @Column(name = "movie_nation")
+    private String movieNation;
+
+    @ApiModelProperty(value = "상영시간")
+    @Column(name = "movie_running_time")
+    private String movieRunningTime;
+
+    @ApiModelProperty(value = "개봉일")
+    @Column(name = "movie_release_date")
+    private String movieReleaseDate;
 
     @ApiModelProperty(value = "한줄 줄거리")
     @Column(name = "movie_content_bold")
@@ -55,11 +64,14 @@ public class Movie {
 
 
     @Builder
-    public Movie(String movieTitle, int movieRank, String moviePoster, Set<String> movieGenres, String movieContentBold, String movieContentDetail, String movieContentDetailLong) {
+    public Movie(String movieTitle, int movieRank, String moviePoster, String movieGenres, String movieNation, String movieRunningTime, String movieReleaseDate, String movieContentBold, String movieContentDetail, String movieContentDetailLong) {
         this.movieTitle = movieTitle;
         this.movieRank = movieRank;
         this.moviePoster = moviePoster;
         this.movieGenres = movieGenres;
+        this.movieNation = movieNation;
+        this.movieRunningTime = movieRunningTime;
+        this.movieReleaseDate = movieReleaseDate;
         this.movieContentBold = movieContentBold;
         this.movieContentDetail = movieContentDetail;
         this.movieContentDetailLong = movieContentDetailLong;
