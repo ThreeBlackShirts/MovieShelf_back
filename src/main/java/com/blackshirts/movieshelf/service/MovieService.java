@@ -2,6 +2,8 @@ package com.blackshirts.movieshelf.service;
 
 import com.blackshirts.movieshelf.dto.MovieRequestDto;
 import com.blackshirts.movieshelf.dto.MovieResponseDto;
+import com.blackshirts.movieshelf.dto.MovieSearchResponseDto;
+import com.blackshirts.movieshelf.entity.Movie;
 import com.blackshirts.movieshelf.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Connection;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -114,5 +117,20 @@ public class MovieService {
                 .stream()
                 .map(MovieResponseDto::new)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<MovieSearchResponseDto> serachMovie(String input) {
+        List<Movie> movies = movieRepository.findByMovieTitleContaining(input);
+        List<MovieSearchResponseDto> movie_list = new ArrayList<>();
+        if (movies.isEmpty() || movies == null){
+            return movie_list;
+        }
+        else{
+//            for (Movie dto : movies) {
+//                log.info(dto.getMovieTitle() + "\t" + dto.getMoviePoster()); repository contains 확인
+//            }
+            return movies.stream().map(MovieSearchResponseDto::new).collect(Collectors.toList());
+        }
     }
 }
