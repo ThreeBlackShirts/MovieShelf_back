@@ -20,7 +20,7 @@ class TestControllerTest {
 
     @Test
     public void shouldNotAllowAccessToUnauthenticatedUsers() throws Exception {
-        mockMvc.perform(get("/api/get"))
+        mockMvc.perform(get("/api/test/get"))
                 .andDo(print())
                 .andExpect(status().isForbidden());
         // (jwt token)header가 없어서 403

@@ -1,0 +1,32 @@
+-------------------------------------------------------------------------------
+Test set: com.blackshirts.movieshelf.controller.UserControllerTest
+-------------------------------------------------------------------------------
+Tests run: 7, Failures: 7, Errors: 0, Skipped: 0, Time elapsed: 15.823 s <<< FAILURE! - in com.blackshirts.movieshelf.controller.UserControllerTest
+signup  Time elapsed: 1.281 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<200> but was:<403>
+	at com.blackshirts.movieshelf.controller.UserControllerTest.signup(UserControllerTest.java:78)
+
+updateUser  Time elapsed: 0.91 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<200> but was:<404>
+	at com.blackshirts.movieshelf.controller.UserControllerTest.updateUser(UserControllerTest.java:140)
+
+login  Time elapsed: 0.735 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<200> but was:<403>
+	at com.blackshirts.movieshelf.controller.UserControllerTest.login(UserControllerTest.java:66)
+
+getUserOneByEmail  Time elapsed: 0.619 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<200> but was:<404>
+	at com.blackshirts.movieshelf.controller.UserControllerTest.getUserOneByEmail(UserControllerTest.java:110)
+
+getUserAll  Time elapsed: 0.579 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<200> but was:<404>
+	at com.blackshirts.movieshelf.controller.UserControllerTest.getUserAll(UserControllerTest.java:123)
+
+deleteUser  Time elapsed: 0.619 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<200> but was:<404>
+	at com.blackshirts.movieshelf.controller.UserControllerTest.deleteUser(UserControllerTest.java:156)
+
+getUserOneById  Time elapsed: 0.635 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<200> but was:<404>
+	at com.blackshirts.movieshelf.controller.UserControllerTest.getUserOneById(UserControllerTest.java:95)
+

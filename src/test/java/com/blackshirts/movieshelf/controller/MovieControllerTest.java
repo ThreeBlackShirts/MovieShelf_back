@@ -26,13 +26,13 @@ public class MovieControllerTest {
 
     @Test
     public void movieSave() throws Exception {
-        mockMvc.perform(get("/movie/moviedatainsert"))
+        mockMvc.perform(get("/api/movie/moviedatainsert"))
                 .andExpect(status().isOk()); //status검증
     }
 
     @Test
     public void findAllMovies() throws Exception {
-        mockMvc.perform(get("/movie/movielist"))
+        mockMvc.perform(get("/api/movie/movielist"))
                 .andExpect(status().isOk()) //status검증
                 .andDo(print());
     }

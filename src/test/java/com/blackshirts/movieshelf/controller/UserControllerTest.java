@@ -58,7 +58,7 @@ public class UserControllerTest {
     public void login() throws Exception {
         UserLoginRequestDto userLoginRequestDto = new UserLoginRequestDto("email1@example.com", "password");
 
-        mockMvc.perform(post("/v1/login")
+        mockMvc.perform(post("/api/v1/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(userLoginRequestDto)))
@@ -70,7 +70,7 @@ public class UserControllerTest {
     public void signup() throws Exception {
         UserSignupRequestDto userSignupRequestDto = new UserSignupRequestDto("email4@example.com", "john", "password", "nick");
 
-        mockMvc.perform(post("/v1/signup")
+        mockMvc.perform(post("/api/v1/signup")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(userSignupRequestDto)))
@@ -85,7 +85,7 @@ public class UserControllerTest {
 
         UserResponseDto userResponseDto = userService.findUserByEmail("email2@example.com");
 
-        String url = "/v1/user/id/" + userResponseDto.getUserId();
+        String url = "/api/v1/user/id/" + userResponseDto.getUserId();
 
         mockMvc.perform(get(url)
                         .header("X-AUTH-TOKEN", jwtTokenProviderToken)
@@ -101,7 +101,7 @@ public class UserControllerTest {
         assertNotNull(jwtTokenProviderToken);
 
         UserResponseDto userResponseDto = userService.findUserByEmail("email2@example.com");
-        String url = "/v1/user/email/" + userResponseDto.getUserEmail();
+        String url = "/api/v1/user/email/" + userResponseDto.getUserEmail();
         mockMvc.perform(get(url)
                         .header("X-AUTH-TOKEN", jwtTokenProviderToken)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -115,7 +115,7 @@ public class UserControllerTest {
         String jwtTokenProviderToken = jwtTokenProvider.createToken("email1@example.com");
         assertNotNull(jwtTokenProviderToken);
 
-        mockMvc.perform(get("/v1/users")
+        mockMvc.perform(get("/api/v1/users")
                         .header("X-AUTH-TOKEN", jwtTokenProviderToken)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .accept(MediaType.APPLICATION_JSON_VALUE))
@@ -131,7 +131,7 @@ public class UserControllerTest {
         UserResponseDto userResponseDto = userService.findUserByEmail("email3@example.com");
         UserRequestDto userRequestDto = new UserRequestDto(userResponseDto.getUserId(), "new_nick_name", "");
 
-        mockMvc.perform(put("/v1/user")
+        mockMvc.perform(put("/api/v1/user")
                         .header("X-AUTH-TOKEN", jwtTokenProviderToken)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -147,7 +147,7 @@ public class UserControllerTest {
 
         UserResponseDto userResponseDto = userService.findUserByEmail("email3@example.com");
 
-        String url = "/v1/user/" + userResponseDto.getUserId();
+        String url = "/api/v1/user/" + userResponseDto.getUserId();
         mockMvc.perform(delete(url)
                         .header("X-AUTH-TOKEN", jwtTokenProviderToken)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
