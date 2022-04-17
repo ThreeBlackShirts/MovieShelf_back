@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = {"1-2. SocialLogin"})
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/oauth")
+@RequestMapping(value = "/api/oauth")
 public class OauthController {
 
     @Autowired

@@ -16,7 +16,7 @@ import java.util.List;
 @Api(tags = {"2. Movie"})
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/movie")
+@RequestMapping("/api/movie")
 public class MovieController {
 
     private final MovieService movieService;

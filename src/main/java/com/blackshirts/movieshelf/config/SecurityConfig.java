@@ -47,12 +47,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic().disable()
                 .authorizeRequests() // 요청에 대한 사용권한 체크
 //                .antMatchers("/**").permitAll()
-                .antMatchers("/api/**").authenticated()
+                //.antMatchers("/api/**").authenticated()
                 .antMatchers("/exception/**", "/item/**", "/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll() // For Swagger
-                .antMatchers("/v1/register/**", "/v1/signup/**", "/v1/login/**", "/v1/logout/**").permitAll() // 로그인, 회원가입은 누구나 접근 가능
-                .antMatchers("/movie/**").permitAll() // 영화 데이타 관련
-                .antMatchers("/google/**").permitAll()
-                .antMatchers("/oauth/**").permitAll()
+                .antMatchers("/api/v1/register/**", "/api/v1/signup/**", "/api/v1/login/**", "/api/v1/logout/**").permitAll() // 로그인, 회원가입은 누구나 접근 가능
+                .antMatchers("/api/movie/**").permitAll() // 영화 데이타 관련
+                .antMatchers("/api/google/**").permitAll()
+                .antMatchers("/api/oauth/**").permitAll()
 //                .antMatchers("/api/**").permitAll()
                 .anyRequest().authenticated()
                 .and()

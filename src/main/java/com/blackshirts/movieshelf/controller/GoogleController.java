@@ -24,7 +24,7 @@ import java.net.URISyntaxException;
 
 @Api(tags = {"1-1. SocialLogin-Google"})
 @Controller
-@RequestMapping(value = "/google")
+@RequestMapping(value = "/api/google")
 public class GoogleController {
 
     private final ConfigUtils configUtils;
