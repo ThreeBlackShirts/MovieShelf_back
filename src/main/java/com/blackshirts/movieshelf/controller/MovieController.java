@@ -40,4 +40,10 @@ public class MovieController {
     public BaseResponse<List<MovieSearchResponseDto>> searchMovie(@ApiParam(value = "검색창 입력내용", required = true) @RequestBody String input) throws Exception {
         return new BaseResponse(HttpStatus.OK, "Return List(MovieTite and MoviePosterUrl)", movieService.serachMovie(input));
     }
+
+    @ApiOperation(value = "영화 추천 시스템", notes = "특정 영화의 장르가 비슷한 영화 목록을 리턴합니다.")
+    @PostMapping("/recommendation")
+    public BaseResponse<List<MovieSearchResponseDto>> recommendMovie(@ApiParam(value = "타겟 영화", required = true) @RequestBody String target) throws Exception {
+        return new BaseResponse(HttpStatus.OK, "Return List(MovieTite and MoviePosterUrl)", movieService.recommendMovie(target));
+    }
 }
