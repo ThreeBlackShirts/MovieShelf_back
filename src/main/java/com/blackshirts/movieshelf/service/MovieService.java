@@ -16,7 +16,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -185,5 +189,45 @@ public class MovieService {
 //            }
             return movies.stream().map(MovieSearchResponseDto::new).collect(Collectors.toList());
         }
+    }
+
+    @Transactional(readOnly = true)
+    public List<MovieSearchResponseDto> recommendMovie(String target) {
+        URL url = null;
+        String encodeData = "";
+        String decodeData = "";
+        try {
+            encodeData = URLEncoder.encode(target, "UTF-8");
+            target = encodeData.replace("+", "%20");
+            url = new URL("http://127.0.0.1:5000/movie/recommend/" + target);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("charset", "UTF-8");
+            connection.setDoOutput(true);
+
+            DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream());
+            outputStream.writeUTF(target);
+            outputStream.flush();
+            outputStream.close();
+
+            try{
+                StringBuffer sb = new StringBuffer();
+                BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
+                while(br.ready()) {
+                    sb.append(br.readLine());
+                }
+                System.out.println(sb);
+            }catch(Exception e) {
+                e.printStackTrace();
+            }
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        List<MovieSearchResponseDto> movie_list = new ArrayList<>();
+        return movie_list;
     }
 }
