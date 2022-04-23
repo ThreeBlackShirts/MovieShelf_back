@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,8 +14,10 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @ApiModel(value = "회원 정보", description = "아이디, 이메일, 비밀번호 등 회원 정보를 가진 Class")
-@Getter
 @Entity(name = "users")
+@Getter
+@NoArgsConstructor
+@Table(name = "users")
 public class User extends BaseTimeEntity implements UserDetails {
 
     @ApiModelProperty(value = "아이디")
@@ -68,10 +71,6 @@ public class User extends BaseTimeEntity implements UserDetails {
         this.userPassword = userPassword;
         this.userNickname = userNickname;
         this.userFilename = userFilename;
-    }
-
-    public User() {
-
     }
 
     @Override
