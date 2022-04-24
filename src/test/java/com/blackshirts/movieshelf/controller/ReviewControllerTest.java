@@ -89,6 +89,15 @@ class ReviewControllerTest {
 
     @Test
     void searchById() {
+//        String jwtTokenProviderToken = jwtTokenProvider.createToken("kionn@gmail.com");
+//        assertNotNull(jwtTokenProviderToken);
+//
+//        mockMvc.perform(get("/api/v3/review")
+//                        .header("X-AUTH-TOKEN", jwtTokenProviderToken)
+//                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+//                        .accept(MediaType.APPLICATION_JSON_VALUE))
+//                .andDo(print())
+//                .andExpect(status().isOk());
     }
 
     @Test
