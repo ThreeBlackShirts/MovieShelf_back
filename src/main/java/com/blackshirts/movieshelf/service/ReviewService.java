@@ -1,9 +1,6 @@
 package com.blackshirts.movieshelf.service;
 
-import com.blackshirts.movieshelf.dto.ReviewCreateRequestDto;
-import com.blackshirts.movieshelf.dto.ReviewListResponseDto;
-import com.blackshirts.movieshelf.dto.ReviewResponseDto;
-import com.blackshirts.movieshelf.dto.ReviewUpdateRequestDto;
+import com.blackshirts.movieshelf.dto.*;
 import com.blackshirts.movieshelf.entity.Review;
 import com.blackshirts.movieshelf.entity.User;
 import com.blackshirts.movieshelf.repository.ReviewRepository;
