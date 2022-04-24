@@ -22,12 +22,15 @@ class MovieResponseDtoTest {
         String movieNation = "제조 국가";
         String movieRunningTime = "상영 시간";
         String movieReleaseDate = "개봉일";
+        String movieDirector = "감동";
+        String movieActor = "출연진";
+        String movieFilmrate = "연령등급";
         String movieContentBold = "한줄 줄거리";
         String movieContentDetail = "상세 줄거리";
         String movieContentDetailLong = "상세 줄거리2";
 
         //when
-        MovieResponseDto dto = new MovieResponseDto(movieRank, movieTitle, moviePoster, movieGenres, movieNation, movieRunningTime, movieReleaseDate, movieContentBold, movieContentDetail, movieContentDetailLong);
+        MovieResponseDto dto = new MovieResponseDto(movieRank, movieTitle, moviePoster, movieGenres, movieNation, movieRunningTime, movieReleaseDate, movieDirector, movieActor, movieFilmrate, movieContentBold, movieContentDetail, movieContentDetailLong);
 
         //then
         assertThat(dto.getMovieRank()).isEqualTo(movieRank); //assertThat: 테스트 검증 라이브러리
@@ -37,6 +40,9 @@ class MovieResponseDtoTest {
         assertThat(dto.getMovieNation()).isEqualTo(movieNation);
         assertThat(dto.getMovieRunningTime()).isEqualTo(movieRunningTime);
         assertThat(dto.getMovieReleaseDate()).isEqualTo(movieReleaseDate);
+        assertThat(dto.getMovieReleaseDate()).isEqualTo(movieDirector);
+        assertThat(dto.getMovieReleaseDate()).isEqualTo(movieActor);
+        assertThat(dto.getMovieReleaseDate()).isEqualTo(movieFilmrate);
         assertThat(dto.getMovieContentBold()).isEqualTo(movieContentBold);
         assertThat(dto.getMovieContentDetail()).isEqualTo(movieContentDetail);
         assertThat(dto.getMovieContentDetailLong()).isEqualTo(movieContentDetailLong);

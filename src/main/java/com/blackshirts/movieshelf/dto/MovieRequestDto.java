@@ -14,6 +14,9 @@ public class MovieRequestDto {
     private String moviePoster;
     private String movieGenres;
     private String movieNation;
+    private String movieDirector;
+    private String movieActor;
+    private String movieFilmrate;
     private String movieRunningTime;
     private String movieReleaseDate;
     private String movieContentBold;
@@ -22,7 +25,7 @@ public class MovieRequestDto {
     private int movieRank;
 
     @Builder
-    public MovieRequestDto(String movieTitle, int movieRank, String moviePoster, String movieGenres, String movieNation, String movieRunningTime, String movieReleaseDate, String movieContentBold, String movieContentDetail, String movieContentDetailLong) {
+    public MovieRequestDto(String movieTitle, int movieRank, String moviePoster, String movieGenres, String movieNation, String movieRunningTime, String movieReleaseDate, String movieDirector, String movieActor, String movieFilmrate, String movieContentBold, String movieContentDetail, String movieContentDetailLong) {
         this.movieTitle = movieTitle;
         this.movieRank = movieRank;
         this.moviePoster = moviePoster;
@@ -30,6 +33,9 @@ public class MovieRequestDto {
         this.movieNation = movieNation;
         this.movieRunningTime = movieRunningTime;
         this.movieReleaseDate = movieReleaseDate;
+        this.movieDirector = movieDirector;
+        this.movieActor = movieActor;
+        this.movieFilmrate = movieFilmrate;
         this.movieContentBold = movieContentBold;
         this.movieContentDetail = movieContentDetail;
         this.movieContentDetailLong = movieContentDetailLong;
@@ -44,6 +50,9 @@ public class MovieRequestDto {
                 .movieNation(movieNation)
                 .movieRunningTime(movieRunningTime)
                 .movieReleaseDate(movieReleaseDate)
+                .movieDirector(movieDirector)
+                .movieActor(movieActor)
+                .movieFilmrate(movieFilmrate)
                 .movieContentBold(movieContentBold)
                 .movieContentDetail(movieContentDetail)
                 .movieContentDetailLong(movieContentDetailLong)

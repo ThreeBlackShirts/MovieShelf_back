@@ -41,7 +41,7 @@ public class MovieService {
     }
 
     @Transactional(readOnly = true)
-    public void dtoSet(String movie_title, int movie_rank, String movie_poster, String movie_genres, String movie_nation, String running_time, String release_date, String movie_content_bold, String movie_content_detail){
+    public void dtoSet(String movie_title, int movie_rank, String movie_poster, String movie_genres, String movie_nation, String running_time, String release_date, String director, String filmrate, String actor, String movie_content_bold, String movie_content_detail){
         //log.info(movie_rank + "\t" + movie_title + "\t" + movie_poster + "\t" + movie_content_bold);
         MovieRequestDto movieRequestDto = new MovieRequestDto();
         movieRequestDto.setMovieTitle(movie_title);
@@ -49,6 +49,9 @@ public class MovieService {
         movieRequestDto.setMoviePoster(movie_poster);
         movieRequestDto.setMovieGenres(movie_genres);
         movieRequestDto.setMovieNation(movie_nation);
+        movieRequestDto.setMovieDirector(director);
+        movieRequestDto.setMovieFilmrate(filmrate);
+        movieRequestDto.setMovieActor(actor);
         movieRequestDto.setMovieRunningTime(running_time);
         movieRequestDto.setMovieReleaseDate(release_date);
         movieRequestDto.setMovieContentBold(movie_content_bold);
@@ -120,7 +123,7 @@ public class MovieService {
                                 movie_nation = info_spec.text();
                             }
 
-                            //제조국, 상영시간, 개봉일
+                            //상영시간, 개봉일
                             String running_time = "";
                             String release_date = "";
                             if(info_spec.size() != 2) {
@@ -135,15 +138,88 @@ public class MovieService {
                                 }
                             }
 
+                            //감독, 출연, 연령등급
+                            String director = "";
+                            String actor = "";
+                            String filmrate = "";
+                            Elements movie_infos = document_detail.select("dl.info_spec dd");
+                            Elements movie_infos_dt = document_detail.select("dl.info_spec dt");
+                            for(int l = 1; l < movie_infos.size(); l++){
+                                if(movie_infos_dt.get(l).attr("class").equals("step2")){
+                                    director = movie_infos.get(l).select("p a").get(0).text();
+                                }
+                                if(movie_infos_dt.get(l).attr("class").equals("step4")){
+                                    filmrate = movie_infos.get(l).select("p a").get(0).text();
+                                }
+                                if(movie_infos_dt.get(l).attr("class").equals("step3")){
+                                    String movie_actor_url = "https://movie.naver.com/movie/bi/mi/" + movie_infos.get(l).select("a.more").attr("href");
+
+                                    Connection conn_actor = Jsoup.connect(movie_actor_url);
+
+                                    try {
+                                        Document document_actor = conn_actor.get();
+                                        Elements movie_actor_elements = document_actor.select("div.p_info a.k_name");
+                                        int limit = 0;
+                                        for(Element element : movie_actor_elements){
+                                            limit++;
+                                            if(element != movie_actor_elements.last() && limit != 15)
+                                                actor += element.text() + ", ";
+                                            else {
+                                                actor += element.text();
+                                                break;
+                                            }
+                                        }
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+
+                            //영화 줄거리(굵은 글씨, 얇은 글씨)
                             Elements movie_content_elements_bold = document_detail.getElementsByClass("h_tx_story");
                             String movie_content_bold = movie_content_elements_bold.text();
 
                             Elements movie_content_elements = document_detail.getElementsByClass("story_area");
                             String movie_content_detail = movie_content_elements.select("p").text(); //text() > toString() : <br>등이 포함된 내용 가져올 수 있음
 
-                            //System.out.println(movie_rank + "\t" + movie_title + "\t" + movie_poster);
-                            //System.out.println(movie_content_bold);  //영화 줄거리 첫 줄 굵은 글씨
-                            //System.out.println(movie_content_detail); //영화 줄거리
+//                            //영화 스틸컷
+//                            List<String> stillcutList = new ArrayList<>();
+//                            String movie_stillcut_url = "https://movie.naver.com/movie/bi/mi/" + document_detail.select("ul.end_sub_tap li a.tab03").attr("href");
+//                            Connection conn_stillcut = Jsoup.connect(movie_stillcut_url);
+//                            try {
+//                                Document document_actor = conn_stillcut.get();
+//                                Elements movie_stillcut_elements = document_actor.select("div.rolling_list ul li");
+//                                Elements movie_stillcut_imgs = document_actor.select("div.img_obj div.img_ar");
+//                                int limit2 = 0;
+//                                for(Element element : movie_stillcut_elements){
+//                                    limit2++;
+//                                    if(element != movie_stillcut_elements.last() && limit2 <= 8) {
+//                                        stillcutList.add(movie_stillcut_imgs.select("div.viewer_img img").attr("src"));
+//                                        movie_stillcut_imgs.select("a.pic_next").
+//                                    }
+//                                    else {
+//                                        actor += element.text();
+//                                        break;
+//                                    }
+//                                }
+//
+//                            } catch (IOException e) {
+//                                e.printStackTrace();
+//                            }
+//
+//                            //영화 트레일러(예고편)
+//                            String movie_trailer_url = "https://movie.naver.com/movie/bi/mi/" + document_detail.select("ul.end_sub_tap li a.tab04").attr("href");
+//
+//                            Connection conn_trailer = Jsoup.connect(movie_trailer_url);
+//
+//                            try {
+//                                Document document_actor = conn_trailer.get();
+//                                Elements movie_trailer_elements = document_actor.select("div.p_info a.k_name");
+//
+//                            } catch (IOException e) {
+//                                e.printStackTrace();
+//                            }
+
                             dtoSet(movie_title,
                                     movie_rank,
                                     movie_poster,
@@ -151,6 +227,9 @@ public class MovieService {
                                     movie_nation,
                                     running_time,
                                     release_date,
+                                    director,
+                                    filmrate,
+                                    actor,
                                     movie_content_bold,
                                     movie_content_detail);
                         }
@@ -229,5 +308,20 @@ public class MovieService {
 
         List<MovieSearchResponseDto> movie_list = new ArrayList<>();
         return movie_list;
+    }
+
+    @Transactional(readOnly = true)
+    public List<MovieResponseDto> detailedMovie(String target) {
+        List<Movie> movies = movieRepository.findByMovieTitleContaining(target);
+        List<MovieResponseDto> movie_list = new ArrayList<>();
+        if (movies.isEmpty() || movies == null){
+            return movie_list;
+        }
+        else{
+//            for (Movie dto : movies) {
+//                log.info(dto.getMovieTitle() + "\t" + dto.getMoviePoster()); repository contains 확인
+//            }
+            return movies.stream().map(MovieResponseDto::new).collect(Collectors.toList());
+        }
     }
 }
