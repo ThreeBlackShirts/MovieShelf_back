@@ -107,6 +107,11 @@ public class UserService {
         return id;
     }
 
+
+    public User getUserByUserEmail(String userEmail) {
+        return userRepository.findByUserEmail(userEmail).orElseThrow(()-> new BaseException(BaseResponseCode.USER_NOT_FOUND));
+    }
+
 //    public Optional<Boolean> existsUser(String email) {
 //        return userRepository.existsByEmail(email);
 //    }

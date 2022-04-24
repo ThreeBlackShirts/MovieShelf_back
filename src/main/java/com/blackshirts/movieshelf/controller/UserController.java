@@ -88,7 +88,7 @@ public class UserController {
     })
     @ApiOperation(value = "회원 삭제", notes = "회원을 삭제합니다.")
     @DeleteMapping("/user/{userId}")
-    public BaseResponse<UserResponseDto> delete(@ApiParam(value = "회원 Id", required = true) @PathVariable Long userId) {
+    public BaseResponse delete(@ApiParam(value = "회원 Id", required = true) @PathVariable Long userId) {
         userService.delete(userId);
         return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), BaseResponseCode.OK.getMessage());
     }
