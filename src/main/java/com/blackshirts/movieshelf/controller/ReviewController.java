@@ -28,8 +28,10 @@ public class ReviewController {
     })
     @ApiOperation(value = "영화 후기 작성", notes = "영화 후기를 등록합니다.")
     @PostMapping("/review")
-    public BaseResponse<Long> create(@ApiParam(value = "영화 후기 등록 정보를 갖는 객체", required = true) @RequestBody ReviewCreateRequestDto requestDto) {
-        return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), reviewService.create(requestDto));
+    public BaseResponse<Long> create(@ApiParam(value = "영화 후기 등록 정보를 갖는 객체", required = true) @RequestBody ReviewRequestDto requestDto) {
+        User user = userService.getUserByUserEmail(requestDto.getUserEmail());
+        ReviewCreateRequestDto createRequestDto = new ReviewCreateRequestDto(user, requestDto.getTitle(), requestDto.getContent());
+        return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), reviewService.create(createRequestDto));
     }
 
     //전체 조회(목록)

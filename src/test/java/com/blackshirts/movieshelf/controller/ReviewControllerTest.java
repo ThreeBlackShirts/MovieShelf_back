@@ -1,6 +1,7 @@
 package com.blackshirts.movieshelf.controller;
 
 import com.blackshirts.movieshelf.dto.ReviewCreateRequestDto;
+import com.blackshirts.movieshelf.dto.ReviewRequestDto;
 import com.blackshirts.movieshelf.dto.UserSignupRequestDto;
 import com.blackshirts.movieshelf.service.ReviewService;
 import com.blackshirts.movieshelf.service.UserService;
@@ -61,7 +62,7 @@ class ReviewControllerTest {
         String jwtTokenProviderToken = jwtTokenProvider.createToken("kionn@gmail.com");
         assertNotNull(jwtTokenProviderToken);
 
-        ReviewCreateRequestDto requestDto = new ReviewCreateRequestDto(userService.getUserByUserEmail("kionn@gmail.com"), "title5", "content5");
+        ReviewRequestDto requestDto = new ReviewRequestDto("kionn@gmail.com", "title5", "content5");
 
         mockMvc.perform(post("/api/v3/review")
                         .header("X-AUTH-TOKEN", jwtTokenProviderToken)
