@@ -23,7 +23,7 @@ public class Review extends BaseTimeEntity {
 
     @ApiModelProperty(value = "user_id")
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = User.class)
-    @JoinColumn(name = "user_id", updatable = false)
+    @JoinColumn(name = "user_id", updatable = false, referencedColumnName = "user_id")
     private User user;
 
     @ApiModelProperty(value = "제목")
@@ -31,7 +31,7 @@ public class Review extends BaseTimeEntity {
     private String title;
 
     @ApiModelProperty(value = "내용")
-    @Column(columnDefinition = "TEXT")
+    @Column(name = "content", length = 4000)
     private String content;
 
     //빌더
@@ -42,4 +42,8 @@ public class Review extends BaseTimeEntity {
         this.content = content;
     }
 
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }
