@@ -9,9 +9,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @ApiModel(value = "영화", description = "영화 제목, 포스터url, 줄거리 등을 가진 Class")
 @Getter
@@ -78,54 +76,40 @@ public class Movie {
     @Column(name = "movie_content_detail_long")
     private String movieContentDetailLong;
 
-//    @ApiModelProperty(value = "스틸컷")
-//    @ElementCollection
-//    @CollectionTable(joinColumns = @JoinColumn(name = "movie_id"))
-//    @Column(name = "movie_sillcut")
-//    private Set<String> movieSillcut = new HashSet<>();
-//
-//    @ApiModelProperty(value = "트레일러")
-//    @ElementCollection
-//    @CollectionTable(joinColumns = @JoinColumn(name = "movie_id"))
-//    @Column(name = "movie_trailer")  // 타이틀 추가 필요
-//    private List<String> movieTrailer = new ArrayList<>();
+    @ApiModelProperty(value = "스틸컷")
+    @ElementCollection
+    @CollectionTable(joinColumns = @JoinColumn(name = "movie_id"))
+    @Column(name = "movie_stillcut")
+    private List<String> movieStillcut = new ArrayList<>();
 
+    @ApiModelProperty(value = "트레일러")
+    @ElementCollection
+    @CollectionTable(joinColumns = @JoinColumn(name = "movie_id"))
+    @Column(name = "movie_trailer")  // 타이틀 추가 필요
+    private List<String> movieTrailer = new ArrayList<>();
 
     @Builder
-    public Movie(String movieTitle, int movieRank, String moviePoster, String movieGenres, String movieNation, String movieRunningTime, String movieReleaseDate, String movieDirector, String movieActor, String movieFilmrate, String movieContentBold, String movieContentDetail, String movieContentDetailLong) {
+    public Movie(Long movieId, String movieTitle, int movieRank, String moviePoster, String movieGenres,
+                 String movieNation, String movieRunningTime, String movieReleaseDate, String movieDirector,
+                 String movieActor, String movieFilmrate, String movieContentBold, String movieContentDetail,
+                 String movieContentDetailLong, List<String> movieStillcut, List<String> movieTrailer) {
+        this.movieId = movieId;
         this.movieTitle = movieTitle;
         this.movieRank = movieRank;
         this.moviePoster = moviePoster;
         this.movieGenres = movieGenres;
         this.movieNation = movieNation;
-        this.movieRunningTime = movieRunningTime;
-        this.movieReleaseDate = movieReleaseDate;
         this.movieDirector = movieDirector;
         this.movieActor = movieActor;
         this.movieFilmrate = movieFilmrate;
+        this.movieRunningTime = movieRunningTime;
+        this.movieReleaseDate = movieReleaseDate;
         this.movieContentBold = movieContentBold;
         this.movieContentDetail = movieContentDetail;
         this.movieContentDetailLong = movieContentDetailLong;
+        this.movieStillcut = movieStillcut;
+        this.movieTrailer = movieTrailer;
     }
-
-//    @Builder
-//    public Movie(String movieTitle, int movieRank, String moviePoster, String movieGenres, String movieNation, String movieRunningTime, String movieReleaseDate, String movieDirector, String movieActor, String movieFilmrate, String movieContentBold, String movieContentDetail, String movieContentDetailLong, Set<String> movieSillcut, List<String> movieTrailer) {
-//        this.movieTitle = movieTitle;
-//        this.movieRank = movieRank;
-//        this.moviePoster = moviePoster;
-//        this.movieGenres = movieGenres;
-//        this.movieNation = movieNation;
-//        this.movieDirector = movieDirector;
-//        this.movieActor = movieActor;
-//        this.movieFilmrate = movieFilmrate;
-//        this.movieRunningTime = movieRunningTime;
-//        this.movieReleaseDate = movieReleaseDate;
-//        this.movieContentBold = movieContentBold;
-//        this.movieContentDetail = movieContentDetail;
-//        this.movieContentDetailLong = movieContentDetailLong;
-//        this.movieSillcut = movieSillcut;
-//        this.movieTrailer = movieTrailer;
-//    }
 
     public Movie() {
 

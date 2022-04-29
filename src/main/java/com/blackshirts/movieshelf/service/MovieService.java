@@ -41,20 +41,23 @@ public class MovieService {
     }
 
     @Transactional(readOnly = true)
-    public void dtoSet(String movie_title, int movie_rank, String movie_poster, String movie_genres, String movie_nation, String running_time, String release_date, String director, String filmrate, String actor, String movie_content_bold, String movie_content_detail){
+    public void dtoSet(String movie_title, int movie_rank, String movie_poster, String movie_genres, String movie_nation, String running_time, String release_date,
+                       String director, String filmrate, String actor, String movie_content_bold, String movie_content_detail,
+                       List<String> stillcutList, List<String> trailerList){
         //log.info(movie_rank + "\t" + movie_title + "\t" + movie_poster + "\t" + movie_content_bold);
-        MovieRequestDto movieRequestDto = new MovieRequestDto();
-        movieRequestDto.setMovieTitle(movie_title);
-        movieRequestDto.setMovieRank(movie_rank);
-        movieRequestDto.setMoviePoster(movie_poster);
-        movieRequestDto.setMovieGenres(movie_genres);
-        movieRequestDto.setMovieNation(movie_nation);
-        movieRequestDto.setMovieDirector(director);
-        movieRequestDto.setMovieFilmrate(filmrate);
-        movieRequestDto.setMovieActor(actor);
-        movieRequestDto.setMovieRunningTime(running_time);
-        movieRequestDto.setMovieReleaseDate(release_date);
-        movieRequestDto.setMovieContentBold(movie_content_bold);
+        MovieRequestDto movieRequestDto = MovieRequestDto.builder()
+                .movieTitle(movie_title)
+                .movieRank(movie_rank)
+                .moviePoster(movie_poster)
+                .movieGenres(movie_genres)
+                .movieNation(movie_nation)
+                .movieDirector(director)
+                .movieFilmrate(filmrate)
+                .movieActor(actor)
+                .movieRunningTime(running_time)
+                .movieReleaseDate(release_date)
+                .movieContentBold(movie_content_bold)
+                .build();
 
         if(movie_content_detail.length() > 255) {
             String movie_content_details = movie_content_detail.substring(0, 255);
@@ -66,6 +69,19 @@ public class MovieService {
         else {
             movieRequestDto.setMovieContentDetail(movie_content_detail);
         }
+
+        //미해결 getMovieStillcut을 찾지 못한는 듯..?
+        for(String stillcut : stillcutList){
+            //System.out.println(stillcut);
+            //movieRequestDto.getMovieStillcut().add(stillcut);
+        }
+
+        //미해결
+        for(String trailer : trailerList){
+            //System.out.println(trailer);
+            //movieRequestDto.getMovieTrailer().add(trailer);
+        }
+
         saveMovie(movieRequestDto);
     }
 
@@ -182,43 +198,70 @@ public class MovieService {
                             Elements movie_content_elements = document_detail.getElementsByClass("story_area");
                             String movie_content_detail = movie_content_elements.select("p").text(); //text() > toString() : <br>등이 포함된 내용 가져올 수 있음
 
-//                            //영화 스틸컷
-//                            List<String> stillcutList = new ArrayList<>();
-//                            String movie_stillcut_url = "https://movie.naver.com/movie/bi/mi/" + document_detail.select("ul.end_sub_tap li a.tab03").attr("href");
-//                            Connection conn_stillcut = Jsoup.connect(movie_stillcut_url);
-//                            try {
-//                                Document document_actor = conn_stillcut.get();
-//                                Elements movie_stillcut_elements = document_actor.select("div.rolling_list ul li");
-//                                Elements movie_stillcut_imgs = document_actor.select("div.img_obj div.img_ar");
-//                                int limit2 = 0;
-//                                for(Element element : movie_stillcut_elements){
-//                                    limit2++;
-//                                    if(element != movie_stillcut_elements.last() && limit2 <= 8) {
-//                                        stillcutList.add(movie_stillcut_imgs.select("div.viewer_img img").attr("src"));
-//                                        movie_stillcut_imgs.select("a.pic_next").
-//                                    }
-//                                    else {
-//                                        actor += element.text();
-//                                        break;
-//                                    }
-//                                }
-//
-//                            } catch (IOException e) {
-//                                e.printStackTrace();
-//                            }
-//
-//                            //영화 트레일러(예고편)
-//                            String movie_trailer_url = "https://movie.naver.com/movie/bi/mi/" + document_detail.select("ul.end_sub_tap li a.tab04").attr("href");
-//
-//                            Connection conn_trailer = Jsoup.connect(movie_trailer_url);
-//
-//                            try {
-//                                Document document_actor = conn_trailer.get();
-//                                Elements movie_trailer_elements = document_actor.select("div.p_info a.k_name");
-//
-//                            } catch (IOException e) {
-//                                e.printStackTrace();
-//                            }
+                            //영화 스틸컷
+                            List<String> stillcutList = new ArrayList<>();
+                            List<String> stillcutUrlList = new ArrayList<>();
+                            Connection conn_photo = Jsoup.connect("https://movie.naver.com/movie/bi/mi/" + document_detail.select("div.sub_tab_area ul.end_sub_tab li a.tab03").attr("href"));
+                            try {
+                                Document document_photo = conn_photo.get();
+                                String movie_stillcut_url = "https://movie.naver.com/movie/bi/mi/" + document_photo.select("div.btn_view_mode a.cick_off").attr("href");
+                                Connection conn_stillcut_list = Jsoup.connect(movie_stillcut_url);
+                                try {
+                                    Document document_stillcut_list = conn_stillcut_list.get();
+                                    Elements movie_stillcut_elements = document_stillcut_list.select("div.gallery_group ul li._brick a");
+                                    int lim_count = 0;
+                                    for (Element element : movie_stillcut_elements) {
+                                        lim_count++;
+                                        stillcutUrlList.add("https://movie.naver.com/movie/bi/mi/" + element.attr("href"));
+                                        if(lim_count >= 8)
+                                            break;
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                for (String stillcutUrl : stillcutUrlList) {
+                                    Connection conn_stillcut = Jsoup.connect(stillcutUrl);
+                                    try {
+                                        Document document_stillcut = conn_stillcut.get();
+                                        stillcutList.add(document_stillcut.select("div.img_ar div.viewer_img img").attr("src"));
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                            //영화 트레일러(예고편)
+                            List<String> trailerList = new ArrayList<>();
+                            List<String> trailertitleList = new ArrayList<>();
+                            List<String> trailerUrlList = new ArrayList<>();
+                            if(document_detail.select("div.sub_tab_area ul.end_sub_tab li a.tab04").attr("href") != "") {
+                                Connection conn_video = Jsoup.connect("https://movie.naver.com/movie/bi/mi/" + document_detail.select("div.sub_tab_area ul.end_sub_tab li a.tab04").attr("href"));
+                                try {
+                                    Document document_trailer_list = conn_video.get();
+                                    Elements movie_trailer_elements = document_trailer_list.select("div.ifr_area ul.video_thumb li a.video_obj");
+                                    int lim_count = 0;
+                                    for (Element element : movie_trailer_elements) {
+                                        lim_count++;
+                                        trailertitleList.add(element.attr("title"));
+                                        trailerUrlList.add("https://movie.naver.com" + element.attr("href"));
+                                        if (lim_count >= 8)
+                                            break;
+                                    }
+                                    for (String trailerUrlUrl : trailerUrlList) {
+                                        Connection conn_trailer = Jsoup.connect(trailerUrlUrl);
+                                        try {
+                                            Document document_trailer = conn_trailer.get();
+                                            trailerList.add("https://movie.naver.com" + document_trailer.select("div.video_area div.video_ar iframe").attr("src"));
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
 
                             dtoSet(movie_title,
                                     movie_rank,
@@ -231,7 +274,9 @@ public class MovieService {
                                     filmrate,
                                     actor,
                                     movie_content_bold,
-                                    movie_content_detail);
+                                    movie_content_detail,
+                                    stillcutList,
+                                    trailerList);
                         }
                         else
                             j++;
