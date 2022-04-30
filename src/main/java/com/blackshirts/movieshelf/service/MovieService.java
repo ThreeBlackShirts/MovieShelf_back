@@ -113,61 +113,63 @@ public class MovieService {
                         if(j != 0) {
                             String movie_poster = poster_elements.attr("src");
 
-                            Elements movie_genre = document_detail.select("dl.info_spec dd p span");
+                            //장르, 제조국, 상영시간, 개봉일, 감독, 출연, 연령등급
                             String movie_genres = "";
-                            Elements info_spec = movie_genre.tagName("span");
-                            Element genres_elements = info_spec.get(0);
-                            for (Element genre : genres_elements.select("a")) {
-                                if(genre != genres_elements.select("a").last())
-                                    movie_genres += genre.text() + ", ";
-                                else
-                                    movie_genres += genre.text();
-                            }
-
-                            //제조국
                             String movie_nation = "";
-                            if(info_spec.get(1).childNodeSize() != 1) {
-                                Element nation_elements = info_spec.get(1);
-                                for (Element nation : nation_elements.select("a")) {
-                                    if (nation != nation_elements.select("a").last())
-                                        movie_nation += nation.text() + ", ";
-                                    else
-                                        movie_nation += nation.text();
-                                }
-                            }
-                            else {
-                                movie_nation = info_spec.text();
-                            }
-
-                            //상영시간, 개봉일
                             String running_time = "";
                             String release_date = "";
-                            if(info_spec.size() != 2) {
-                                if(info_spec.get(2).select("a").size() == 0) {
-                                    running_time = info_spec.get(2).ownText().trim();
-                                    if(info_spec.size() != 3) {
-                                        release_date =  info_spec.get(3).select("a").text().replace(" ", "");
-                                    }
-                                }
-                                else {
-                                    release_date = info_spec.get(2).select("a").text().replace(" ", "");
-                                }
-                            }
-
-                            //감독, 출연, 연령등급
                             String director = "";
                             String actor = "";
                             String filmrate = "";
                             Elements movie_infos = document_detail.select("dl.info_spec dd");
                             Elements movie_infos_dt = document_detail.select("dl.info_spec dt");
-                            for(int l = 1; l < movie_infos.size(); l++){
-                                if(movie_infos_dt.get(l).attr("class").equals("step2")){
+                            for(int l = 0; l < movie_infos.size(); l++){
+                                if(movie_infos_dt.get(l).attr("class").equals("step1")){
+                                    Elements movie_info = movie_infos.select("p span");
+
+                                    //장르
+                                    Element genres_elements = movie_info.get(0);
+                                    for (Element genre : genres_elements.select("a")) {
+                                        if(genre != genres_elements.select("a").last())
+                                            movie_genres += genre.text() + ", ";
+                                        else
+                                            movie_genres += genre.text();
+                                    }
+
+                                    //제조국
+                                    if(movie_info.get(1).childNodeSize() != 1) {
+                                        Element nation_elements = movie_info.get(1);
+                                        for (Element nation : nation_elements.select("a")) {
+                                            if (nation != nation_elements.select("a").last())
+                                                movie_nation += nation.text() + ", ";
+                                            else
+                                                movie_nation += nation.text();
+                                        }
+                                    }
+                                    else {
+                                        movie_nation = movie_info.text();
+                                    }
+
+                                    //상영시간, 개봉일
+                                    if(movie_info.size() != 2) {
+                                        if(movie_info.get(2).select("a").size() == 0) {
+                                            running_time = movie_info.get(2).ownText().trim();
+                                            if(movie_info.size() != 3) {
+                                                release_date =  movie_info.get(3).select("a").text().replace(" ", "");
+                                            }
+                                        }
+                                        else {
+                                            release_date = movie_info.get(2).select("a").text().replace(" ", "");
+                                        }
+                                    }
+                                }
+                                else if(movie_infos_dt.get(l).attr("class").equals("step2")){
                                     director = movie_infos.get(l).select("p a").get(0).text();
                                 }
-                                if(movie_infos_dt.get(l).attr("class").equals("step4")){
+                                else if(movie_infos_dt.get(l).attr("class").equals("step4")){
                                     filmrate = movie_infos.get(l).select("p a").get(0).text();
                                 }
-                                if(movie_infos_dt.get(l).attr("class").equals("step3")){
+                                else if(movie_infos_dt.get(l).attr("class").equals("step3")){
                                     String movie_actor_url = "https://movie.naver.com/movie/bi/mi/" + movie_infos.get(l).select("a.more").attr("href");
 
                                     Connection conn_actor = Jsoup.connect(movie_actor_url);
@@ -285,7 +287,6 @@ public class MovieService {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -351,6 +352,7 @@ public class MovieService {
             e.printStackTrace();
         }
 
+        //임시
         List<MovieSearchResponseDto> movie_list = new ArrayList<>();
         return movie_list;
     }
