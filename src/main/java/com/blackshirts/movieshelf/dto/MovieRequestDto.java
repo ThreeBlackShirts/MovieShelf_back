@@ -6,23 +6,36 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
 public class MovieRequestDto {
+    private Long movieId;
     private String movieTitle;
     private String moviePoster;
     private String movieGenres;
     private String movieNation;
+    private String movieDirector;
+    private String movieActor;
+    private String movieFilmrate;
     private String movieRunningTime;
     private String movieReleaseDate;
     private String movieContentBold;
     private String movieContentDetail;
     private String movieContentDetailLong;
     private int movieRank;
+    private List<String> movieStillcut = new ArrayList<>();
+    private List<String> movieTrailer = new ArrayList<>();
 
     @Builder
-    public MovieRequestDto(String movieTitle, int movieRank, String moviePoster, String movieGenres, String movieNation, String movieRunningTime, String movieReleaseDate, String movieContentBold, String movieContentDetail, String movieContentDetailLong) {
+    public MovieRequestDto(Long movieId, String movieTitle, int movieRank, String moviePoster, String movieGenres, String movieNation, String movieRunningTime,
+                           String movieReleaseDate, String movieDirector, String movieActor, String movieFilmrate, String movieContentBold,
+                           String movieContentDetail, String movieContentDetailLong,
+                           List<String> movieStillcut, List<String> movieTrailer) {
+        this.movieId = movieId;
         this.movieTitle = movieTitle;
         this.movieRank = movieRank;
         this.moviePoster = moviePoster;
@@ -30,13 +43,19 @@ public class MovieRequestDto {
         this.movieNation = movieNation;
         this.movieRunningTime = movieRunningTime;
         this.movieReleaseDate = movieReleaseDate;
+        this.movieDirector = movieDirector;
+        this.movieActor = movieActor;
+        this.movieFilmrate = movieFilmrate;
         this.movieContentBold = movieContentBold;
         this.movieContentDetail = movieContentDetail;
         this.movieContentDetailLong = movieContentDetailLong;
+        this.movieStillcut = movieStillcut;
+        this.movieTrailer = movieTrailer;
     }
 
     public Movie toEntity() {
         return Movie.builder()
+                .movieId(movieId)
                 .movieTitle(movieTitle)
                 .movieRank(movieRank)
                 .moviePoster(moviePoster)
@@ -44,9 +63,14 @@ public class MovieRequestDto {
                 .movieNation(movieNation)
                 .movieRunningTime(movieRunningTime)
                 .movieReleaseDate(movieReleaseDate)
+                .movieDirector(movieDirector)
+                .movieActor(movieActor)
+                .movieFilmrate(movieFilmrate)
                 .movieContentBold(movieContentBold)
                 .movieContentDetail(movieContentDetail)
                 .movieContentDetailLong(movieContentDetailLong)
+                .movieStillcut(movieStillcut)
+                .movieTrailer(movieTrailer)
                 .build();
     }
 }
