@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @ApiModel(value = "회원 영화 리뷰 정보", description = "회원의 영화 리뷰 정보를 가진 Class")
 @Entity(name = "reviews")
@@ -33,6 +35,9 @@ public class Review extends BaseTimeEntity {
     @ApiModelProperty(value = "내용")
     @Column(name = "content", length = 4000)
     private String content;
+
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
+    Set<Like> likes = new HashSet<>();
 
     //빌더
     @Builder
