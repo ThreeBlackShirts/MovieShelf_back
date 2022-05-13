@@ -97,6 +97,10 @@ public class MovieService {
             int i = 1;
             for (Element elements : movie_elements.select("a")) {
                 String movie_title = elements.text();
+                if(movieRepository.existsByMovieTitle(movie_title)){
+                    System.out.println("이미 등록된 영화입니다.");
+                    continue;
+                }
                 int movie_rank = i;
                 i++;
 
