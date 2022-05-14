@@ -31,4 +31,9 @@ public class LikeService {
 
         return  likeRepository.findByUserAndReview(user, review).orElseThrow(() -> new BaseException(BaseResponseCode.Like_NOT_FOUND)).getLikeId();
     }
+
+    public Long delete(Long likeId){
+        likeRepository.deleteById(likeId);
+        return likeId;
+    }
 }
