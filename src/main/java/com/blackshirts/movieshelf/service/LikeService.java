@@ -32,6 +32,11 @@ public class LikeService {
         return  likeRepository.findByUserAndReview(user, review).orElseThrow(() -> new BaseException(BaseResponseCode.Like_NOT_FOUND)).getLikeId();
     }
 
+    //사용자가 이미 좋아요 한 게시물인지 체크
+    private boolean isNotAlreadyLike(User user, Review review) {
+        return likeRepository.findByUserAndReview(user, review).isPresent();
+    }
+
     public Long delete(Long likeId){
         likeRepository.deleteById(likeId);
         return likeId;
