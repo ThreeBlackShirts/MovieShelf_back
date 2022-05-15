@@ -1,7 +1,7 @@
 package com.blackshirts.movieshelf.controller;
 
 import com.blackshirts.movieshelf.dto.UserLoginRequestDto;
-import com.blackshirts.movieshelf.dto.UserRequestDto;
+import com.blackshirts.movieshelf.dto.UserUpdateRequestDto;
 import com.blackshirts.movieshelf.dto.UserResponseDto;
 import com.blackshirts.movieshelf.dto.UserSignupRequestDto;
 import com.blackshirts.movieshelf.service.UserService;
@@ -129,7 +129,7 @@ public class UserControllerTest {
         assertNotNull(jwtTokenProviderToken);
 
         UserResponseDto userResponseDto = userService.findUserByEmail("email3@example.com");
-        UserRequestDto userRequestDto = new UserRequestDto(userResponseDto.getUserId(), "new_nick_name", "");
+        UserUpdateRequestDto userRequestDto = new UserUpdateRequestDto(userResponseDto.getUserId(), "new_nick_name", "");
 
         mockMvc.perform(put("/api/v1/user")
                         .header("X-AUTH-TOKEN", jwtTokenProviderToken)

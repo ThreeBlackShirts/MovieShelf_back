@@ -21,7 +21,7 @@ public class UserController {
 
 //    @ApiOperation(value = "회원 등록", notes = "회원을 등록합니다.")
 //    @PostMapping("/register")
-//    public BaseResponse<Long> save(@ApiParam(value = "회원 한 명의 정보를 갖는 객체", required = true) @RequestBody UserRequestDto userRequestDto) throws Exception {
+//    public BaseResponse<Long> save(@ApiParam(value = "회원 한 명의 정보를 갖는 객체", required = true) @RequestBody UserUpdateRequestDto userRequestDto) throws Exception {
 //        return new BaseResponse<>(HttpStatus.OK, "회원을 등록합니다.", userService.saveUser(userRequestDto));
 //    }
 
@@ -76,7 +76,7 @@ public class UserController {
     })
     @ApiOperation(value = "회원 수정", notes = "회원 정보를 수정합니다.")
     @PutMapping("/user")
-    public BaseResponse<Long> update(@ApiParam(value = "회원 한 명의 정보를 갖는 객체", required = true) @RequestBody UserRequestDto userRequestDto) throws Exception {
+    public BaseResponse<Long> update(@ApiParam(value = "회원 한 명의 정보를 갖는 객체", required = true) @RequestBody UserUpdateRequestDto userRequestDto) throws Exception {
         return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), userService.update(userRequestDto).get());
     }
 

@@ -26,7 +26,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
 //    @Transactional(readOnly = true)
-//    public Long saveUser(UserRequestDto userRequestDto) {
+//    public Long saveUser(UserUpdateRequestDto userRequestDto) {
 //        userRequestDto.setUserPassword(passwordEncoder.encode(userRequestDto.getUserPassword()));
 //        userRepository.save(userRequestDto.toEntity());
 //        return userRepository.findByUserEmail(userRequestDto.getUserEmail()).get().getUserId();
@@ -66,7 +66,7 @@ public class UserService {
         return new UserLoginResponseDto(HttpStatus.OK, token);
     }
 
-//    public Long update(Long id, UserRequestDto userRequestDto){
+//    public Long update(Long id, UserUpdateRequestDto userRequestDto){
 //        User newUser = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("해당하는 유저를 찾을 수 없습니다."));
 //        newUser.updateUserNickname(userRequestDto.getUserName());
 //        return id;
@@ -88,7 +88,7 @@ public class UserService {
         return id;
     }
 
-    public Optional<User> update(UserRequestDto userRequestDto) throws BaseException {
+    public Optional<User> update(UserUpdateRequestDto userRequestDto) throws BaseException {
         Optional<User> user = userRepository.findById(userRequestDto.getUserId());
         try {
             user.ifPresent(selectUser -> {
