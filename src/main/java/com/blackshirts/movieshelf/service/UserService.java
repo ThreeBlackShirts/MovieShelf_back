@@ -75,7 +75,9 @@ public class UserService {
     @Transactional(readOnly = true)
     public Long signUp(UserSignupRequestDto userSignupRequestDto) throws BaseException {
 
+        userSignupRequestDto.setUserPassword(passwordEncoder.encode(userSignupRequestDto.getUserPassword()));
         boolean exitsUserCheck = userRepository.existsByUserEmail(userSignupRequestDto.getUserEmail()).orElseThrow(() -> new BaseException(BaseResponseCode.BAD_REQUEST));
+
         if (exitsUserCheck) {
             throw new BaseException(BaseResponseCode.DUPLICATE_EMAIL);
         }
