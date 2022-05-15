@@ -58,7 +58,7 @@ public class UserService {
     }
 
     public UserLoginResponseDto login(UserLoginRequestDto userLoginRequestDto) {
-        User user = userRepository.findByUserEmail(userLoginRequestDto.getUserEmail()).orElseThrow(()-> new BaseException(BaseResponseCode.USER_NOT_FOUND));
+        User user = userRepository.findByUserEmail(userLoginRequestDto.getUserEmail()).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
         if (!passwordEncoder.matches(userLoginRequestDto.getUserPassword(), user.getPassword()))
             throw new BaseException(BaseResponseCode.INVALID_PASSWORD);
 
@@ -74,14 +74,18 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public Long signUp(UserSignupRequestDto userSignupRequestDto) throws BaseException {
-        userRepository.existsByUserEmail(userSignupRequestDto.getUserEmail()).orElseThrow(() -> new BaseException(BaseResponseCode.DUPLICATE_EMAIL));
-        userSignupRequestDto.setUserPassword(passwordEncoder.encode(userSignupRequestDto.getUserPassword()));
+
+        boolean exitsUserCheck = userRepository.existsByUserEmail(userSignupRequestDto.getUserEmail()).orElseThrow(() -> new BaseException(BaseResponseCode.BAD_REQUEST));
+        if (exitsUserCheck) {
+            throw new BaseException(BaseResponseCode.DUPLICATE_EMAIL);
+        }
+        Long id;
         try {
-            userRepository.save(userSignupRequestDto.toEntity());
+            id = userRepository.save(userSignupRequestDto.toEntity()).getUserId();
         } catch (Exception e) {
             throw new BaseException(BaseResponseCode.FAILED_TO_SAVE_USER);
         }
-        return userRepository.findByUserEmail(userSignupRequestDto.getUserEmail()).get().getUserId();
+        return id;
     }
 
     public Optional<User> update(UserRequestDto userRequestDto) throws BaseException {
@@ -109,7 +113,7 @@ public class UserService {
 
 
     public User getUserByUserEmail(String userEmail) {
-        return userRepository.findByUserEmail(userEmail).orElseThrow(()-> new BaseException(BaseResponseCode.USER_NOT_FOUND));
+        return userRepository.findByUserEmail(userEmail).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
     }
 
 //    public Optional<Boolean> existsUser(String email) {
