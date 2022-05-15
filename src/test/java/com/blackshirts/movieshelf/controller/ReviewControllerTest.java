@@ -1,14 +1,11 @@
 package com.blackshirts.movieshelf.controller;
 
-import com.blackshirts.movieshelf.dto.ReviewCreateRequestDto;
 import com.blackshirts.movieshelf.dto.ReviewRequestDto;
-import com.blackshirts.movieshelf.dto.UserSignupRequestDto;
 import com.blackshirts.movieshelf.service.ReviewService;
 import com.blackshirts.movieshelf.service.UserService;
 import com.blackshirts.movieshelf.util.JwtTokenProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;

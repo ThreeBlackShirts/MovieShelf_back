@@ -1,6 +1,5 @@
 package com.blackshirts.movieshelf.exception;
 
-import com.blackshirts.movieshelf.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

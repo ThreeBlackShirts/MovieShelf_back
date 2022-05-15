@@ -1,11 +1,7 @@
 package com.blackshirts.movieshelf.dto;
 
-import com.blackshirts.movieshelf.entity.Movie;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-
-import java.util.Collections;
-import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 

@@ -1,13 +1,12 @@
 package com.blackshirts.movieshelf.service;
 
-import com.google.gson.JsonParser;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import org.springframework.stereotype.Service;
 
 @Service
 public class OauthService {
