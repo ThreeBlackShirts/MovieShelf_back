@@ -4,7 +4,6 @@ import com.blackshirts.movieshelf.dto.*;
 import com.blackshirts.movieshelf.entity.User;
 import com.blackshirts.movieshelf.exception.BaseException;
 import com.blackshirts.movieshelf.exception.BaseResponseCode;
-import com.blackshirts.movieshelf.exception.EmailLoginFailedCException;
 import com.blackshirts.movieshelf.repository.UserRepository;
 import com.blackshirts.movieshelf.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
