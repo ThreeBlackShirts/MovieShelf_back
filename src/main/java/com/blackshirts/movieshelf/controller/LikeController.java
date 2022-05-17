@@ -7,10 +7,7 @@ import com.blackshirts.movieshelf.exception.BaseResponseCode;
 import com.blackshirts.movieshelf.service.LikeService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Api(tags = {"Like"})
 @RequiredArgsConstructor
@@ -22,11 +19,15 @@ public class LikeController {
     @PostMapping("/like/{reviewId}")
     public BaseResponse<String> addLike(UserRequestDto userRequestDto, @PathVariable Long reviewId) {
 
-        boolean result = false;
-
-
         return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), likeService.addLike(userRequestDto.toEntity(), reviewId));
 
     }
+
+    @DeleteMapping("/like/{reviewId}")
+    public BaseResponse<String> deleteLike(UserRequestDto userRequestDto, @PathVariable Long reviewId){
+        return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), likeService.delete(userRequestDto.toEntity(), reviewId));
+    }
+
+
 
 }

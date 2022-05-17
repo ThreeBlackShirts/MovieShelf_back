@@ -22,13 +22,14 @@ public class LikeService {
 
         Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
         likeRepository.findByUserAndReview(user, review).orElseThrow(() -> new BaseException(BaseResponseCode.Like_NOT_FOUND));
-
-        try {
-            likeRepository.save(new Like(review, user));
-        } catch (Exception e) {
-            throw new BaseException(BaseResponseCode.FAILED_TO_SAVE_LIKE);
+        boolean isLikeCheck = isNotAlreadyLike(user, review);
+        if(!isLikeCheck) {
+            try {
+                likeRepository.save(new Like(review, user));
+            } catch (Exception e) {
+                throw new BaseException(BaseResponseCode.FAILED_TO_SAVE_LIKE);
+            }
         }
-
         return  likeRepository.findByUserAndReview(user, review).orElseThrow(() -> new BaseException(BaseResponseCode.Like_NOT_FOUND)).getLikeId();
     }
 
@@ -37,7 +38,11 @@ public class LikeService {
         return likeRepository.findByUserAndReview(user, review).isPresent();
     }
 
-    public Long delete(Long likeId){
+    public Long delete(User user, Long reviewId){
+        Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
+        boolean isLikeCheck = isNotAlreadyLike(user, review);
+
+        Long likeId = likeRepository.findByUserAndReview(user, review).get().getLikeId();
         likeRepository.deleteById(likeId);
         return likeId;
     }
