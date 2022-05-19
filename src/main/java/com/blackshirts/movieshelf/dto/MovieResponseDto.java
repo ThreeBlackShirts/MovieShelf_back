@@ -3,8 +3,6 @@ package com.blackshirts.movieshelf.dto;
 import com.blackshirts.movieshelf.entity.Movie;
 import lombok.Getter;
 
-import java.util.Set;
-
 @Getter
 public class MovieResponseDto {
     private int movieRank;
@@ -19,7 +17,6 @@ public class MovieResponseDto {
     private String movieFilmrate;
     private String movieContentBold;
     private String movieContentDetail;
-    private String movieContentDetailLong;
 
     public MovieResponseDto(Movie movie){
         this.movieRank = movie.getMovieRank();
@@ -34,9 +31,8 @@ public class MovieResponseDto {
         this.movieFilmrate = movie.getMovieFilmrate();
         this.movieContentBold = movie.getMovieContentBold();
         this.movieContentDetail = movie.getMovieContentDetail();
-        this.movieContentDetailLong = movie.getMovieContentDetailLong();
     }
 
-    public MovieResponseDto(int movieRank, String movieTitle, String moviePoster, String movieGenres, String movieNation, String movieRunningTime, String movieReleaseDate, String movieDirector, String movieActor, String movieFilmrate, String movieContentBold, String movieContentDetail, String movieContentDetailLong) {
+    public MovieResponseDto(int movieRank, String movieTitle, String moviePoster, String movieGenres, String movieNation, String movieRunningTime, String movieReleaseDate, String movieDirector, String movieActor, String movieFilmrate, String movieContentBold, String movieContentDetail) {
     }
 }

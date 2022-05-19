@@ -1,6 +1,8 @@
 package com.blackshirts.movieshelf.dto;
 
 import com.blackshirts.movieshelf.entity.Movie;
+import com.blackshirts.movieshelf.entity.MovieStillcut;
+import com.blackshirts.movieshelf.entity.MovieTrailer;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,14 +29,13 @@ public class MovieRequestDto {
     private String movieContentDetail;
     private String movieContentDetailLong;
     private int movieRank;
-    private List<String> movieStillcut = new ArrayList<>();
-    private List<String> movieTrailer = new ArrayList<>();
+    private List<MovieStillcut> movieStillcut = new ArrayList<>();
+    private List<MovieTrailer> movieTrailer = new ArrayList<>();
 
     @Builder
     public MovieRequestDto(Long movieId, String movieTitle, int movieRank, String moviePoster, String movieGenres, String movieNation, String movieRunningTime,
                            String movieReleaseDate, String movieDirector, String movieActor, String movieFilmrate, String movieContentBold,
-                           String movieContentDetail, String movieContentDetailLong,
-                           List<String> movieStillcut, List<String> movieTrailer) {
+                           String movieContentDetail, List<MovieStillcut> movieStillcut, List<MovieTrailer> movieTrailer) {
         this.movieId = movieId;
         this.movieTitle = movieTitle;
         this.movieRank = movieRank;
@@ -48,7 +49,6 @@ public class MovieRequestDto {
         this.movieFilmrate = movieFilmrate;
         this.movieContentBold = movieContentBold;
         this.movieContentDetail = movieContentDetail;
-        this.movieContentDetailLong = movieContentDetailLong;
         this.movieStillcut = movieStillcut;
         this.movieTrailer = movieTrailer;
     }
@@ -68,9 +68,8 @@ public class MovieRequestDto {
                 .movieFilmrate(movieFilmrate)
                 .movieContentBold(movieContentBold)
                 .movieContentDetail(movieContentDetail)
-                .movieContentDetailLong(movieContentDetailLong)
-                .movieStillcut(movieStillcut)
-                .movieTrailer(movieTrailer)
+                .stillcuts(movieStillcut)
+                .trailers(movieTrailer)
                 .build();
     }
 }
