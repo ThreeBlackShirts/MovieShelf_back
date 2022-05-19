@@ -4,7 +4,13 @@ import com.blackshirts.movieshelf.dto.MovieRequestDto;
 import com.blackshirts.movieshelf.dto.MovieResponseDto;
 import com.blackshirts.movieshelf.dto.MovieSearchResponseDto;
 import com.blackshirts.movieshelf.entity.Movie;
+import com.blackshirts.movieshelf.entity.MovieStillcut;
+import com.blackshirts.movieshelf.entity.MovieTrailer;
+import com.blackshirts.movieshelf.exception.BaseException;
+import com.blackshirts.movieshelf.exception.BaseResponseCode;
 import com.blackshirts.movieshelf.repository.MovieRepository;
+import com.blackshirts.movieshelf.repository.MovieStillcutRepository;
+import com.blackshirts.movieshelf.repository.MovieTrailerRepository;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -35,23 +41,45 @@ public class MovieService {
     private static final Logger log = LoggerFactory.getLogger(MovieService.class);
 
     private final MovieRepository movieRepository;
+    private final MovieStillcutRepository movieStillcutRepository;
+    private final MovieTrailerRepository movieTrailerRepository;
 
     @Transactional(readOnly = true)
-    public void saveMovie(MovieRequestDto movieRequestDto) {
+    public void saveMovie(MovieRequestDto movieRequestDto, List<String> stillcutList, List<String> trailerList) {
         log.info(movieRequestDto.getMovieRank() + "\t" + movieRequestDto.getMovieTitle() + "\t" + movieRequestDto.getMoviePoster());
         //log.info(movieRequestDto.getMovieContentBold() + "\n" + movieRequestDto.getMovieContentDetail() + movieRequestDto.getMovieContentDetailLong());
         //log.info(movieRequestDto.getMovieGenres() + "\t" + movieRequestDto.getMovieNation() + "\t" + movieRequestDto.getMovieRunningTime() + "\t" + movieRequestDto.getMovieReleaseDate());
         movieRepository.save(movieRequestDto.toEntity());
+
+        Movie movie = movieRepository.findByMovieTitle(movieRequestDto.getMovieTitle()).orElseThrow(() -> new IllegalArgumentException("해당 영화가 존재하지 않습니다."));
+        for(String stillcut : stillcutList){
+            //movieStillcutRepository.findByMovie(movie).orElseThrow(() -> new BaseException(BaseResponseCode.MOVIE_NOT_FOUND));
+
+            try {
+                movieStillcutRepository.save(new MovieStillcut(movie, stillcut));
+            } catch (Exception e) {
+                throw new BaseException(BaseResponseCode.FAILED_TO_SAVE_STILLCUT);
+            }
+        }
+
+        for(String trailer : trailerList){
+            //movieTrailerRepository.findByMovie(movie).orElseThrow(() -> new BaseException(BaseResponseCode.MOVIE_NOT_FOUND));
+
+            try {
+                movieTrailerRepository.save(new MovieTrailer(movie, trailer));
+            } catch (Exception e) {
+                throw new BaseException(BaseResponseCode.FAILED_TO_SAVE_STILLCUT);
+            }
+        }
     }
 
     @Transactional(readOnly = true)
-    public void dtoSet(String movie_title, int movie_rank, String movie_poster, String movie_genres, String movie_nation, String running_time, String release_date,
+    public void dtoSet(String movie_title, String movie_poster, String movie_genres, String movie_nation, String running_time, String release_date,
                        String director, String filmrate, String actor, String movie_content_bold, String movie_content_detail,
                        List<String> stillcutList, List<String> trailerList){
         //log.info(movie_rank + "\t" + movie_title + "\t" + movie_poster + "\t" + movie_content_bold);
         MovieRequestDto movieRequestDto = MovieRequestDto.builder()
                 .movieTitle(movie_title)
-                .movieRank(movie_rank)
                 .moviePoster(movie_poster)
                 .movieGenres(movie_genres)
                 .movieNation(movie_nation)
@@ -61,32 +89,10 @@ public class MovieService {
                 .movieRunningTime(running_time)
                 .movieReleaseDate(release_date)
                 .movieContentBold(movie_content_bold)
+                .movieContentDetail(movie_content_detail)
                 .build();
 
-        if(movie_content_detail.length() > 255) {
-            String movie_content_details = movie_content_detail.substring(0, 255);
-            String movie_content_detail_Long = movie_content_detail.substring(255, movie_content_detail.length());
-
-            movieRequestDto.setMovieContentDetail(movie_content_details);
-            movieRequestDto.setMovieContentDetailLong(movie_content_detail_Long);
-        }
-        else {
-            movieRequestDto.setMovieContentDetail(movie_content_detail);
-        }
-
-        //미해결 getMovieStillcut을 찾지 못한는 듯..?
-        for(String stillcut : stillcutList){
-            //System.out.println(stillcut);
-            //movieRequestDto.getMovieStillcut().add(stillcut);
-        }
-
-        //미해결
-        for(String trailer : trailerList){
-            //System.out.println(trailer);
-            //movieRequestDto.getMovieTrailer().add(trailer);
-        }
-
-        saveMovie(movieRequestDto);
+        saveMovie(movieRequestDto, stillcutList, trailerList);
     }
 
     @Transactional(readOnly = true)
@@ -98,15 +104,15 @@ public class MovieService {
             Document document = conn.get();
             Elements movie_elements = document.getElementsByClass("tit3");
 
-            int i = 1;
+            //int i = 1;
             for (Element elements : movie_elements.select("a")) {
                 String movie_title = elements.text();
                 if(movieRepository.existsByMovieTitle(movie_title)){
                     System.out.println("이미 등록된 영화입니다.");
                     continue;
                 }
-                int movie_rank = i;
-                i++;
+                //int movie_rank = i;
+                //i++;
 
                 String movie_detail_url = "https://movie.naver.com/" + elements.attr("href");
 
@@ -211,35 +217,37 @@ public class MovieService {
                             //영화 스틸컷
                             List<String> stillcutList = new ArrayList<>();
                             List<String> stillcutUrlList = new ArrayList<>();
-                            Connection conn_photo = Jsoup.connect("https://movie.naver.com/movie/bi/mi/" + document_detail.select("div.sub_tab_area ul.end_sub_tab li a.tab03").attr("href"));
-                            try {
-                                Document document_photo = conn_photo.get();
-                                String movie_stillcut_url = "https://movie.naver.com/movie/bi/mi/" + document_photo.select("div.btn_view_mode a.cick_off").attr("href");
-                                Connection conn_stillcut_list = Jsoup.connect(movie_stillcut_url);
+                            if(document_detail.select("div.sub_tab_area ul.end_sub_tab li a.tab04").attr("href") != "") {
+                                Connection conn_photo = Jsoup.connect("https://movie.naver.com/movie/bi/mi/" + document_detail.select("div.sub_tab_area ul.end_sub_tab li a.tab03").attr("href"));
                                 try {
-                                    Document document_stillcut_list = conn_stillcut_list.get();
-                                    Elements movie_stillcut_elements = document_stillcut_list.select("div.gallery_group ul li._brick a");
-                                    int lim_count = 0;
-                                    for (Element element : movie_stillcut_elements) {
-                                        lim_count++;
-                                        stillcutUrlList.add("https://movie.naver.com/movie/bi/mi/" + element.attr("href"));
-                                        if(lim_count >= 8)
-                                            break;
+                                    Document document_photo = conn_photo.get();
+                                    String movie_stillcut_url = "https://movie.naver.com/movie/bi/mi/" + document_photo.select("div.btn_view_mode a.cick_off").attr("href");
+                                    Connection conn_stillcut_list = Jsoup.connect(movie_stillcut_url);
+                                    try {
+                                        Document document_stillcut_list = conn_stillcut_list.get();
+                                        Elements movie_stillcut_elements = document_stillcut_list.select("div.gallery_group ul li._brick a");
+                                        int lim_count = 0;
+                                        for (Element element : movie_stillcut_elements) {
+                                            lim_count++;
+                                            stillcutUrlList.add("https://movie.naver.com/movie/bi/mi/" + element.attr("href"));
+                                            if (lim_count >= 8)
+                                                break;
+                                        }
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                    for (String stillcutUrl : stillcutUrlList) {
+                                        Connection conn_stillcut = Jsoup.connect(stillcutUrl);
+                                        try {
+                                            Document document_stillcut = conn_stillcut.get();
+                                            stillcutList.add(document_stillcut.select("div.img_ar div.viewer_img img").attr("src"));
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
                                     }
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
-                                for (String stillcutUrl : stillcutUrlList) {
-                                    Connection conn_stillcut = Jsoup.connect(stillcutUrl);
-                                    try {
-                                        Document document_stillcut = conn_stillcut.get();
-                                        stillcutList.add(document_stillcut.select("div.img_ar div.viewer_img img").attr("src"));
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            } catch (IOException e) {
-                                e.printStackTrace();
                             }
 
                             //영화 트레일러(예고편)
@@ -274,7 +282,7 @@ public class MovieService {
                             }
 
                             dtoSet(movie_title,
-                                    movie_rank,
+                                    //movie_rank,
                                     movie_poster,
                                     movie_genres,
                                     movie_nation,

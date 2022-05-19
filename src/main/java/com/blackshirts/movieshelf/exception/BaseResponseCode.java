@@ -23,6 +23,8 @@ public enum BaseResponseCode {
      * 404 NOT FOUND
      */
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."),
+    MOVIE_NOT_FOUND(HttpStatus.NOT_FOUND, "영화를 찾을 수 없습니다."),
+    FAILED_TO_SAVE_STILLCUT(HttpStatus.NOT_FOUND, "스틸컷 등록에 실패했습니다."),
     /**
      * 404 NOT FOUND
      */

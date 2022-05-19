@@ -4,15 +4,19 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @ApiModel(value = "영화", description = "영화 제목, 포스터url, 줄거리 등을 가진 Class")
 @Getter
+@Setter
 @Entity(name = "movies")
 @DynamicUpdate //update 시 null인 필드 제외
 public class Movie {
@@ -69,30 +73,20 @@ public class Movie {
     private String movieContentBold;
 
     @ApiModelProperty(value = "자세한 줄거리")
-    @Column(name = "movie_content_detail")
+    @Column(name = "movie_content_detail", length = 800)
     private String movieContentDetail;
 
-    @ApiModelProperty(value = "자세한 줄거리2")
-    @Column(name = "movie_content_detail_long")
-    private String movieContentDetailLong;
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
+    List<MovieStillcut> stillcuts = new ArrayList<>();
 
-    @ApiModelProperty(value = "스틸컷")
-    @ElementCollection
-    @CollectionTable(joinColumns = @JoinColumn(name = "movie_id"))
-    @Column(name = "movie_stillcut")
-    private List<String> movieStillcut = new ArrayList<>();
-
-    @ApiModelProperty(value = "트레일러")
-    @ElementCollection
-    @CollectionTable(joinColumns = @JoinColumn(name = "movie_id"))
-    @Column(name = "movie_trailer")  // 타이틀 추가 필요
-    private List<String> movieTrailer = new ArrayList<>();
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
+    List<MovieTrailer> trailers = new ArrayList<>();
 
     @Builder
     public Movie(Long movieId, String movieTitle, int movieRank, String moviePoster, String movieGenres,
                  String movieNation, String movieRunningTime, String movieReleaseDate, String movieDirector,
                  String movieActor, String movieFilmrate, String movieContentBold, String movieContentDetail,
-                 String movieContentDetailLong, List<String> movieStillcut, List<String> movieTrailer) {
+                 List<MovieStillcut> stillcuts, List<MovieTrailer> trailers) {
         this.movieId = movieId;
         this.movieTitle = movieTitle;
         this.movieRank = movieRank;
@@ -106,9 +100,8 @@ public class Movie {
         this.movieReleaseDate = movieReleaseDate;
         this.movieContentBold = movieContentBold;
         this.movieContentDetail = movieContentDetail;
-        this.movieContentDetailLong = movieContentDetailLong;
-        this.movieStillcut = movieStillcut;
-        this.movieTrailer = movieTrailer;
+        this.stillcuts = stillcuts;
+        this.trailers = trailers;
     }
 
     public Movie() {
