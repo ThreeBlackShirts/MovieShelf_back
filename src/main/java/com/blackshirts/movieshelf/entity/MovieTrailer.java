@@ -17,7 +17,7 @@ public class MovieTrailer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tralier_id", nullable = false)
-    private Long reviewId;
+    private Long tralierId;
 
     @ApiModelProperty(value = "movie")
     @ManyToOne(fetch = FetchType.LAZY)

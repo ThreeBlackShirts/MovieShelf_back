@@ -18,7 +18,7 @@ public class MovieStillcut {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "stillcut_id", nullable = false)
-    private Long reviewId;
+    private Long stillcutId;
 
     @ApiModelProperty(value = "movie")
     @ManyToOne(fetch = FetchType.LAZY)
