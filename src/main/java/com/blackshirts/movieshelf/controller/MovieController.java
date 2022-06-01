@@ -25,7 +25,7 @@ public class MovieController {
     @ApiOperation(value = "크롤링 데이터 등록", notes = "크롤링 된 영화 정보를 등록합니다.")
     @GetMapping("/datainsert")
     public BaseResponse<String> movieSave() throws Exception {
-        movieService.NavermovieCrawling();
+        movieService.NaverMovieCrawling();
         return new BaseResponse(HttpStatus.OK, "크롤링 된 영화 정보가 등록되었습니다.",
                 "크롤링 데이터");
     }

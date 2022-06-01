@@ -98,7 +98,7 @@ public class MovieService {
     }
 
     @Transactional(readOnly = true)
-    public void NavermovieCrawling(){
+    public void NaverMovieCrawling(){
         final String naver_movie_url = "https://movie.naver.com/movie/sdb/rank/rmovie.naver";
         Connection conn = Jsoup.connect(naver_movie_url);
 
