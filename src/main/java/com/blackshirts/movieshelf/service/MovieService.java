@@ -1,5 +1,6 @@
 package com.blackshirts.movieshelf.service;
 
+import com.blackshirts.movieshelf.dto.MovieDetailResponseDto;
 import com.blackshirts.movieshelf.dto.MovieRequestDto;
 import com.blackshirts.movieshelf.dto.MovieResponseDto;
 import com.blackshirts.movieshelf.dto.MovieSearchResponseDto;
@@ -19,6 +20,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -374,17 +376,38 @@ public class MovieService {
     }
 
     @Transactional(readOnly = true)
-    public List<MovieResponseDto> detailedMovie(String target) {
-        List<Movie> movies = movieRepository.findByMovieTitleContaining(target);
-        List<MovieResponseDto> movie_list = new ArrayList<>();
-        if (movies.isEmpty() || movies == null){
-            return movie_list;
+    public MovieDetailResponseDto detailedMovie(String target) {
+        Movie movie = movieRepository.findByMovieTitle(target).orElseThrow(() -> new IllegalArgumentException("해당 영화가 존재하지 않습니다."));
+
+        List<MovieStillcut> stillcuts = movieStillcutRepository.findByMovie(movie);
+        List<String> stillcutList = new ArrayList<>();
+        for(MovieStillcut movieStillcut : stillcuts){
+            stillcutList.add(movieStillcut.getStillcut());
         }
-        else{
+        List<MovieTrailer> trailers = movieTrailerRepository.findByMovie(movie);
+        List<String> trailerList = new ArrayList<>();
+        for(MovieTrailer movieTrailer : trailers){
+            trailerList.add(movieTrailer.getTralier());
+        }
+
+        MovieDetailResponseDto movieDetailResponseDto = new MovieDetailResponseDto();
+        movieDetailResponseDto.setMovieTitle(movie.getMovieTitle());
+        movieDetailResponseDto.setMoviePoster(movie.getMoviePoster());
+        movieDetailResponseDto.setMovieGenres(movie.getMovieGenres());
+        movieDetailResponseDto.setMovieNation(movie.getMovieNation());
+        movieDetailResponseDto.setMovieRunningTime(movie.getMovieRunningTime());
+        movieDetailResponseDto.setMovieReleaseDate(movie.getMovieReleaseDate());
+        movieDetailResponseDto.setMovieDirector(movie.getMovieDirector());
+        movieDetailResponseDto.setMovieActor(movie.getMovieActor());
+        movieDetailResponseDto.setMovieFilmrate(movie.getMovieFilmrate());
+        movieDetailResponseDto.setMovieContentBold(movie.getMovieContentBold());
+        movieDetailResponseDto.setMovieContentDetail(movie.getMovieContentDetail());
+        movieDetailResponseDto.setMovieStillcut(stillcutList);
+        movieDetailResponseDto.setMovieTrailer(trailerList);
+
 //            for (Movie dto : movies) {
 //                log.info(dto.getMovieTitle() + "\t" + dto.getMoviePoster()); repository contains 확인
 //            }
-            return movies.stream().map(MovieResponseDto::new).collect(Collectors.toList());
-        }
+        return movieDetailResponseDto;
     }
 }

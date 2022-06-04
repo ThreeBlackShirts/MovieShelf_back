@@ -1,5 +1,6 @@
 package com.blackshirts.movieshelf.controller;
 
+import com.blackshirts.movieshelf.dto.MovieDetailResponseDto;
 import com.blackshirts.movieshelf.dto.MovieResponseDto;
 import com.blackshirts.movieshelf.dto.MovieSearchResponseDto;
 import com.blackshirts.movieshelf.exception.BaseResponse;
@@ -49,7 +50,7 @@ public class MovieController {
 
     @ApiOperation(value = "영화 컨텐츠 정보", notes = "영화 컨텐츠 정보를 리턴합니다.")
     @GetMapping("/detailed/{movieTitle}")
-    public BaseResponse<List<MovieResponseDto>> detailedMovie(@ApiParam(value = "타겟 영화", required = true) @PathVariable String movieTitle) throws Exception {
+    public BaseResponse<MovieDetailResponseDto> detailedMovie(@ApiParam(value = "타겟 영화", required = true) @PathVariable String movieTitle) throws Exception {
         return new BaseResponse(HttpStatus.OK, "Return Movie contents", movieService.detailedMovie(movieTitle));
     }
 }
