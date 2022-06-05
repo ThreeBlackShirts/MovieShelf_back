@@ -23,7 +23,8 @@ public class MovieRating {
 
     @ApiModelProperty(value = "movie_id")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "movie_id")
+    @JoinColumn(name = "movie_id", foreignKey = @ForeignKey(name = "FK_MovieRate_Movie"))
+//     @JoinColumn(name = "movie_id")  name : 내 엔티티에서 외래키 칼럼명을 만들어주는 설정
     private Movie movie;
 
     @ApiModelProperty(value = "user_email")
@@ -32,12 +33,11 @@ public class MovieRating {
     private User user;
 
     @ApiModelProperty(value = "영화 아이디")
-    @Column(name = "movie_id", nullable = false, unique = true)
+    @Column(name = "movie_rate", nullable = false, unique = true)
     private int movieRate;
 
     @Builder
-    public MovieRating(Long rateId, Movie movie, User user, int movieRate) {
-        this.rateId = rateId;
+    public MovieRating(Movie movie, User user, int movieRate) {
         this.movie = movie;
         this.user = user;
         this.movieRate = movieRate;
