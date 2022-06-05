@@ -10,9 +10,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @ApiModel(value = "영화", description = "영화 제목, 포스터url, 줄거리 등을 가진 Class")
 @Getter
