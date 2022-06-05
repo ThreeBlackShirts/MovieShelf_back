@@ -20,7 +20,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -320,7 +319,7 @@ public class MovieService {
     }
 
     @Transactional(readOnly = true)
-    public List<MovieSearchResponseDto> serachMovie(String input) {
+    public List<MovieSearchResponseDto> searchMovie(String input) {
         List<Movie> movies = movieRepository.findByMovieTitleContaining(input);
         List<MovieSearchResponseDto> movie_list = new ArrayList<>();
         if (movies.isEmpty() || movies == null){
