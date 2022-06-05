@@ -23,13 +23,14 @@ public class MovieRating {
 
     @ApiModelProperty(value = "movie_id")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "movie_id", foreignKey = @ForeignKey(name = "FK_MovieRate_Movie"))
+    @JoinColumn
+//    @JoinColumn(name = "movie_id", foreignKey = @ForeignKey(name = "FK_MovieRate_Movie"))
 //     @JoinColumn(name = "movie_id")  name : 내 엔티티에서 외래키 칼럼명을 만들어주는 설정
     private Movie movie;
 
     @ApiModelProperty(value = "user_email")
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = User.class)
-    @JoinColumn(name = "user_email", updatable = false, referencedColumnName = "user_email")
+    @JoinColumn
     private User user;
 
     @ApiModelProperty(value = "영화 아이디")
