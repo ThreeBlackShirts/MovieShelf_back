@@ -1,10 +1,9 @@
 package com.blackshirts.movieshelf.service;
 
+import com.blackshirts.movieshelf.dto.MovieRatingRequestDto;
+import com.blackshirts.movieshelf.dto.MovieRatingResponseDto;
 import com.blackshirts.movieshelf.entity.Movie;
-import com.blackshirts.movieshelf.entity.Review;
 import com.blackshirts.movieshelf.entity.User;
-import com.blackshirts.movieshelf.exception.BaseException;
-import com.blackshirts.movieshelf.exception.BaseResponseCode;
 import com.blackshirts.movieshelf.repository.MovieRatingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +19,11 @@ public class MovieRatingService {
         return movieRatingRepository.findByMovieAndUser(movie, user).isPresent();
     }
 
+//    @Transactional
+//    public Long create(MovieRatingRequestDto movieRatingDto) {
+//
+//        return movieRatingRepository.save(movieRatingDto.).getReviewId();
+//    }
 
 
 }
