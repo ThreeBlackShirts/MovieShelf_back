@@ -55,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 //        http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
-
+//            put, delete 부분을 위해 주석 처리
     }
 
     @Bean
