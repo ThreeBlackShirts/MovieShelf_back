@@ -129,7 +129,7 @@ public class UserControllerTest {
         assertNotNull(jwtTokenProviderToken);
 
         UserResponseDto userResponseDto = userService.findUserByEmail("email3@example.com");
-        UserUpdateRequestDto userRequestDto = new UserUpdateRequestDto(userResponseDto.getUserId(), "new_nick_name", "");
+        UserUpdateRequestDto userRequestDto = new UserUpdateRequestDto(userResponseDto.getUserEmail(),"1111", "new_nick_name", "");
 
         mockMvc.perform(put("/api/v1/user")
                         .header("X-AUTH-TOKEN", jwtTokenProviderToken)

@@ -1,6 +1,7 @@
 package com.blackshirts.movieshelf.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -13,7 +14,13 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/api/**")
 				.allowCredentials(true)
 				.allowedOrigins("http://localhost:8080", "http://localhost:3000") // 원하는 도메인만 허용
-				.allowedMethods("*") // 원하는 메소드만 허용 (GET, POST, ...)
+                .allowedMethods(HttpMethod.GET.name(),
+                        HttpMethod.HEAD.name(),
+                        HttpMethod.POST.name(),
+                        HttpMethod.PUT.name(),
+                        HttpMethod.DELETE.name(),
+                        HttpMethod.OPTIONS.name()
+                )// 원하는 메소드만 허용 (GET, POST, ...)
 				.allowedHeaders("*") // 원하는 헤더만 허용
 				.allowCredentials(false); // 쿠키 요청 허용 (true -> 보안상 이슈 발생 가능)
     }

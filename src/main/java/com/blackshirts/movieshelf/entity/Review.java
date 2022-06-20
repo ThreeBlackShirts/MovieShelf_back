@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -36,7 +38,8 @@ public class Review extends BaseTimeEntity {
     @Column(name = "content", length = 4000)
     private String content;
 
-    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "review", orphanRemoval=true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     Set<Like> likes = new HashSet<>();
 
     //빌더

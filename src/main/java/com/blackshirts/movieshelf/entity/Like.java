@@ -2,6 +2,8 @@ package com.blackshirts.movieshelf.entity;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -19,11 +21,13 @@ public class Like {
 
     @ApiModelProperty(value = "review")
     @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "review_id", foreignKey = @ForeignKey(name = "FK_Like_Review"))
     private Review review;
 
     @ApiModelProperty(value = "user")
     @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "FK_Like_User"))
     private User user;
 
