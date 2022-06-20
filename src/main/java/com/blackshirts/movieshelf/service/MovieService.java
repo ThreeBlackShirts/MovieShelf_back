@@ -320,6 +320,7 @@ public class MovieService {
 
     @Transactional(readOnly = true)
     public List<MovieSearchResponseDto> searchMovie(String input) {
+        input = input.replace("\"", "");
         List<Movie> movies = movieRepository.findByMovieTitleContaining(input);
         List<MovieSearchResponseDto> movie_list = new ArrayList<>();
         if (movies.isEmpty() || movies == null){
