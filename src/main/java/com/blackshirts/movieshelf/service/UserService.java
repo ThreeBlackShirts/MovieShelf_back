@@ -90,9 +90,10 @@ public class UserService {
     }
 
     public Optional<User> update(UserUpdateRequestDto userRequestDto) throws BaseException {
-        Optional<User> user = userRepository.findById(userRequestDto.getUserId());
+        Optional<User> user = userRepository.findByUserEmail(userRequestDto.getUserEmail());
         try {
             user.ifPresent(selectUser -> {
+                selectUser.setUserPassword(passwordEncoder.encode(userRequestDto.getUserPassword()));
                 selectUser.setUserNickname(userRequestDto.getUserNickname());
                 selectUser.setUserFilename(userRequestDto.getUserFilename());
                 userRepository.save(selectUser);

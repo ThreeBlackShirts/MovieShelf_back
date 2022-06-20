@@ -7,6 +7,7 @@ import com.blackshirts.movieshelf.exception.BaseException;
 import com.blackshirts.movieshelf.exception.BaseResponseCode;
 import com.blackshirts.movieshelf.repository.LikeRepository;
 import com.blackshirts.movieshelf.repository.ReviewRepository;
+import com.blackshirts.movieshelf.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,20 +18,27 @@ import org.springframework.transaction.annotation.Transactional;
 public class LikeService {
     private final LikeRepository likeRepository;
     private final ReviewRepository reviewRepository;
+    private final UserRepository userRepository;
+
 
     public Long addLike(User user, Long reviewId) {
 
+        User findUser = userRepository.findByUserEmail(user.getUserEmail()).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
         Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
-        likeRepository.findByUserAndReview(user, review).orElseThrow(() -> new BaseException(BaseResponseCode.Like_NOT_FOUND));
-        boolean isLikeCheck = isNotAlreadyLike(user, review);
-        if(!isLikeCheck) {
+//        likeRepository.findByUserAndReview(findUser, review).orElseThrow(() -> new BaseException(BaseResponseCode.DUPLICATE_SAVE_LIKE));
+        boolean isLikeCheck = isNotAlreadyLike(findUser, review);
+        if (!isLikeCheck) {
             try {
-                likeRepository.save(new Like(review, user));
+                likeRepository.save(new Like(review, findUser));
             } catch (Exception e) {
                 throw new BaseException(BaseResponseCode.FAILED_TO_SAVE_LIKE);
             }
+        }else{
+            throw new BaseException(BaseResponseCode.DUPLICATE_SAVE_LIKE);
         }
-        return  likeRepository.findByUserAndReview(user, review).orElseThrow(() -> new BaseException(BaseResponseCode.Like_NOT_FOUND)).getLikeId();
+
+
+        return likeRepository.findByUserAndReview(findUser, review).orElseThrow(() -> new BaseException(BaseResponseCode.DUPLICATE_SAVE_LIKE)).getLikeId();
     }
 
     //사용자가 이미 좋아요 한 게시물인지 체크
@@ -38,12 +46,19 @@ public class LikeService {
         return likeRepository.findByUserAndReview(user, review).isPresent();
     }
 
-    public Long delete(User user, Long reviewId){
-        Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
-        boolean isLikeCheck = isNotAlreadyLike(user, review);
+    public Long delete(User user, Long reviewId) {
 
-        Long likeId = likeRepository.findByUserAndReview(user, review).get().getLikeId();
-        likeRepository.deleteById(likeId);
+        User findUser = userRepository.findByUserEmail(user.getUserEmail()).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
+        Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
+        boolean isLikeCheck = isNotAlreadyLike(findUser, review);
+        Long likeId = null;
+        if (isLikeCheck) {
+
+            likeId = likeRepository.findByUserAndReview(findUser, review).orElseThrow(() -> new BaseException(BaseResponseCode.Like_NOT_FOUND)).getLikeId();
+            likeRepository.deleteById(likeId);
+
+        }
+
         return likeId;
     }
 }
