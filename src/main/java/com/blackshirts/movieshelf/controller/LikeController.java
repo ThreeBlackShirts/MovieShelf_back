@@ -16,18 +16,15 @@ import org.springframework.web.bind.annotation.*;
 public class LikeController {
     private final LikeService likeService;
 
-    @PostMapping("/like/{reviewId}")
+    @PostMapping("/{reviewId}")
     public BaseResponse<String> addLike(UserRequestDto userRequestDto, @PathVariable Long reviewId) {
 
         return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), likeService.addLike(userRequestDto.toEntity(), reviewId));
 
     }
 
-    @DeleteMapping("/like/{reviewId}")
+    @DeleteMapping("/{reviewId}")
     public BaseResponse<String> deleteLike(UserRequestDto userRequestDto, @PathVariable Long reviewId){
         return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), likeService.delete(userRequestDto.toEntity(), reviewId));
     }
-
-
-
 }
