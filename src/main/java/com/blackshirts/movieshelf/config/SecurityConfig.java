@@ -2,7 +2,6 @@ package com.blackshirts.movieshelf.config;
 
 import com.blackshirts.movieshelf.util.JwtAuthenticationFilter;
 import com.blackshirts.movieshelf.util.JwtTokenProvider;
-import com.sun.tools.javac.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
