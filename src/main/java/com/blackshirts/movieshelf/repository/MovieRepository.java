@@ -2,6 +2,7 @@ package com.blackshirts.movieshelf.repository;
 
 import com.blackshirts.movieshelf.entity.Movie;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,6 +15,10 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     // EX) Movie findBytitle(String search_word);
 
     Optional<Movie> findByMovieTitle(String title);
+    Movie findByMoviePoster(String poster);
     List<Movie> findByMovieTitleContaining(String input);
     boolean existsByMovieTitle(String title);
+
+    @Query(value = "SELECT movie_title FROM (SELECT movie_title FROM movies ORDER BY dbms_random.value) WHERE rownum = 1", nativeQuery = true)
+    String getRandomMovies();
 }

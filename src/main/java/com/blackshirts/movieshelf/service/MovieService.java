@@ -12,6 +12,9 @@ import com.blackshirts.movieshelf.exception.BaseResponseCode;
 import com.blackshirts.movieshelf.repository.MovieRepository;
 import com.blackshirts.movieshelf.repository.MovieStillcutRepository;
 import com.blackshirts.movieshelf.repository.MovieTrailerRepository;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -320,6 +323,7 @@ public class MovieService {
 
     @Transactional(readOnly = true)
     public List<MovieSearchResponseDto> searchMovie(String input) {
+        input = input.replace("\"", "");
         List<Movie> movies = movieRepository.findByMovieTitleContaining(input);
         List<MovieSearchResponseDto> movie_list = new ArrayList<>();
         if (movies.isEmpty() || movies == null){
@@ -334,7 +338,11 @@ public class MovieService {
     }
 
     @Transactional(readOnly = true)
-    public List<MovieSearchResponseDto> recommendMovie(String target) {
+    public List<MovieSearchResponseDto> recommendMovie() {
+        List<Movie> recommendMovies = new ArrayList<>();
+        List<MovieSearchResponseDto> movie_list = new ArrayList<>();
+        String target = movieRepository.getRandomMovies();
+        System.out.println(target);
         URL url = null;
         String encodeData = "";
         String decodeData = "";
@@ -359,6 +367,20 @@ public class MovieService {
                     sb.append(br.readLine());
                 }
                 System.out.println(sb);
+                String recommendMovie = sb.toString();
+                recommendMovie = recommendMovie.replace("[", "");
+                recommendMovie = recommendMovie.replace("]", "");
+                recommendMovie = recommendMovie.replace("{", "");
+                recommendMovie = recommendMovie.replace("}", "");
+                recommendMovie = recommendMovie.replace("\\", "");
+                recommendMovie = recommendMovie.replace("\"", "");
+                recommendMovie = recommendMovie.replace("movie_poster:", "");
+                String[] data = recommendMovie.split(",");
+
+                for(String poster : data) {
+                    recommendMovies.add(movieRepository.findByMoviePoster(poster));
+                }
+
             }catch(Exception e) {
                 e.printStackTrace();
             }
@@ -369,9 +391,12 @@ public class MovieService {
             e.printStackTrace();
         }
 
-        //임시
-        List<MovieSearchResponseDto> movie_list = new ArrayList<>();
-        return movie_list;
+        if (recommendMovies.isEmpty() || recommendMovies == null){
+            return movie_list;
+        }
+        else{
+            return recommendMovies.stream().map(MovieSearchResponseDto::new).collect(Collectors.toList());
+        }
     }
 
     @Transactional(readOnly = true)
