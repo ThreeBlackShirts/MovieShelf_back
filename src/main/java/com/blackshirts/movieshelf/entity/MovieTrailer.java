@@ -24,13 +24,23 @@ public class MovieTrailer {
     @JoinColumn(name = "movie_id", foreignKey = @ForeignKey(name = "FK_tralier_Movie"))
     private Movie movie;
 
+    @ApiModelProperty(value = "트레일러 제목")
+    @Column(name = "movie_tralier_title", length = 500)
+    private String tralierTitle;
+
+    @ApiModelProperty(value = "트레일러 이미지")
+    @Column(name = "movie_tralier_img", length = 500)
+    private String tralierImg;
+
     @ApiModelProperty(value = "트레일러")
     @Column(name = "movie_tralier", length = 500)
     private String tralier;
 
     @Builder
-    public MovieTrailer(Movie movie, String tralier) {
+    public MovieTrailer(Movie movie, String tralierTitle, String tralierImg, String tralier) {
         this.movie = movie;
+        this.tralierTitle = tralierTitle;
+        this.tralierImg = tralierImg;
         this.tralier = tralier;
     }
 
