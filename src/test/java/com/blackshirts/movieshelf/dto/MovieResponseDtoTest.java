@@ -11,6 +11,7 @@ class MovieResponseDtoTest {
     @Test
     public void lombok_function_test(){
         //given
+        Long movieId = 1L;
         int movieRank = 1;
         String movieTitle = "영화제목";
         String moviePoster = "포스터URL";
@@ -25,9 +26,10 @@ class MovieResponseDtoTest {
         String movieContentDetail = "상세 줄거리";
 
         //when
-        MovieResponseDto dto = new MovieResponseDto(movieRank, movieTitle, moviePoster, movieGenres, movieNation, movieRunningTime, movieReleaseDate, movieDirector, movieActor, movieFilmrate, movieContentBold, movieContentDetail);
+        MovieResponseDto dto = new MovieResponseDto(movieId, movieRank, movieTitle, moviePoster, movieGenres, movieNation, movieRunningTime, movieReleaseDate, movieDirector, movieActor, movieFilmrate, movieContentBold, movieContentDetail);
 
         //then
+        assertThat(dto.getMovieId()).isEqualTo(movieId);
         assertThat(dto.getMovieRank()).isEqualTo(movieRank); //assertThat: 테스트 검증 라이브러리
         assertThat(dto.getMovieTitle()).isEqualTo(movieTitle);
         assertThat(dto.getMoviePoster()).isEqualTo(moviePoster);

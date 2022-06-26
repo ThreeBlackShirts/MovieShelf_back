@@ -15,7 +15,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class MovieRequestDto {
-    private Long movieId;
     private String movieTitle;
     private String moviePoster;
     private String movieGenres;
@@ -33,10 +32,9 @@ public class MovieRequestDto {
     private List<MovieTrailer> movieTrailer = new ArrayList<>();
 
     @Builder
-    public MovieRequestDto(Long movieId, String movieTitle, int movieRank, String moviePoster, String movieGenres, String movieNation, String movieRunningTime,
+    public MovieRequestDto(String movieTitle, int movieRank, String moviePoster, String movieGenres, String movieNation, String movieRunningTime,
                            String movieReleaseDate, String movieDirector, String movieActor, String movieFilmrate, String movieContentBold,
                            String movieContentDetail, List<MovieStillcut> movieStillcut, List<MovieTrailer> movieTrailer) {
-        this.movieId = movieId;
         this.movieTitle = movieTitle;
         this.movieRank = movieRank;
         this.moviePoster = moviePoster;
@@ -55,7 +53,6 @@ public class MovieRequestDto {
 
     public Movie toEntity() {
         return Movie.builder()
-                .movieId(movieId)
                 .movieTitle(movieTitle)
                 .movieRank(movieRank)
                 .moviePoster(moviePoster)
