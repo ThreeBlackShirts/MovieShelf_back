@@ -1,9 +1,6 @@
 package com.blackshirts.movieshelf.service;
 
-import com.blackshirts.movieshelf.dto.MovieDetailResponseDto;
-import com.blackshirts.movieshelf.dto.MovieRequestDto;
-import com.blackshirts.movieshelf.dto.MovieResponseDto;
-import com.blackshirts.movieshelf.dto.MovieSearchResponseDto;
+import com.blackshirts.movieshelf.dto.*;
 import com.blackshirts.movieshelf.entity.Movie;
 import com.blackshirts.movieshelf.entity.MovieStillcut;
 import com.blackshirts.movieshelf.entity.MovieTrailer;
@@ -341,10 +338,24 @@ public class MovieService {
     }
 
     @Transactional(readOnly = true)
+    public MoviebannerResponseDto todayMovie() {
+        Movie movie = movieRepository.getRandomMovies();
+        String stillcut = movieStillcutRepository.findByMovie(movie).get(0).getStillcut();
+
+        MoviebannerResponseDto moviebannerResponseDto = new MoviebannerResponseDto();
+        moviebannerResponseDto.setMovieTitle(movie.getMovieTitle());
+        moviebannerResponseDto.setMovieStillcut(stillcut);
+        moviebannerResponseDto.setMovieContentBold(movie.getMovieContentBold());
+        moviebannerResponseDto.setMovieContentDetail(movie.getMovieContentDetail());
+
+        return moviebannerResponseDto;
+    }
+
+    @Transactional(readOnly = true)
     public List<MovieSearchResponseDto> recommendMovie() {
         List<Movie> recommendMovies = new ArrayList<>();
         List<MovieSearchResponseDto> movie_list = new ArrayList<>();
-        String target = movieRepository.getRandomMovies();
+        String target = movieRepository.getRandomMoviesTitle();
         System.out.println(target);
         URL url = null;
         String encodeData = "";
@@ -399,6 +410,32 @@ public class MovieService {
         }
         else{
             return recommendMovies.stream().map(MovieSearchResponseDto::new).collect(Collectors.toList());
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public List<MovieSearchResponseDto> nationMovie(String target) {
+        target = target.replace("\"", "");
+        List<Movie> movies = movieRepository.findByMovieNationContaining(target);
+        List<MovieSearchResponseDto> movie_list = new ArrayList<>();
+        if (movies.isEmpty() || movies == null){
+            return movie_list;
+        }
+        else{
+            return movies.stream().map(MovieSearchResponseDto::new).collect(Collectors.toList());
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public List<MovieSearchResponseDto> genreMovie(String target) {
+        target = target.replace("\"", "");
+        List<Movie> movies = movieRepository.findByMovieGenresContaining(target);
+        List<MovieSearchResponseDto> movie_list = new ArrayList<>();
+        if (movies.isEmpty() || movies == null){
+            return movie_list;
+        }
+        else{
+            return movies.stream().map(MovieSearchResponseDto::new).collect(Collectors.toList());
         }
     }
 

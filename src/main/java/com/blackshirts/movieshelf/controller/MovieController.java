@@ -3,6 +3,7 @@ package com.blackshirts.movieshelf.controller;
 import com.blackshirts.movieshelf.dto.MovieDetailResponseDto;
 import com.blackshirts.movieshelf.dto.MovieResponseDto;
 import com.blackshirts.movieshelf.dto.MovieSearchResponseDto;
+import com.blackshirts.movieshelf.dto.MoviebannerResponseDto;
 import com.blackshirts.movieshelf.exception.BaseResponse;
 import com.blackshirts.movieshelf.service.MovieService;
 import io.swagger.annotations.Api;
@@ -42,10 +43,28 @@ public class MovieController {
         return new BaseResponse(HttpStatus.OK, "Return List(MovieTite and MoviePosterUrl)", movieService.searchMovie(input));
     }
 
+    @ApiOperation(value = "영화 단건 추천", notes = "영화 하나를 랜덤으로 리턴합니다.")
+    @PostMapping("/todaybanner")
+    public BaseResponse<MoviebannerResponseDto> todayMovie() throws Exception {
+        return new BaseResponse(HttpStatus.OK, "Return Movie title, PosterUrl, detail", movieService.todayMovie());
+    }
+
     @ApiOperation(value = "영화 추천 시스템", notes = "특정 영화의 장르가 비슷한 영화 목록을 리턴합니다.")
     @PostMapping("/recommendation")
     public BaseResponse<List<MovieSearchResponseDto>> recommendMovie() throws Exception {
-        return new BaseResponse(HttpStatus.OK, "Return MoviePosterUrl", movieService.recommendMovie());
+        return new BaseResponse(HttpStatus.OK, "Return Movie title, PosterUrl", movieService.recommendMovie());
+    }
+
+    @ApiOperation(value = "영화 국가별 리스트", notes = "특정 제조국이 같은 영화 목록을 리턴합니다.")
+    @PostMapping("/nation")
+    public BaseResponse<List<MovieSearchResponseDto>> nationMovie(@ApiParam(value = "제조국", required = true) @RequestBody String target) throws Exception {
+        return new BaseResponse(HttpStatus.OK, "Return Movie title, PosterUrl", movieService.nationMovie(target));
+    }
+
+    @ApiOperation(value = "영화 장르별 리스트", notes = "특정 장르가 비슷한 영화 목록을 리턴합니다.")
+    @PostMapping("/genre")
+    public BaseResponse<List<MovieSearchResponseDto>> genreMovie(@ApiParam(value = "장르", required = true) @RequestBody String target) throws Exception {
+        return new BaseResponse(HttpStatus.OK, "Return Movie title, PosterUrl", movieService.genreMovie(target));
     }
 
     @ApiOperation(value = "영화 컨텐츠 정보", notes = "영화 컨텐츠 정보를 리턴합니다.")
