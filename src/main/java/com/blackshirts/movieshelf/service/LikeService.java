@@ -20,7 +20,6 @@ public class LikeService {
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
 
-
     public Long addLike(User user, Long reviewId) {
 
         User findUser = userRepository.findByUserEmail(user.getUserEmail()).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));

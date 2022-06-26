@@ -69,7 +69,7 @@ public class ReviewController {
     })
     @ApiOperation(value = "영화 후기 단건 검색", notes = "userEmail별로 영화 후기를 조회합니다.")
     @GetMapping("/review/{userEmail}")
-    public BaseResponse<ReviewResponseDto> searchByUser(@PathVariable String userEmail) {
+    public BaseResponse<List<ReviewResponseDto>> searchByUser(@PathVariable String userEmail) {
         User user = userService.getUserByUserEmail(userEmail);
         return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), reviewService.searchByUser(user));
     }
