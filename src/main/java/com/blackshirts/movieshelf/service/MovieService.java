@@ -12,6 +12,9 @@ import com.blackshirts.movieshelf.exception.BaseResponseCode;
 import com.blackshirts.movieshelf.repository.MovieRepository;
 import com.blackshirts.movieshelf.repository.MovieStillcutRepository;
 import com.blackshirts.movieshelf.repository.MovieTrailerRepository;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -32,6 +35,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,7 +50,7 @@ public class MovieService {
     private final MovieTrailerRepository movieTrailerRepository;
 
     @Transactional(readOnly = true)
-    public void saveMovie(MovieRequestDto movieRequestDto, List<String> stillcutList, List<String> trailerList) {
+    public void saveMovie(MovieRequestDto movieRequestDto, List<String> stillcutList, List<String> trailerTitle, List<String> trailerImg, List<String> trailerList) {
         log.info(movieRequestDto.getMovieRank() + "\t" + movieRequestDto.getMovieTitle() + "\t" + movieRequestDto.getMoviePoster());
         //log.info(movieRequestDto.getMovieContentBold() + "\n" + movieRequestDto.getMovieContentDetail() + movieRequestDto.getMovieContentDetailLong());
         //log.info(movieRequestDto.getMovieGenres() + "\t" + movieRequestDto.getMovieNation() + "\t" + movieRequestDto.getMovieRunningTime() + "\t" + movieRequestDto.getMovieReleaseDate());
@@ -63,11 +67,10 @@ public class MovieService {
             }
         }
 
-        for(String trailer : trailerList){
+        for(int i=0; i<trailerList.size(); i++){
             //movieTrailerRepository.findByMovie(movie).orElseThrow(() -> new BaseException(BaseResponseCode.MOVIE_NOT_FOUND));
-
             try {
-                movieTrailerRepository.save(new MovieTrailer(movie, trailer));
+                movieTrailerRepository.save(new MovieTrailer(movie, trailerTitle.get(i), trailerImg.get(i), trailerList.get(i)));
             } catch (Exception e) {
                 throw new BaseException(BaseResponseCode.FAILED_TO_SAVE_STILLCUT);
             }
@@ -77,7 +80,7 @@ public class MovieService {
     @Transactional(readOnly = true)
     public void dtoSet(String movie_title, String movie_poster, String movie_genres, String movie_nation, String running_time, String release_date,
                        String director, String filmrate, String actor, String movie_content_bold, String movie_content_detail,
-                       List<String> stillcutList, List<String> trailerList){
+                       List<String> stillcutList, List<String> trailerTitle, List<String> trailerImg, List<String> trailerList){
         //log.info(movie_rank + "\t" + movie_title + "\t" + movie_poster + "\t" + movie_content_bold);
         MovieRequestDto movieRequestDto = MovieRequestDto.builder()
                 .movieTitle(movie_title)
@@ -93,7 +96,7 @@ public class MovieService {
                 .movieContentDetail(movie_content_detail)
                 .build();
 
-        saveMovie(movieRequestDto, stillcutList, trailerList);
+        saveMovie(movieRequestDto, stillcutList, trailerTitle, trailerImg, trailerList);
     }
 
     @Transactional(readOnly = true)
@@ -195,7 +198,7 @@ public class MovieService {
                                         int limit = 0;
                                         for(Element element : movie_actor_elements){
                                             limit++;
-                                            if(element != movie_actor_elements.last() && limit != 15)
+                                            if(element != movie_actor_elements.last() && limit != 8)
                                                 actor += element.text() + ", ";
                                             else {
                                                 actor += element.text();
@@ -254,6 +257,7 @@ public class MovieService {
                             //영화 트레일러(예고편)
                             List<String> trailerList = new ArrayList<>();
                             List<String> trailertitleList = new ArrayList<>();
+                            List<String> trailerImgList = new ArrayList<>();
                             List<String> trailerUrlList = new ArrayList<>();
                             if(document_detail.select("div.sub_tab_area ul.end_sub_tab li a.tab04").attr("href") != "") {
                                 Connection conn_video = Jsoup.connect("https://movie.naver.com/movie/bi/mi/" + document_detail.select("div.sub_tab_area ul.end_sub_tab li a.tab04").attr("href"));
@@ -264,6 +268,7 @@ public class MovieService {
                                     for (Element element : movie_trailer_elements) {
                                         lim_count++;
                                         trailertitleList.add(element.attr("title"));
+                                        trailerImgList.add(element.select("img").attr("src"));
                                         trailerUrlList.add("https://movie.naver.com" + element.attr("href"));
                                         if (lim_count >= 8)
                                             break;
@@ -283,7 +288,6 @@ public class MovieService {
                             }
 
                             dtoSet(movie_title,
-                                    //movie_rank,
                                     movie_poster,
                                     movie_genres,
                                     movie_nation,
@@ -295,6 +299,8 @@ public class MovieService {
                                     movie_content_bold,
                                     movie_content_detail,
                                     stillcutList,
+                                    trailertitleList,
+                                    trailerImgList,
                                     trailerList);
                         }
                         else
@@ -335,7 +341,11 @@ public class MovieService {
     }
 
     @Transactional(readOnly = true)
-    public List<MovieSearchResponseDto> recommendMovie(String target) {
+    public List<MovieSearchResponseDto> recommendMovie() {
+        List<Movie> recommendMovies = new ArrayList<>();
+        List<MovieSearchResponseDto> movie_list = new ArrayList<>();
+        String target = movieRepository.getRandomMovies();
+        System.out.println(target);
         URL url = null;
         String encodeData = "";
         String decodeData = "";
@@ -360,6 +370,20 @@ public class MovieService {
                     sb.append(br.readLine());
                 }
                 System.out.println(sb);
+                String recommendMovie = sb.toString();
+                recommendMovie = recommendMovie.replace("[", "");
+                recommendMovie = recommendMovie.replace("]", "");
+                recommendMovie = recommendMovie.replace("{", "");
+                recommendMovie = recommendMovie.replace("}", "");
+                recommendMovie = recommendMovie.replace("\\", "");
+                recommendMovie = recommendMovie.replace("\"", "");
+                recommendMovie = recommendMovie.replace("movie_poster:", "");
+                String[] data = recommendMovie.split(",");
+
+                for(String poster : data) {
+                    recommendMovies.add(movieRepository.findByMoviePoster(poster));
+                }
+
             }catch(Exception e) {
                 e.printStackTrace();
             }
@@ -370,9 +394,12 @@ public class MovieService {
             e.printStackTrace();
         }
 
-        //임시
-        List<MovieSearchResponseDto> movie_list = new ArrayList<>();
-        return movie_list;
+        if (recommendMovies.isEmpty() || recommendMovies == null){
+            return movie_list;
+        }
+        else{
+            return recommendMovies.stream().map(MovieSearchResponseDto::new).collect(Collectors.toList());
+        }
     }
 
     @Transactional(readOnly = true)
@@ -385,9 +412,9 @@ public class MovieService {
             stillcutList.add(movieStillcut.getStillcut());
         }
         List<MovieTrailer> trailers = movieTrailerRepository.findByMovie(movie);
-        List<String> trailerList = new ArrayList<>();
+        List<List<String>> trailerList = new ArrayList<>();
         for(MovieTrailer movieTrailer : trailers){
-            trailerList.add(movieTrailer.getTralier());
+            trailerList.add(Arrays.asList(movieTrailer.getTralierTitle(), movieTrailer.getTralierImg(), movieTrailer.getTralier()));
         }
 
         MovieDetailResponseDto movieDetailResponseDto = new MovieDetailResponseDto();

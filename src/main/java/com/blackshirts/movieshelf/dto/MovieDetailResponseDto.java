@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Getter
@@ -26,7 +28,7 @@ public class MovieDetailResponseDto {
     private String movieContentBold;
     private String movieContentDetail;
     private List<String> movieStillcut;
-    private List<String> movieTrailer;
+    private List<List<String>> movieTrailer;
 
     public MovieDetailResponseDto(Movie movie, MovieStillcut movieStillcut, MovieTrailer movieTrailer){
         this.movieRank = movie.getMovieRank();
@@ -42,6 +44,6 @@ public class MovieDetailResponseDto {
         this.movieContentBold = movie.getMovieContentBold();
         this.movieContentDetail = movie.getMovieContentDetail();
         this.movieStillcut.add(movieStillcut.getStillcut());
-        this.movieTrailer.add(movieTrailer.getTralier());
+        this.movieTrailer.add(Arrays.asList(movieTrailer.getTralierTitle(), movieTrailer.getTralierImg(), movieTrailer.getTralier()));
     }
 }
