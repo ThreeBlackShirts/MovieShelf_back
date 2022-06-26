@@ -477,7 +477,7 @@ public class MovieService {
     }
 
     public MovieDetailResponseDto findByMovieId(Long id){
-        Movie movie = movieRepository.findByMovieId(id).orElseThrow(() -> new IllegalArgumentException("해당 영화가 존재하지 않습니다."));
+        Movie movie = movieRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 영화가 존재하지 않습니다."));
 
         List<MovieStillcut> stillcuts = movieStillcutRepository.findByMovie(movie);
         List<String> stillcutList = new ArrayList<>();
