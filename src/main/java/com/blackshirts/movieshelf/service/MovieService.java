@@ -34,6 +34,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -474,4 +475,41 @@ public class MovieService {
 //            }
         return movieDetailResponseDto;
     }
+
+    public MovieDetailResponseDto findByMovieId(Long id){
+        Movie movie = movieRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 영화가 존재하지 않습니다."));
+
+        List<MovieStillcut> stillcuts = movieStillcutRepository.findByMovie(movie);
+        List<String> stillcutList = new ArrayList<>();
+        for(MovieStillcut movieStillcut : stillcuts){
+            stillcutList.add(movieStillcut.getStillcut());
+        }
+        List<MovieTrailer> trailers = movieTrailerRepository.findByMovie(movie);
+        List<List<String>> trailerList = new ArrayList<>();
+        for(MovieTrailer movieTrailer : trailers){
+            trailerList.add(Arrays.asList(movieTrailer.getTralierTitle(), movieTrailer.getTralierImg(), movieTrailer.getTralier()));
+        }
+
+        MovieDetailResponseDto movieDetailResponseDto = new MovieDetailResponseDto();
+        movieDetailResponseDto.setMovieTitle(movie.getMovieTitle());
+        movieDetailResponseDto.setMoviePoster(movie.getMoviePoster());
+        movieDetailResponseDto.setMovieGenres(movie.getMovieGenres());
+        movieDetailResponseDto.setMovieNation(movie.getMovieNation());
+        movieDetailResponseDto.setMovieRunningTime(movie.getMovieRunningTime());
+        movieDetailResponseDto.setMovieReleaseDate(movie.getMovieReleaseDate());
+        movieDetailResponseDto.setMovieDirector(movie.getMovieDirector());
+        movieDetailResponseDto.setMovieActor(movie.getMovieActor());
+        movieDetailResponseDto.setMovieFilmrate(movie.getMovieFilmrate());
+        movieDetailResponseDto.setMovieContentBold(movie.getMovieContentBold());
+        movieDetailResponseDto.setMovieContentDetail(movie.getMovieContentDetail());
+        movieDetailResponseDto.setMovieStillcut(stillcutList);
+        movieDetailResponseDto.setMovieTrailer(trailerList);
+
+//            for (Movie dto : movies) {
+//                log.info(dto.getMovieTitle() + "\t" + dto.getMoviePoster()); repository contains 확인
+//            }
+        return movieDetailResponseDto;
+    }
+
+
 }
