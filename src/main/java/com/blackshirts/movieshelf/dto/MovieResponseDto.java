@@ -5,6 +5,7 @@ import lombok.Getter;
 
 @Getter
 public class MovieResponseDto {
+    private Long movieId;
     private int movieRank;
     private String movieTitle;
     private String moviePoster;
@@ -19,6 +20,7 @@ public class MovieResponseDto {
     private String movieContentDetail;
 
     public MovieResponseDto(Movie movie){
+        this.movieId = movie.getMovieId();
         this.movieRank = movie.getMovieRank();
         this.movieTitle = movie.getMovieTitle();
         this.moviePoster = movie.getMoviePoster();
@@ -33,6 +35,19 @@ public class MovieResponseDto {
         this.movieContentDetail = movie.getMovieContentDetail();
     }
 
-    public MovieResponseDto(int movieRank, String movieTitle, String moviePoster, String movieGenres, String movieNation, String movieRunningTime, String movieReleaseDate, String movieDirector, String movieActor, String movieFilmrate, String movieContentBold, String movieContentDetail) {
+    public MovieResponseDto(Long movieId, int movieRank, String movieTitle, String moviePoster, String movieGenres, String movieNation, String movieRunningTime, String movieReleaseDate, String movieDirector, String movieActor, String movieFilmrate, String movieContentBold, String movieContentDetail) {
+        this.movieId = movieId;
+        this.movieRank = movieRank;
+        this.movieTitle = movieTitle;
+        this.moviePoster = moviePoster;
+        this.movieGenres = movieGenres;
+        this.movieNation = movieNation;
+        this.movieRunningTime = movieRunningTime;
+        this.movieReleaseDate = movieReleaseDate;
+        this.movieDirector = movieDirector;
+        this.movieActor = movieActor;
+        this.movieFilmrate = movieFilmrate;
+        this.movieContentBold = movieContentBold;
+        this.movieContentDetail = movieContentDetail;
     }
 }
