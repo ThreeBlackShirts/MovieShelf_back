@@ -42,10 +42,16 @@ public class Review extends BaseTimeEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     Set<Like> likes = new HashSet<>();
 
+    @ApiModelProperty(value = "movie_id")
+    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Movie.class)
+    @JoinColumn(name = "movie_id", updatable = false, referencedColumnName = "movie_id")
+    private Movie movie;
+
     //빌더
     @Builder
-    public Review(User user, String title, String content) {
+    public Review(User user, Movie movie, String title, String content) {
         this.user = user;
+        this.movie = movie;
         this.title = title;
         this.content = content;
     }

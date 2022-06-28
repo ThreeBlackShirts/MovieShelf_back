@@ -1,18 +1,16 @@
 package com.blackshirts.movieshelf.controller;
 
-import com.blackshirts.movieshelf.dto.UserLoginRequestDto;
 import com.blackshirts.movieshelf.dto.UserRequestDto;
 import com.blackshirts.movieshelf.exception.BaseResponse;
 import com.blackshirts.movieshelf.exception.BaseResponseCode;
 import com.blackshirts.movieshelf.service.LikeService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.*;
 
-@Api(tags = {"Like"})
+@Api(tags = {"4. Like"})
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v3/like")

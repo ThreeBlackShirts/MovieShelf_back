@@ -4,6 +4,7 @@ import com.blackshirts.movieshelf.dto.*;
 import com.blackshirts.movieshelf.entity.Movie;
 import com.blackshirts.movieshelf.entity.MovieStillcut;
 import com.blackshirts.movieshelf.entity.MovieTrailer;
+import com.blackshirts.movieshelf.entity.User;
 import com.blackshirts.movieshelf.exception.BaseException;
 import com.blackshirts.movieshelf.exception.BaseResponseCode;
 import com.blackshirts.movieshelf.repository.MovieRepository;
@@ -509,6 +510,10 @@ public class MovieService {
 //                log.info(dto.getMovieTitle() + "\t" + dto.getMoviePoster()); repository contains 확인
 //            }
         return movieDetailResponseDto;
+    }
+
+    public Movie getMovieByMovieId(Long movieId) {
+        return movieRepository.findById(movieId).orElseThrow(() -> new BaseException(BaseResponseCode.MOVIE_NOT_FOUND));
     }
 
 

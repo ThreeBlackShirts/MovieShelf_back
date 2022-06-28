@@ -11,12 +11,14 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ReviewRequestDto {
     private String userEmail;
+    private Long movieId;
     private String title;
     private String content;
 
     @Builder
-    public ReviewRequestDto(String userEmail, String title, String content) {
+    public ReviewRequestDto(String userEmail, Long movieId, String title, String content) {
         this.userEmail = userEmail;
+        this.movieId = movieId;
         this.title = title;
         this.content = content;
     }

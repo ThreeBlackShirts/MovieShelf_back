@@ -59,7 +59,7 @@ class ReviewControllerTest {
         String jwtTokenProviderToken = jwtTokenProvider.createToken("kionn@gmail.com");
         assertNotNull(jwtTokenProviderToken);
 
-        ReviewRequestDto requestDto = new ReviewRequestDto("kionn@gmail.com", "title5", "content5");
+        ReviewRequestDto requestDto = new ReviewRequestDto("kionn@gmail.com", 1L, "title5", "content5");
 
         mockMvc.perform(post("/api/v3/review")
                         .header("X-AUTH-TOKEN", jwtTokenProviderToken)

@@ -15,6 +15,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class MovieDetailResponseDto {
+    private Long movieId;
     private int movieRank;
     private String movieTitle;
     private String moviePoster;
@@ -31,6 +32,7 @@ public class MovieDetailResponseDto {
     private List<List<String>> movieTrailer;
 
     public MovieDetailResponseDto(Movie movie, MovieStillcut movieStillcut, MovieTrailer movieTrailer){
+        this.movieId = movie.getMovieId();
         this.movieRank = movie.getMovieRank();
         this.movieTitle = movie.getMovieTitle();
         this.moviePoster = movie.getMoviePoster();

@@ -9,12 +9,14 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class MoviebannerResponseDto {
+    private Long movieId;
     private String movieTitle;
     private String movieStillcut;
     private String movieContentBold;
     private String movieContentDetail;
 
     public MoviebannerResponseDto(Movie movie, String movieStillcut) {
+        this.movieId = movie.getMovieId();
         this.movieTitle = movie.getMovieTitle();
         this.movieStillcut = movieStillcut;
         this.movieContentBold = movie.getMovieContentBold();

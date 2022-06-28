@@ -1,9 +1,11 @@
 package com.blackshirts.movieshelf.controller;
 
 import com.blackshirts.movieshelf.dto.*;
+import com.blackshirts.movieshelf.entity.Movie;
 import com.blackshirts.movieshelf.entity.User;
 import com.blackshirts.movieshelf.exception.BaseResponse;
 import com.blackshirts.movieshelf.exception.BaseResponseCode;
+import com.blackshirts.movieshelf.service.MovieService;
 import com.blackshirts.movieshelf.service.ReviewService;
 import com.blackshirts.movieshelf.service.UserService;
 import io.swagger.annotations.*;
@@ -19,6 +21,7 @@ import java.util.List;
 public class ReviewController {
     private final ReviewService reviewService;
     private final UserService userService;
+    private final MovieService movieService;
 
     @ApiImplicitParams({
             @ApiImplicitParam(
@@ -30,7 +33,8 @@ public class ReviewController {
     @PostMapping("/review")
     public BaseResponse<Long> create(@ApiParam(value = "영화 후기 등록 정보를 갖는 객체", required = true) @RequestBody ReviewRequestDto requestDto) {
         User user = userService.getUserByUserEmail(requestDto.getUserEmail());
-        ReviewCreateRequestDto createRequestDto = new ReviewCreateRequestDto(user, requestDto.getTitle(), requestDto.getContent());
+        Movie movie = movieService.getMovieByMovieId(requestDto.getMovieId());
+        ReviewCreateRequestDto createRequestDto = new ReviewCreateRequestDto(user, movie, requestDto.getTitle(), requestDto.getContent());
         return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), reviewService.create(createRequestDto));
     }
 
