@@ -64,6 +64,20 @@ public class ReviewController {
         return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), reviewService.searchById(reviewId));
     }
 
+    //user 개별 조회 - 영화 id별
+    @ApiImplicitParams({
+            @ApiImplicitParam(
+                    name = "X-AUTH-TOKEN",
+                    value = "로그인 성공 후 AccessToken",
+                    required = true, dataType = "String", paramType = "header")
+    })
+    @ApiOperation(value = "영화 후기 검색", notes = "userEmail별로 영화 후기를 조회합니다.")
+    @GetMapping("/review/user/{userEmail}")
+    public BaseResponse<List<ReviewResponseDto>> searchByUser(@PathVariable String userEmail) {
+        User user = userService.getUserByUserEmail(userEmail);
+        return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), reviewService.searchByUser(user));
+    }
+
     //user 개별 조회
     @ApiImplicitParams({
             @ApiImplicitParam(
@@ -71,11 +85,11 @@ public class ReviewController {
                     value = "로그인 성공 후 AccessToken",
                     required = true, dataType = "String", paramType = "header")
     })
-    @ApiOperation(value = "영화 후기 단건 검색", notes = "userEmail별로 영화 후기를 조회합니다.")
-    @GetMapping("/review/{userEmail}")
-    public BaseResponse<List<ReviewResponseDto>> searchByUser(@PathVariable String userEmail) {
-        User user = userService.getUserByUserEmail(userEmail);
-        return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), reviewService.searchByUser(user));
+    @ApiOperation(value = "영화 후기 검색", notes = "movieId별로 영화 후기를 조회합니다.")
+    @GetMapping("/review/movie/{movieId}")
+    public BaseResponse<List<ReviewResponseDto>> searchByUser(@PathVariable Long movieId) {
+        Movie movie = movieService.getMovieByMovieId(movieId);
+        return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), reviewService.searchByMovie(movie));
     }
 
     @ApiImplicitParams({

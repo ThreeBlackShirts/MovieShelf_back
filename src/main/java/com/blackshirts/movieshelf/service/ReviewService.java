@@ -4,6 +4,7 @@ import com.blackshirts.movieshelf.dto.ReviewCreateRequestDto;
 import com.blackshirts.movieshelf.dto.ReviewListResponseDto;
 import com.blackshirts.movieshelf.dto.ReviewResponseDto;
 import com.blackshirts.movieshelf.dto.ReviewUpdateRequestDto;
+import com.blackshirts.movieshelf.entity.Movie;
 import com.blackshirts.movieshelf.entity.Review;
 import com.blackshirts.movieshelf.entity.User;
 import com.blackshirts.movieshelf.repository.ReviewRepository;
@@ -45,6 +46,13 @@ public class ReviewService {
     @Transactional(readOnly = true)
     public List<ReviewListResponseDto> searchByUser(User user) {
         return reviewRepository.findAllByUser(user).stream()
+                .map(ReviewListResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<ReviewListResponseDto> searchByMovie(Movie movie) {
+        return reviewRepository.findAllByMovie(movie).stream()
                 .map(ReviewListResponseDto::new)
                 .collect(Collectors.toList());
     }
