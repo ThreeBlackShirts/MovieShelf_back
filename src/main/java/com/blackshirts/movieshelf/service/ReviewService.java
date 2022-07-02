@@ -51,9 +51,9 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    public List<ReviewListResponseDto> searchByMovie(Movie movie) {
+    public List<ReviewResponseDto> searchByMovie(Movie movie) {
         return reviewRepository.findAllByMovie(movie).stream()
-                .map(ReviewListResponseDto::new)
+                .map(ReviewResponseDto::new)
                 .collect(Collectors.toList());
     }
 
