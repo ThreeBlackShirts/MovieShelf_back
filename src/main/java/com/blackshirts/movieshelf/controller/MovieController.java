@@ -68,14 +68,14 @@ public class MovieController {
     }
 
     @ApiOperation(value = "영화 컨텐츠 정보", notes = "영화 컨텐츠 정보를 리턴합니다.")
-    @GetMapping("/detailed/{movieTitle}")
-    public BaseResponse<MovieDetailResponseDto> detailedMovie(@ApiParam(value = "타겟 영화", required = true) @PathVariable String movieTitle) throws Exception {
-        return new BaseResponse(HttpStatus.OK, "Return Movie contents", movieService.detailedMovie(movieTitle));
+    @PostMapping("/detailed")
+    public BaseResponse<MovieDetailResponseDto> detailedMovie(@ApiParam(value = "타겟 영화", required = true) @RequestBody String movieTitle) throws Exception {
+        return new BaseResponse(HttpStatus.OK, "Return Movie detail", movieService.detailedMovie(movieTitle));
     }
 
     @ApiOperation(value = "영화 컨텐츠 정보", notes = "영화id로 컨텐츠 정보를 리턴합니다.")
     @GetMapping("/detailed/{movieId}")
-    public BaseResponse<MovieDetailResponseDto> readMovieById(@ApiParam(value = "타겟 영화", required = true) @PathVariable String movieTitle) throws Exception {
-        return new BaseResponse(HttpStatus.OK, "Return Movie contents", movieService.detailedMovie(movieTitle));
+    public BaseResponse<MovieDetailResponseDto> findMovieById(@ApiParam(value = "타겟 영화", required = true) @PathVariable Long movieId) throws Exception {
+        return new BaseResponse(HttpStatus.OK, "Return Movie detail", movieService.findByMovieId(movieId));
     }
 }

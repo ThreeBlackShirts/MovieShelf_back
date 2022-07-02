@@ -443,6 +443,7 @@ public class MovieService {
 
     @Transactional(readOnly = true)
     public MovieDetailResponseDto detailedMovie(String target) {
+        target = target.replace("\"", "");
         Movie movie = movieRepository.findByMovieTitle(target).orElseThrow(() -> new IllegalArgumentException("해당 영화가 존재하지 않습니다."));
 
         List<MovieStillcut> stillcuts = movieStillcutRepository.findByMovie(movie);
@@ -457,6 +458,7 @@ public class MovieService {
         }
 
         MovieDetailResponseDto movieDetailResponseDto = new MovieDetailResponseDto();
+        movieDetailResponseDto.setMovieId(movie.getMovieId());
         movieDetailResponseDto.setMovieTitle(movie.getMovieTitle());
         movieDetailResponseDto.setMoviePoster(movie.getMoviePoster());
         movieDetailResponseDto.setMovieGenres(movie.getMovieGenres());
@@ -478,6 +480,7 @@ public class MovieService {
     }
 
     public MovieDetailResponseDto findByMovieId(Long id){
+        System.out.println(id);
         Movie movie = movieRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 영화가 존재하지 않습니다."));
 
         List<MovieStillcut> stillcuts = movieStillcutRepository.findByMovie(movie);
@@ -492,6 +495,7 @@ public class MovieService {
         }
 
         MovieDetailResponseDto movieDetailResponseDto = new MovieDetailResponseDto();
+        movieDetailResponseDto.setMovieId(movie.getMovieId());
         movieDetailResponseDto.setMovieTitle(movie.getMovieTitle());
         movieDetailResponseDto.setMoviePoster(movie.getMoviePoster());
         movieDetailResponseDto.setMovieGenres(movie.getMovieGenres());
@@ -506,9 +510,6 @@ public class MovieService {
         movieDetailResponseDto.setMovieStillcut(stillcutList);
         movieDetailResponseDto.setMovieTrailer(trailerList);
 
-//            for (Movie dto : movies) {
-//                log.info(dto.getMovieTitle() + "\t" + dto.getMoviePoster()); repository contains 확인
-//            }
         return movieDetailResponseDto;
     }
 
