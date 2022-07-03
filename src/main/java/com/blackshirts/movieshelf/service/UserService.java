@@ -113,6 +113,14 @@ public class UserService {
         return id;
     }
 
+    public String deleteByEmail(String userEmail) throws BaseException {
+        User user = userRepository.findByUserEmail(userEmail).orElseThrow(() -> new UsernameNotFoundException("해당하는 유저를 찾을 수 없습니다."));
+
+        delete(user.getUserId());
+
+        return userEmail;
+    }
+
 
     public User getUserByUserEmail(String userEmail) {
         return userRepository.findByUserEmail(userEmail).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));

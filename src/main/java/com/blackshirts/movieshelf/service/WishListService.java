@@ -1,8 +1,9 @@
 package com.blackshirts.movieshelf.service;
 
-import com.blackshirts.movieshelf.entity.WishList;
+import com.blackshirts.movieshelf.dto.WishListResponseDto;
 import com.blackshirts.movieshelf.entity.Movie;
 import com.blackshirts.movieshelf.entity.User;
+import com.blackshirts.movieshelf.entity.WishList;
 import com.blackshirts.movieshelf.exception.BaseException;
 import com.blackshirts.movieshelf.exception.BaseResponseCode;
 import com.blackshirts.movieshelf.repository.MovieRepository;
@@ -11,6 +12,9 @@ import com.blackshirts.movieshelf.repository.WishListRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -59,6 +63,13 @@ public class WishListService {
         }
 
         return wishId;
+    }
+
+    @Transactional(readOnly = true)
+    public List<WishListResponseDto> searchByUser(User user) {
+        return wishListRepository.findAllByUser(user).stream()
+                .map(WishListResponseDto::new)
+                .collect(Collectors.toList());
     }
 
 }

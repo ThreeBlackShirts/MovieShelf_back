@@ -93,5 +93,18 @@ public class UserController {
         return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), BaseResponseCode.OK.getMessage());
     }
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(
+                    name = "X-AUTH-TOKEN",
+                    value = "로그인 성공 후 AccessToken",
+                    required = true, dataType = "String", paramType = "header")
+    })
+    @ApiOperation(value = "회원 삭제", notes = "회원을 삭제합니다.")
+    @DeleteMapping("/userEmail/{userEmail}")
+    public BaseResponse deleteByEmail(@ApiParam(value = "회원 Email", required = true) @PathVariable String userEmail) {
+        userService.deleteByEmail(userEmail);
+        return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), BaseResponseCode.OK.getMessage());
+    }
+
 
 }
