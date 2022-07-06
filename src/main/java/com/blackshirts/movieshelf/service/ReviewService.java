@@ -32,6 +32,8 @@ public class ReviewService {
 
         review.update(requestDto.getTitle(), requestDto.getContent());
 
+        reviewRepository.save(review);
+
         return id;
     }
 
