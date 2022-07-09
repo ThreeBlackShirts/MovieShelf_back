@@ -345,6 +345,7 @@ public class MovieService {
         String stillcut = movieStillcutRepository.findByMovie(movie).get(0).getStillcut();
 
         MoviebannerResponseDto moviebannerResponseDto = new MoviebannerResponseDto();
+        moviebannerResponseDto.setMovieId(movie.getMovieId());
         moviebannerResponseDto.setMovieTitle(movie.getMovieTitle());
         moviebannerResponseDto.setMovieStillcut(stillcut);
         moviebannerResponseDto.setMovieContentBold(movie.getMovieContentBold());
@@ -442,44 +443,7 @@ public class MovieService {
     }
 
     @Transactional(readOnly = true)
-    public MovieDetailResponseDto detailedMovie(String target) {
-        target = target.replace("\"", "");
-        Movie movie = movieRepository.findByMovieTitle(target).orElseThrow(() -> new IllegalArgumentException("해당 영화가 존재하지 않습니다."));
-
-        List<MovieStillcut> stillcuts = movieStillcutRepository.findByMovie(movie);
-        List<String> stillcutList = new ArrayList<>();
-        for(MovieStillcut movieStillcut : stillcuts){
-            stillcutList.add(movieStillcut.getStillcut());
-        }
-        List<MovieTrailer> trailers = movieTrailerRepository.findByMovie(movie);
-        List<List<String>> trailerList = new ArrayList<>();
-        for(MovieTrailer movieTrailer : trailers){
-            trailerList.add(Arrays.asList(movieTrailer.getTralierTitle(), movieTrailer.getTralierImg(), movieTrailer.getTralier()));
-        }
-
-        MovieDetailResponseDto movieDetailResponseDto = new MovieDetailResponseDto();
-        movieDetailResponseDto.setMovieId(movie.getMovieId());
-        movieDetailResponseDto.setMovieTitle(movie.getMovieTitle());
-        movieDetailResponseDto.setMoviePoster(movie.getMoviePoster());
-        movieDetailResponseDto.setMovieGenres(movie.getMovieGenres());
-        movieDetailResponseDto.setMovieNation(movie.getMovieNation());
-        movieDetailResponseDto.setMovieRunningTime(movie.getMovieRunningTime());
-        movieDetailResponseDto.setMovieReleaseDate(movie.getMovieReleaseDate());
-        movieDetailResponseDto.setMovieDirector(movie.getMovieDirector());
-        movieDetailResponseDto.setMovieActor(movie.getMovieActor());
-        movieDetailResponseDto.setMovieFilmrate(movie.getMovieFilmrate());
-        movieDetailResponseDto.setMovieContentBold(movie.getMovieContentBold());
-        movieDetailResponseDto.setMovieContentDetail(movie.getMovieContentDetail());
-        movieDetailResponseDto.setMovieStillcut(stillcutList);
-        movieDetailResponseDto.setMovieTrailer(trailerList);
-
-//            for (Movie dto : movies) {
-//                log.info(dto.getMovieTitle() + "\t" + dto.getMoviePoster()); repository contains 확인
-//            }
-        return movieDetailResponseDto;
-    }
-
-    public MovieDetailResponseDto findByMovieId(Long id){
+    public MovieDetailResponseDto detailedMovie(Long id){
         System.out.println(id);
         Movie movie = movieRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 영화가 존재하지 않습니다."));
 
@@ -516,6 +480,5 @@ public class MovieService {
     public Movie getMovieByMovieId(Long movieId) {
         return movieRepository.findById(movieId).orElseThrow(() -> new BaseException(BaseResponseCode.MOVIE_NOT_FOUND));
     }
-
 
 }
