@@ -6,7 +6,8 @@ import lombok.Getter;
 @Getter
 public class ReviewListResponseDto {
     private Long reviewId;
-    private String user;
+    private String userNickName;
+    private String userEmail;
     private Long movieId;
     private String movieTitle;
     private String moviePoster;
@@ -14,7 +15,8 @@ public class ReviewListResponseDto {
 
     public ReviewListResponseDto(Review entity) {
         this.reviewId = entity.getReviewId();
-        this.user = entity.getUser().getUserNickname();
+        this.userNickName = entity.getUser().getUserNickname();
+        this.userEmail = entity.getUser().getUserEmail();
         this.movieId = entity.getMovie().getMovieId();
         this.movieTitle = entity.getMovie().getMovieTitle();
         this.moviePoster = entity.getMovie().getMoviePoster();
