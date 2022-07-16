@@ -50,7 +50,7 @@ public class MovieService {
 
     @Transactional(readOnly = true)
     public void saveMovie(MovieRequestDto movieRequestDto, List<String> stillcutList, List<String> trailerTitle, List<String> trailerImg, List<String> trailerList) {
-        log.info(movieRequestDto.getMovieRank() + "\t" + movieRequestDto.getMovieTitle() + "\t" + movieRequestDto.getMoviePoster());
+        log.info(movieRequestDto.getMovieRate() + "\t" + movieRequestDto.getMovieTitle() + "\t" + movieRequestDto.getMoviePoster());
         //log.info(movieRequestDto.getMovieContentBold() + "\n" + movieRequestDto.getMovieContentDetail() + movieRequestDto.getMovieContentDetailLong());
         //log.info(movieRequestDto.getMovieGenres() + "\t" + movieRequestDto.getMovieNation() + "\t" + movieRequestDto.getMovieRunningTime() + "\t" + movieRequestDto.getMovieReleaseDate());
         movieRepository.save(movieRequestDto.toEntity());

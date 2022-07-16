@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 public class MovieResponseDto {
     private Long movieId;
-    private int movieRank;
+    private double movieRate;
     private String movieTitle;
     private String moviePoster;
     private String movieGenres;
@@ -21,7 +21,7 @@ public class MovieResponseDto {
 
     public MovieResponseDto(Movie movie){
         this.movieId = movie.getMovieId();
-        this.movieRank = movie.getMovieRank();
+        this.movieRate = movie.getMovieRate();
         this.movieTitle = movie.getMovieTitle();
         this.moviePoster = movie.getMoviePoster();
         this.movieGenres = movie.getMovieGenres();
@@ -35,9 +35,9 @@ public class MovieResponseDto {
         this.movieContentDetail = movie.getMovieContentDetail();
     }
 
-    public MovieResponseDto(Long movieId, int movieRank, String movieTitle, String moviePoster, String movieGenres, String movieNation, String movieRunningTime, String movieReleaseDate, String movieDirector, String movieActor, String movieFilmrate, String movieContentBold, String movieContentDetail) {
+    public MovieResponseDto(Long movieId, double movieRate, String movieTitle, String moviePoster, String movieGenres, String movieNation, String movieRunningTime, String movieReleaseDate, String movieDirector, String movieActor, String movieFilmrate, String movieContentBold, String movieContentDetail) {
         this.movieId = movieId;
-        this.movieRank = movieRank;
+        this.movieRate = movieRate;
         this.movieTitle = movieTitle;
         this.moviePoster = moviePoster;
         this.movieGenres = movieGenres;

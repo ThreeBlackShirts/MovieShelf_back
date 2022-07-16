@@ -1,6 +1,5 @@
 package com.blackshirts.movieshelf.dto;
 
-import com.blackshirts.movieshelf.entity.Review;
 import com.blackshirts.movieshelf.entity.WishList;
 import lombok.Getter;
 

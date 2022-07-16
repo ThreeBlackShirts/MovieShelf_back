@@ -29,10 +29,10 @@ public class Movie {
     @Column(name = "movie_title", length = 50, nullable = false, unique = true)
     private String movieTitle;
 
-    @ApiModelProperty(value = "영화순위")
-    @Column(name = "movie_rank", length = 100)
+    @ApiModelProperty(value = "영화평점")
+    @Column(name = "movie_rate", length = 100)
     @ColumnDefault("0")
-    private int movieRank;
+    private double movieRate;
 
     @ApiModelProperty(value = "포스터url")
     @Column(name = "movie_poster")
@@ -81,13 +81,13 @@ public class Movie {
     List<MovieTrailer> trailers = new ArrayList<>();
 
     @Builder
-    public Movie(Long movieId, String movieTitle, int movieRank, String moviePoster, String movieGenres,
+    public Movie(Long movieId, String movieTitle, Double movieRate, String moviePoster, String movieGenres,
                  String movieNation, String movieRunningTime, String movieReleaseDate, String movieDirector,
                  String movieActor, String movieFilmrate, String movieContentBold, String movieContentDetail,
                  List<MovieStillcut> stillcuts, List<MovieTrailer> trailers) {
         this.movieId = movieId;
         this.movieTitle = movieTitle;
-        this.movieRank = movieRank;
+        this.movieRate = movieRate;
         this.moviePoster = moviePoster;
         this.movieGenres = movieGenres;
         this.movieNation = movieNation;

@@ -38,7 +38,8 @@ public class MovieRating {
     private int movieRate;
 
     @Builder
-    public MovieRating(Movie movie, User user, int movieRate) {
+    public MovieRating(Long rateId, Movie movie, User user, int movieRate) {
+        this.rateId = rateId;
         this.movie = movie;
         this.user = user;
         this.movieRate = movieRate;

@@ -19,11 +19,16 @@ public class MovieRatingService {
         return movieRatingRepository.findByMovieAndUser(movie, user).isPresent();
     }
 
-//    @Transactional
-//    public Long create(MovieRatingRequestDto movieRatingDto) {
-//
-//        return movieRatingRepository.save(movieRatingDto.).getReviewId();
-//    }
+    @Transactional
+    public Long create(MovieRatingRequestDto movieRatingDto) {
 
+        return movieRatingRepository.save(movieRatingDto.toEntity()).getRateId();
+    }
+
+    @Transactional
+    public Long update(MovieRatingRequestDto movieRatingDto) {
+
+        return movieRatingRepository.save(movieRatingDto.toEntity()).getRateId();
+    }
 
 }

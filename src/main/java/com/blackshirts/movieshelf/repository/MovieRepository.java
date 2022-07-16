@@ -21,6 +21,8 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     List<Movie> findByMovieNationContaining(String target);
     List<Movie> findByMovieGenresContaining(String target);
 
+    List<Movie> findByMovieNationContainingOrderByMovieRate(String target);
+
     @Query(value = "SELECT movie_title FROM (SELECT movie_title FROM movies ORDER BY dbms_random.value) WHERE rownum = 1", nativeQuery = true)
     String getRandomMoviesTitle();
 

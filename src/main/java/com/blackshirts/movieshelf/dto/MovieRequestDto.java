@@ -27,16 +27,16 @@ public class MovieRequestDto {
     private String movieContentBold;
     private String movieContentDetail;
     private String movieContentDetailLong;
-    private int movieRank;
+    private double movieRate;
     private List<MovieStillcut> movieStillcut = new ArrayList<>();
     private List<MovieTrailer> movieTrailer = new ArrayList<>();
 
     @Builder
-    public MovieRequestDto(String movieTitle, int movieRank, String moviePoster, String movieGenres, String movieNation, String movieRunningTime,
+    public MovieRequestDto(String movieTitle, double movieRate, String moviePoster, String movieGenres, String movieNation, String movieRunningTime,
                            String movieReleaseDate, String movieDirector, String movieActor, String movieFilmrate, String movieContentBold,
                            String movieContentDetail, List<MovieStillcut> movieStillcut, List<MovieTrailer> movieTrailer) {
         this.movieTitle = movieTitle;
-        this.movieRank = movieRank;
+        this.movieRate = movieRate;
         this.moviePoster = moviePoster;
         this.movieGenres = movieGenres;
         this.movieNation = movieNation;
@@ -54,7 +54,7 @@ public class MovieRequestDto {
     public Movie toEntity() {
         return Movie.builder()
                 .movieTitle(movieTitle)
-                .movieRank(movieRank)
+                .movieRate(movieRate)
                 .moviePoster(moviePoster)
                 .movieGenres(movieGenres)
                 .movieNation(movieNation)

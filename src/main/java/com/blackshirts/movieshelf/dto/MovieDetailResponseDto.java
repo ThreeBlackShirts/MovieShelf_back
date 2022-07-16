@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 public class MovieDetailResponseDto {
     private Long movieId;
-    private int movieRank;
+    private double movieRate;
     private String movieTitle;
     private String moviePoster;
     private String movieGenres;
@@ -33,7 +33,7 @@ public class MovieDetailResponseDto {
 
     public MovieDetailResponseDto(Movie movie, MovieStillcut movieStillcut, MovieTrailer movieTrailer){
         this.movieId = movie.getMovieId();
-        this.movieRank = movie.getMovieRank();
+        this.movieRate = movie.getMovieRate();
         this.movieTitle = movie.getMovieTitle();
         this.moviePoster = movie.getMoviePoster();
         this.movieGenres = movie.getMovieGenres();
