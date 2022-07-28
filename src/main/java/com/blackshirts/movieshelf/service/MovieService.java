@@ -342,6 +342,13 @@ public class MovieService {
     @Transactional(readOnly = true)
     public MoviebannerResponseDto todayMovie() {
         Movie movie = movieRepository.getRandomMovies();
+        System.out.println(movie.getMovieTitle());
+
+        while(movieStillcutRepository.findByMovie(movie) == null || movieStillcutRepository.findByMovie(movie).size() == 0){
+            movie = movieRepository.getRandomMovies();
+            System.out.println(movie.getMovieTitle());
+        }
+
         String stillcut = movieStillcutRepository.findByMovie(movie).get(0).getStillcut();
 
         MoviebannerResponseDto moviebannerResponseDto = new MoviebannerResponseDto();
@@ -368,7 +375,6 @@ public class MovieService {
             target = encodeData.replace("+", "%20");
             url = new URL("http://127.0.0.1:5000/movie/recommend/" + target);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
             connection.setRequestProperty("charset", "UTF-8");
             connection.setDoOutput(true);
 
