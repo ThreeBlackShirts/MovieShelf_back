@@ -9,5 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface MovieRatingRepository extends JpaRepository<MovieRating, Long> {
-    Optional<Like> findByMovieAndUser(Movie movie, User user);
+    Optional<MovieRating> findByMovieAndUser(Movie movie, User user);
 }

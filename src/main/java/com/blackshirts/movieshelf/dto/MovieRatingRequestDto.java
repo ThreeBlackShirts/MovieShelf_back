@@ -12,23 +12,23 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class MovieRatingRequestDto {
-    private User user;
-    private Movie movie;
+    private Long userId;
+    private Long movieId;
     private int movieRate;
 
     @Builder
-    public MovieRatingRequestDto(User user, Movie movie, int movieRate) {
-        this.user = user;
-        this.movie = movie;
+    public MovieRatingRequestDto(Long userId, Long movieId, int movieRate) {
+        this.userId = userId;
+        this.movieId = movieId;
         this.movieRate = movieRate;
     }
 
-    // dto -> entity
-    public MovieRating toEntity() {
-        return MovieRating.builder()
-                .user(user)
-                .movie(movie)
-                .movieRate(movieRate)
-                .build();
-    }
+//    // dto -> entity
+//    public MovieRating toEntity() {
+//        return MovieRating.builder()
+//                .user(user)
+//                .movie(movie)
+//                .movieRate(movieRate)
+//                .build();
+//    }
 }

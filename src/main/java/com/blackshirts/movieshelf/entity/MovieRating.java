@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
@@ -40,6 +41,12 @@ public class MovieRating {
     @Builder
     public MovieRating(Long rateId, Movie movie, User user, int movieRate) {
         this.rateId = rateId;
+        this.movie = movie;
+        this.user = user;
+        this.movieRate = movieRate;
+    }
+
+    public MovieRating(Movie movie, User user, int movieRate) {
         this.movie = movie;
         this.user = user;
         this.movieRate = movieRate;

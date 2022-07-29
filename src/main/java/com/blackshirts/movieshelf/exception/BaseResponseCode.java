@@ -22,6 +22,8 @@ public enum BaseResponseCode {
     DUPLICATE_SAVE_LIKE(HttpStatus.NOT_FOUND, "이미 좋아요에 등록되어 있습니다."),
     DUPLICATE_SAVE_WISH(HttpStatus.NOT_FOUND, "이미 위시리스트에 등록되어 있습니다."),
 
+    DUPLICATE_SAVE_MOVIE_RATE(HttpStatus.NOT_FOUND, "이미 영화 평점이 등록되어 있습니다."),
+
     /**
      * 404 NOT FOUND
      */
@@ -37,6 +39,7 @@ public enum BaseResponseCode {
     WISH_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 영화에 대한 등록된 위시리스트 정보를 찾을 수 없습니다."),
     FAILED_TO_SAVE_LIKE(HttpStatus.NOT_FOUND, "좋아요 등록에 실패했습니다."),
     FAILED_TO_SAVE_WISH(HttpStatus.NOT_FOUND, "위시리스트 등록에 실패했습니다."),
+    FAILED_TO_SAVE_MOVIE_RATE(HttpStatus.NOT_FOUND, "영화 평점 등록에 실패했습니다."),
 
     /**
      * 405 Method Not Allowed
