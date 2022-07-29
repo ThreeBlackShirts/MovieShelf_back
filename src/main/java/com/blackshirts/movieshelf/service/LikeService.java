@@ -1,5 +1,7 @@
 package com.blackshirts.movieshelf.service;
 
+import com.blackshirts.movieshelf.dto.LikeResponseDto;
+import com.blackshirts.movieshelf.dto.WishListResponseDto;
 import com.blackshirts.movieshelf.entity.Like;
 import com.blackshirts.movieshelf.entity.Review;
 import com.blackshirts.movieshelf.entity.User;
@@ -11,6 +13,9 @@ import com.blackshirts.movieshelf.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -60,4 +65,16 @@ public class LikeService {
 
         return likeId;
     }
+
+    @Transactional(readOnly = true)
+    public List<LikeResponseDto> searchByUser(User user) {
+        return likeRepository.findAllByUser(user).stream()
+                .map(LikeResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+//    public int countReviewLike(Long reviewId){
+//        Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new BaseException(BaseResponseCode.REVIEW_NOT_FOUND));
+//
+//    }
 }

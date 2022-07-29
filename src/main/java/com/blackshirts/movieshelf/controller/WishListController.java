@@ -59,7 +59,7 @@ public class WishListController {
                     value = "로그인 성공 후 AccessToken",
                     required = true, dataType = "String", paramType = "header")
     })
-    @ApiOperation(value = "영화 후기 검색", notes = "userEmail별로 영화 후기를 조회합니다.")
+    @ApiOperation(value = "영화 위시리스트 검색", notes = "userEmail별로 영화 위시리스트를 조회합니다.")
     @GetMapping("/list/{userEmail}")
     public BaseResponse<List<WishList>> searchByUser(@PathVariable String userEmail) {
         User user = userService.getUserByUserEmail(userEmail);

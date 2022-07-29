@@ -10,6 +10,7 @@ public class ReviewResponseDto {
     private String user;
     private String title;
     private String content;
+    private int like;
 
     public ReviewResponseDto(Review entity) {
         this.reviewId = entity.getReviewId();
@@ -17,5 +18,6 @@ public class ReviewResponseDto {
         this.user = entity.getUser().getUserNickname();
         this.title = entity.getTitle();
         this.content = entity.getContent();
+        this.like = entity.getLikes().size();
     }
 }
