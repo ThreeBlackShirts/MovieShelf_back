@@ -1,10 +1,12 @@
 package com.blackshirts.movieshelf.controller;
 
 import com.blackshirts.movieshelf.dto.UserRequestDto;
+import com.blackshirts.movieshelf.entity.Movie;
 import com.blackshirts.movieshelf.entity.User;
 import com.blackshirts.movieshelf.entity.WishList;
 import com.blackshirts.movieshelf.exception.BaseResponse;
 import com.blackshirts.movieshelf.exception.BaseResponseCode;
+import com.blackshirts.movieshelf.service.MovieService;
 import com.blackshirts.movieshelf.service.UserService;
 import com.blackshirts.movieshelf.service.WishListService;
 import io.swagger.annotations.Api;
@@ -16,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Api(tags = {"5. WishList"})
@@ -25,6 +28,8 @@ import java.util.List;
 public class WishListController {
     private final WishListService wishListService;
     private final UserService userService;
+
+    private final MovieService movieService;
     private static final Logger log = LoggerFactory.getLogger(WishListController.class);
 
     @ApiImplicitParams({
@@ -35,9 +40,11 @@ public class WishListController {
     })
     @PostMapping("/{movieId}")
     public BaseResponse<Long> addLike(@RequestBody UserRequestDto userRequestDto, @PathVariable Long movieId) {
-        log.info(userRequestDto.getUserEmail());
 
-        return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), wishListService.createWish(userRequestDto.toEntity(), movieId));
+        log.info("addLike()" + new Date());
+
+        Long wishListId = wishListService.createWish(userRequestDto, movieId);
+        return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), wishListId);
 
     }
 
@@ -49,7 +56,9 @@ public class WishListController {
     })
     @DeleteMapping("/{movieId}")
     public BaseResponse<Long> deleteLike(@RequestBody UserRequestDto userRequestDto, @PathVariable Long movieId) {
-        return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), wishListService.delete(userRequestDto.toEntity(), movieId));
+
+        Long deletedWishId = wishListService.delete(userRequestDto, movieId);
+        return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), deletedWishId);
     }
 
     //user 개별 조회 - 영화 id별
@@ -62,7 +71,6 @@ public class WishListController {
     @ApiOperation(value = "영화 위시리스트 검색", notes = "userEmail별로 영화 위시리스트를 조회합니다.")
     @GetMapping("/list/{userEmail}")
     public BaseResponse<List<WishList>> searchByUser(@PathVariable String userEmail) {
-        User user = userService.getUserByUserEmail(userEmail);
-        return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), wishListService.searchByUser(user));
+        return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), wishListService.searchByUser(userEmail));
     }
 }

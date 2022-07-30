@@ -1,5 +1,6 @@
 package com.blackshirts.movieshelf.service;
 
+import com.blackshirts.movieshelf.dto.UserRequestDto;
 import com.blackshirts.movieshelf.dto.WishListResponseDto;
 import com.blackshirts.movieshelf.entity.Movie;
 import com.blackshirts.movieshelf.entity.User;
@@ -24,11 +25,11 @@ public class WishListService {
     private final MovieRepository movieRepository;
     private final UserRepository userRepository;
 
-    public Long createWish(User user, Long movieId) {
+    public Long createWish(UserRequestDto userRequestDto, Long movieId) {
 
-        User findUser = userRepository.findByUserEmail(user.getUserEmail()).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
-        Movie movie = movieRepository.findById(movieId).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
-//        wishListRepository.findByUserAndMovie(findUser, movie).orElseThrow(() -> new BaseException(BaseResponseCode.DUPLICATE_SAVE_LIKE));
+        User findUser = getUserByUserEmail(userRequestDto.getUserEmail());
+        Movie movie = getMovieByMovieId(movieId);
+
         boolean isWishListCheck = isNotAlreadyWishList(findUser, movie);
         if (!isWishListCheck) {
             try {
@@ -50,14 +51,14 @@ public class WishListService {
         return wishListRepository.findByUserAndMovie(user, movie).isPresent();
     }
 
-    public Long delete(User user, Long movieId) {
+    public Long delete(UserRequestDto userRequestDto, Long movieId) {
 
-        User findUser = userRepository.findByUserEmail(user.getUserEmail()).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
-        Movie movie = movieRepository.findById(movieId).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
+        User findUser = getUserByUserEmail(userRequestDto.getUserEmail());
+        Movie movie = getMovieByMovieId(movieId);
+
         boolean isWishListCheck = isNotAlreadyWishList(findUser, movie);
         Long wishId = null;
         if (isWishListCheck) {
-
             wishId = wishListRepository.findByUserAndMovie(findUser, movie).orElseThrow(() -> new BaseException(BaseResponseCode.WISH_NOT_FOUND)).getWishListId();
             wishListRepository.deleteById(wishId);
         }
@@ -66,10 +67,19 @@ public class WishListService {
     }
 
     @Transactional(readOnly = true)
-    public List<WishListResponseDto> searchByUser(User user) {
+    public List<WishListResponseDto> searchByUser(String userEmail) {
+        User user = getUserByUserEmail(userEmail);
         return wishListRepository.findAllByUser(user).stream()
                 .map(WishListResponseDto::new)
                 .collect(Collectors.toList());
+    }
+
+    private User getUserByUserEmail(String userEmail){
+        return userRepository.findByUserEmail(userEmail).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
+    }
+
+    private Movie getMovieByMovieId(Long movieId){
+        return movieRepository.findById(movieId).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
     }
 
 }
