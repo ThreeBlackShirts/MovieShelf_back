@@ -24,7 +24,7 @@ import java.util.List;
 @Api(tags = {"4. Like"})
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v3/like")
+@RequestMapping("/api/v4/like")
 public class LikeController {
     private final LikeService likeService;
     private static final Logger log = LoggerFactory.getLogger(LikeController.class);

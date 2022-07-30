@@ -24,12 +24,10 @@ import java.util.List;
 @Api(tags = {"5. WishList"})
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v4/wish")
+@RequestMapping("/api/v5/wish")
 public class WishListController {
     private final WishListService wishListService;
-    private final UserService userService;
 
-    private final MovieService movieService;
     private static final Logger log = LoggerFactory.getLogger(WishListController.class);
 
     @ApiImplicitParams({
