@@ -36,13 +36,13 @@ public class LikeController {
     public BaseResponse addLike(@RequestBody UserRequestDto userRequestDto, @PathVariable Long reviewId) {
         log.info("addLike() " +new Date());
 
-        return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), likeService.addLike(userRequestDto.toEntity(), reviewId));
+        return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), likeService.addLike(userRequestDto, reviewId));
 
     }
 
     @DeleteMapping("/{reviewId}")
     public BaseResponse deleteLike(@RequestBody UserRequestDto userRequestDto, @PathVariable Long reviewId) {
-        return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), likeService.delete(userRequestDto.toEntity(), reviewId));
+        return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), likeService.delete(userRequestDto, reviewId));
     }
 
     @ApiImplicitParams({
@@ -54,8 +54,7 @@ public class LikeController {
     @ApiOperation(value = "좋아요 누른 리뷰 검색", notes = "userEmail별로 좋아요한 리뷰를 조회합니다.")
     @GetMapping("/list/{userEmail}")
     public BaseResponse<List<Like>> searchByUser(@PathVariable String userEmail) {
-        User user = userService.getUserByUserEmail(userEmail);
-        return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), likeService.searchByUser(user));
+        return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), likeService.searchByUser(userEmail));
     }
 
 }
