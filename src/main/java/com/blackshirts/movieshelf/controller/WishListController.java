@@ -39,7 +39,7 @@ public class WishListController {
     @PostMapping("/{movieId}")
     public BaseResponse<Long> addLike(@RequestBody UserRequestDto userRequestDto, @PathVariable Long movieId) {
 
-        log.info("addLike()" + new Date());
+        log.info("addLike() " + new Date());
 
         Long wishListId = wishListService.createWish(userRequestDto, movieId);
         return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), wishListId);
