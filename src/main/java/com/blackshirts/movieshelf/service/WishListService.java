@@ -36,10 +36,10 @@ public class WishListService {
 
                 wishListRepository.save(new WishList(movie, findUser));
             } catch (Exception e) {
-                throw new BaseException(BaseResponseCode.FAILED_TO_SAVE_LIKE);
+                throw new BaseException(BaseResponseCode.FAILED_TO_SAVE_WISH);
             }
         } else {
-            throw new BaseException(BaseResponseCode.DUPLICATE_SAVE_LIKE);
+            throw new BaseException(BaseResponseCode.DUPLICATE_SAVE_WISH);
         }
 
 
@@ -79,7 +79,7 @@ public class WishListService {
     }
 
     private Movie getMovieByMovieId(Long movieId){
-        return movieRepository.findById(movieId).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
+        return movieRepository.findById(movieId).orElseThrow(() -> new IllegalArgumentException("해당 위시리스트가 존재하지 않습니다."));
     }
 
 }
