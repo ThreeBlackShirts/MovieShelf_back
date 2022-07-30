@@ -30,8 +30,6 @@ public class LikeController {
     private final LikeService likeService;
     private static final Logger log = LoggerFactory.getLogger(LikeController.class);
 
-    private final UserService userService;
-
     @PostMapping("/{reviewId}")
     public BaseResponse addLike(@RequestBody UserRequestDto userRequestDto, @PathVariable Long reviewId) {
         log.info("addLike() " + new Date());
