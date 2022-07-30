@@ -73,8 +73,4 @@ public class LikeService {
                 .collect(Collectors.toList());
     }
 
-//    public int countReviewLike(Long reviewId){
-//        Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new BaseException(BaseResponseCode.REVIEW_NOT_FOUND));
-//
-//    }
 }
