@@ -34,7 +34,7 @@ public class LikeController {
 
     @PostMapping("/{reviewId}")
     public BaseResponse addLike(@RequestBody UserRequestDto userRequestDto, @PathVariable Long reviewId) {
-        log.info("addLike() " +new Date());
+        log.info("addLike() " + new Date());
 
         return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), likeService.addLike(userRequestDto, reviewId));
 
