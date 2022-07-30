@@ -1,8 +1,10 @@
 package com.blackshirts.movieshelf.service;
 
 import com.blackshirts.movieshelf.dto.LikeResponseDto;
+import com.blackshirts.movieshelf.dto.UserRequestDto;
 import com.blackshirts.movieshelf.dto.WishListResponseDto;
 import com.blackshirts.movieshelf.entity.Like;
+import com.blackshirts.movieshelf.entity.Movie;
 import com.blackshirts.movieshelf.entity.Review;
 import com.blackshirts.movieshelf.entity.User;
 import com.blackshirts.movieshelf.exception.BaseException;
@@ -25,11 +27,11 @@ public class LikeService {
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
 
-    public Long addLike(User user, Long reviewId) {
+    public Long addLike(UserRequestDto userRequestDto, Long reviewId) {
 
-        User findUser = userRepository.findByUserEmail(user.getUserEmail()).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
-        Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
-//        likeRepository.findByUserAndReview(findUser, review).orElseThrow(() -> new BaseException(BaseResponseCode.DUPLICATE_SAVE_LIKE));
+        User findUser = getUserByUserEmail(userRequestDto.getUserEmail());
+        Review review = getReviewByReviewId(reviewId);
+
         boolean isLikeCheck = isNotAlreadyLike(findUser, review);
         if (!isLikeCheck) {
             try {
@@ -50,10 +52,10 @@ public class LikeService {
         return likeRepository.findByUserAndReview(user, review).isPresent();
     }
 
-    public Long delete(User user, Long reviewId) {
+    public Long delete(UserRequestDto userRequestDto, Long reviewId) {
 
-        User findUser = userRepository.findByUserEmail(user.getUserEmail()).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
-        Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
+        User findUser = getUserByUserEmail(userRequestDto.getUserEmail());
+        Review review = getReviewByReviewId(reviewId);
         boolean isLikeCheck = isNotAlreadyLike(findUser, review);
         Long likeId = null;
         if (isLikeCheck) {
@@ -67,10 +69,19 @@ public class LikeService {
     }
 
     @Transactional(readOnly = true)
-    public List<LikeResponseDto> searchByUser(User user) {
+    public List<LikeResponseDto> searchByUser(String userEmail) {
+        User user = getUserByUserEmail(userEmail);
         return likeRepository.findAllByUser(user).stream()
                 .map(LikeResponseDto::new)
                 .collect(Collectors.toList());
+    }
+
+    private User getUserByUserEmail(String userEmail){
+        return userRepository.findByUserEmail(userEmail).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
+    }
+
+    private Review getReviewByReviewId(Long reviewId){
+        return reviewRepository.findById(reviewId).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
     }
 
 }
