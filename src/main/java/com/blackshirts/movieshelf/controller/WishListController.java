@@ -37,9 +37,9 @@ public class WishListController {
                     required = true, dataType = "String", paramType = "header")
     })
     @PostMapping("/{movieId}")
-    public BaseResponse<Long> addLike(@RequestBody UserRequestDto userRequestDto, @PathVariable Long movieId) {
+    public BaseResponse<Long> addWishList(@RequestBody UserRequestDto userRequestDto, @PathVariable Long movieId) {
 
-        log.info("addLike() " + new Date());
+        log.info("addWishList() " + new Date());
 
         Long wishListId = wishListService.createWish(userRequestDto, movieId);
         return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), wishListId);
@@ -53,7 +53,7 @@ public class WishListController {
                     required = true, dataType = "String", paramType = "header")
     })
     @DeleteMapping("/{movieId}")
-    public BaseResponse<Long> deleteLike(@RequestBody UserRequestDto userRequestDto, @PathVariable Long movieId) {
+    public BaseResponse<Long> deleteWishList(@RequestBody UserRequestDto userRequestDto, @PathVariable Long movieId) {
 
         Long deletedWishId = wishListService.delete(userRequestDto, movieId);
         return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), deletedWishId);

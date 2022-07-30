@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Api(tags = {"4. Like"})
@@ -33,7 +34,7 @@ public class LikeController {
 
     @PostMapping("/{reviewId}")
     public BaseResponse addLike(@RequestBody UserRequestDto userRequestDto, @PathVariable Long reviewId) {
-        log.info(userRequestDto.getUserEmail());
+        log.info("addLike() " +new Date());
 
         return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), likeService.addLike(userRequestDto.toEntity(), reviewId));
 
