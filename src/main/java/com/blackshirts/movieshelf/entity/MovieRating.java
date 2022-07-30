@@ -9,7 +9,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
-@ApiModel(value = "영화 별점", description = "영화 아이디와  Class")
+@ApiModel(value = "영화 평점", description = "영화(id), 유저(id)와 영화 평점")
 @Entity(name = "movies_rating")
 @Getter
 @NoArgsConstructor
@@ -29,14 +29,18 @@ public class MovieRating {
 //     @JoinColumn(name = "movie_id")  name : 내 엔티티에서 외래키 칼럼명을 만들어주는 설정
     private Movie movie;
 
-    @ApiModelProperty(value = "user_email")
+    @ApiModelProperty(value = "user_id")
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = User.class)
     @JoinColumn
     private User user;
 
-    @ApiModelProperty(value = "영화 아이디")
+    @ApiModelProperty(value = "영화 평점")
     @Column(name = "movie_rate", nullable = false, unique = true)
     private int movieRate;
+
+    public void setMovieRate(int movieRate) {
+        this.movieRate = movieRate;
+    }
 
     @Builder
     public MovieRating(Long rateId, Movie movie, User user, int movieRate) {

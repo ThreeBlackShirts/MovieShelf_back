@@ -57,15 +57,4 @@ public class LikeController {
         return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), likeService.searchByUser(user));
     }
 
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(
-//                    name = "X-AUTH-TOKEN",
-//                    value = "로그인 성공 후 AccessToken",
-//                    required = true, dataType = "String", paramType = "header")
-//    })
-//    @ApiOperation(value = "리뷰의 좋아요 개수 단건 검색", notes = "reviewId별로 좋아요한 개수를 조회합니다.")
-//    @GetMapping("/list/{userEmail}")
-//    public BaseResponse<List<Like>> countReviewLike(@PathVariable Long reviewId) {
-//        return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), likeService.countReviewLike(reviewId));
-//    }
 }
