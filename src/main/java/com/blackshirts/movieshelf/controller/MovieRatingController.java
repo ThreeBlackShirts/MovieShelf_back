@@ -22,15 +22,15 @@ public class MovieRatingController {
 
     @PostMapping("/add")
     public BaseResponse addMovieRate(@RequestBody MovieRatingRequestDto movieRatingRequestDto) {
-        log.info("addMovieRate() "+movieRatingRequestDto.getMovieRate());
+        log.info("addMovieRate() " + movieRatingRequestDto.getMovieRate());
 
         return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), movieRatingService.create(movieRatingRequestDto));
 
     }
 
-    @PostMapping("/update/{reviewId}")
-    public BaseResponse updateMovieRate(@RequestBody MovieRatingRequestDto movieRatingRequestDto, @PathVariable Long reviewId) {
-        log.info("updateMovieRate() "+movieRatingRequestDto.getMovieRate());
+    @PostMapping("/update")
+    public BaseResponse updateMovieRate(@RequestBody MovieRatingRequestDto movieRatingRequestDto) {
+        log.info("updateMovieRate() " + movieRatingRequestDto.getMovieRate());
 
         return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), movieRatingService.updateMovieRate(movieRatingRequestDto));
 

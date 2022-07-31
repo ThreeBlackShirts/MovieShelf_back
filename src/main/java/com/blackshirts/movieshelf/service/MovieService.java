@@ -479,6 +479,7 @@ public class MovieService {
         movieDetailResponseDto.setMovieContentDetail(movie.getMovieContentDetail());
         movieDetailResponseDto.setMovieStillcut(stillcutList);
         movieDetailResponseDto.setMovieTrailer(trailerList);
+        movieDetailResponseDto.setMovieRate(movie.getMovieRate());
 
         return movieDetailResponseDto;
     }
