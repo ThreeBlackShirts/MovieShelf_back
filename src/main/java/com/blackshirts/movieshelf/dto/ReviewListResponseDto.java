@@ -13,6 +13,8 @@ public class ReviewListResponseDto {
     private String moviePoster;
     private String title;
 
+    private int like;
+
     public ReviewListResponseDto(Review entity) {
         this.reviewId = entity.getReviewId();
         this.userNickName = entity.getUser().getUserNickname();
@@ -21,5 +23,6 @@ public class ReviewListResponseDto {
         this.movieTitle = entity.getMovie().getMovieTitle();
         this.moviePoster = entity.getMovie().getMoviePoster();
         this.title = entity.getTitle();
+        this.like = entity.getLikes().size();
     }
 }
