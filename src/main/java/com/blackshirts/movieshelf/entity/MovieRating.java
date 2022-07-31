@@ -23,19 +23,15 @@ public class MovieRating {
     private Long rateId;
 
     @ApiModelProperty(value = "movie_id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
-//    @JoinColumn(name = "movie_id", foreignKey = @ForeignKey(name = "FK_MovieRate_Movie"))
-//     @JoinColumn(name = "movie_id")  name : 내 엔티티에서 외래키 칼럼명을 만들어주는 설정
-    private Movie movie;
+    @Column(name = "movie_id", nullable = false)
+    private Long movieId;
 
     @ApiModelProperty(value = "user_id")
-    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = User.class)
-    @JoinColumn
-    private User user;
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
 
     @ApiModelProperty(value = "영화 평점")
-    @Column(name = "movie_rate", nullable = false, unique = true)
+    @Column(name = "movie_rate", nullable = false)
     private int movieRate;
 
     public void setMovieRate(int movieRate) {
@@ -43,16 +39,16 @@ public class MovieRating {
     }
 
     @Builder
-    public MovieRating(Long rateId, Movie movie, User user, int movieRate) {
+    public MovieRating(Long rateId, Long movieId, Long userId, int movieRate) {
         this.rateId = rateId;
-        this.movie = movie;
-        this.user = user;
+        this.movieId = movieId;
+        this.userId = userId;
         this.movieRate = movieRate;
     }
 
-    public MovieRating(Movie movie, User user, int movieRate) {
-        this.movie = movie;
-        this.user = user;
+    public MovieRating(Long movieId, Long userId, int movieRate) {
+        this.movieId = movieId;
+        this.userId = userId;
         this.movieRate = movieRate;
     }
 }
