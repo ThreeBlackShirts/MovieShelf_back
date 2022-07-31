@@ -60,7 +60,7 @@ public class WishListService {
         return isNotAlreadyWishList(findUser, movie);
     }
 
-    //사용자가 이미 좋아요 한 게시물인지 체크
+    //사용자가 이미 위시리스트에 담았는지 존재 여부 확인
     private boolean isNotAlreadyWishList(User user, Movie movie) {
         return wishListRepository.findByUserAndMovie(user, movie).isPresent();
     }
