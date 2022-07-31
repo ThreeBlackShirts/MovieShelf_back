@@ -79,12 +79,6 @@ public class ReviewController {
     }
 
     //user 개별 조회
-    @ApiImplicitParams({
-            @ApiImplicitParam(
-                    name = "X-AUTH-TOKEN",
-                    value = "로그인 성공 후 AccessToken",
-                    required = true, dataType = "String", paramType = "header")
-    })
     @ApiOperation(value = "영화 후기 검색", notes = "movieId별로 영화 후기를 조회합니다.")
     @GetMapping("/review/movie/{movieId}")
     public BaseResponse<List<ReviewResponseDto>> searchByUser(@PathVariable Long movieId) {
