@@ -30,6 +30,25 @@ public class LikeController {
     private final LikeService likeService;
     private static final Logger log = LoggerFactory.getLogger(LikeController.class);
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(
+                    name = "X-AUTH-TOKEN",
+                    value = "로그인 성공 후 AccessToken",
+                    required = true, dataType = "String", paramType = "header")
+    })
+    @ApiOperation(value = "좋아요 단건 조회", notes = "userEmail, reviewId로 좋아요 단건 조회")
+    @GetMapping("/{reviewId}")
+    public BaseResponse findLike(@RequestBody UserRequestDto userRequestDto, @PathVariable Long reviewId) {
+        return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), likeService.findLike(userRequestDto, reviewId));
+    }
+
+    @ApiImplicitParams({
+            @ApiImplicitParam(
+                    name = "X-AUTH-TOKEN",
+                    value = "로그인 성공 후 AccessToken",
+                    required = true, dataType = "String", paramType = "header")
+    })
+    @ApiOperation(value = "좋아요 등록", notes = "userEmail, reviewId로 좋아요 등록")
     @PostMapping("/{reviewId}")
     public BaseResponse addLike(@RequestBody UserRequestDto userRequestDto, @PathVariable Long reviewId) {
         log.info("addLike() " + new Date());
@@ -38,6 +57,13 @@ public class LikeController {
 
     }
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(
+                    name = "X-AUTH-TOKEN",
+                    value = "로그인 성공 후 AccessToken",
+                    required = true, dataType = "String", paramType = "header")
+    })
+    @ApiOperation(value = "좋아요 삭제", notes = "reviewId로 좋아요 삭제")
     @DeleteMapping("/{reviewId}")
     public BaseResponse deleteLike(@RequestBody UserRequestDto userRequestDto, @PathVariable Long reviewId) {
         return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), likeService.delete(userRequestDto, reviewId));
