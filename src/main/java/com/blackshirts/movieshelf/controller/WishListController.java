@@ -36,6 +36,7 @@ public class WishListController {
                     value = "로그인 성공 후 AccessToken",
                     required = true, dataType = "String", paramType = "header")
     })
+    @ApiOperation(value = "위시리스트 추가", notes = "userEmail, movieId로 위시리스트 등록")
     @PostMapping("/{movieId}")
     public BaseResponse<Long> addWishList(@RequestBody UserRequestDto userRequestDto, @PathVariable Long movieId) {
 
@@ -52,6 +53,7 @@ public class WishListController {
                     value = "로그인 성공 후 AccessToken",
                     required = true, dataType = "String", paramType = "header")
     })
+    @ApiOperation(value = "위시리스트 삭제", notes = "userEmail, movieId로 위시리스트 삭제")
     @DeleteMapping("/{movieId}")
     public BaseResponse<Long> deleteWishList(@RequestBody UserRequestDto userRequestDto, @PathVariable Long movieId) {
 
