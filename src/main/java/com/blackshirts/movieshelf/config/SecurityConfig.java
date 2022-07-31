@@ -48,6 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/movie/**").permitAll() // 영화 데이타 관련
                 .antMatchers("/api/google/**").permitAll()
                 .antMatchers("/api/oauth/**").permitAll()
+                .antMatchers("/api/v3/review/movie/**").permitAll()
 //                .antMatchers("/api/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
