@@ -27,7 +27,7 @@ public class LikeService {
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
 
-    public LikeResponseDto findLike(UserRequestDto userRequestDto, Long reviewId){
+    public LikeResponseDto findLike(UserRequestDto userRequestDto, Long reviewId) {
         User findUser = getUserByUserEmail(userRequestDto.getUserEmail());
         Review review = getReviewByReviewId(reviewId);
         return new LikeResponseDto(findByUserAndReview(findUser, review));
@@ -45,14 +45,20 @@ public class LikeService {
             } catch (Exception e) {
                 throw new BaseException(BaseResponseCode.FAILED_TO_SAVE_LIKE);
             }
-        }else{
+        } else {
             throw new BaseException(BaseResponseCode.DUPLICATE_SAVE_LIKE);
         }
 
-        return findByUserAndReview(findUser,review).getLikeId();
+        return findByUserAndReview(findUser, review).getLikeId();
     }
 
-    //사용자가 이미 좋아요 한 게시물인지 체크
+    public boolean validateLike(UserRequestDto userRequestDto, Long reviewId) {
+        User findUser = getUserByUserEmail(userRequestDto.getUserEmail());
+        Review review = getReviewByReviewId(reviewId);
+        return isNotAlreadyLike(findUser, review);
+    }
+
+    //사용자가 이미 좋아요 한 게시물인지 존재 여부 확인
     private boolean isNotAlreadyLike(User user, Review review) {
         return likeRepository.findByUserAndReview(user, review).isPresent();
     }
@@ -79,15 +85,15 @@ public class LikeService {
                 .collect(Collectors.toList());
     }
 
-    private Like findByUserAndReview(User user, Review review){
+    private Like findByUserAndReview(User user, Review review) {
         return likeRepository.findByUserAndReview(user, review).orElseThrow(() -> new BaseException(BaseResponseCode.Like_NOT_FOUND));
     }
 
-    private User getUserByUserEmail(String userEmail){
+    private User getUserByUserEmail(String userEmail) {
         return userRepository.findByUserEmail(userEmail).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
     }
 
-    private Review getReviewByReviewId(Long reviewId){
+    private Review getReviewByReviewId(Long reviewId) {
         return reviewRepository.findById(reviewId).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
     }
 

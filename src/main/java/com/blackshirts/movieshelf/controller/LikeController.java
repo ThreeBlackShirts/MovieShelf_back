@@ -48,6 +48,19 @@ public class LikeController {
                     value = "로그인 성공 후 AccessToken",
                     required = true, dataType = "String", paramType = "header")
     })
+    @ApiOperation(value = "좋아요 존재 조회", notes = "userEmail, reviewId로 좋아요 존재 조회 / True면 존재")
+    @GetMapping("/validate/{movieId}")
+    public BaseResponse validateWishList(@RequestBody UserRequestDto userRequestDto, @PathVariable Long reviewId) {
+        return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), likeService.validateLike(userRequestDto, reviewId));
+    }
+
+
+    @ApiImplicitParams({
+            @ApiImplicitParam(
+                    name = "X-AUTH-TOKEN",
+                    value = "로그인 성공 후 AccessToken",
+                    required = true, dataType = "String", paramType = "header")
+    })
     @ApiOperation(value = "좋아요 등록", notes = "userEmail, reviewId로 좋아요 등록")
     @PostMapping("/{reviewId}")
     public BaseResponse addLike(@RequestBody UserRequestDto userRequestDto, @PathVariable Long reviewId) {
