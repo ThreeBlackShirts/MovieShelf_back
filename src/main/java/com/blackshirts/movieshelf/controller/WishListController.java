@@ -36,6 +36,30 @@ public class WishListController {
                     value = "로그인 성공 후 AccessToken",
                     required = true, dataType = "String", paramType = "header")
     })
+    @ApiOperation(value = "위시리스트 단건 조회", notes = "userEmail, movieId로 위시 단건 조회")
+    @GetMapping("/{movieId}")
+    public BaseResponse findWishList(@RequestBody UserRequestDto userRequestDto, @PathVariable Long movieId) {
+        return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), wishListService.findWishList(userRequestDto, movieId));
+    }
+
+    @ApiImplicitParams({
+            @ApiImplicitParam(
+                    name = "X-AUTH-TOKEN",
+                    value = "로그인 성공 후 AccessToken",
+                    required = true, dataType = "String", paramType = "header")
+    })
+    @ApiOperation(value = "위시리스트 존재 조회", notes = "userEmail, movieId로 위시 존재 조회")
+    @GetMapping("/validate/{movieId}")
+    public BaseResponse validateWishList(@RequestBody UserRequestDto userRequestDto, @PathVariable Long movieId) {
+        return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), wishListService.validateWishList(userRequestDto, movieId));
+    }
+
+    @ApiImplicitParams({
+            @ApiImplicitParam(
+                    name = "X-AUTH-TOKEN",
+                    value = "로그인 성공 후 AccessToken",
+                    required = true, dataType = "String", paramType = "header")
+    })
     @ApiOperation(value = "위시리스트 추가", notes = "userEmail, movieId로 위시리스트 등록")
     @PostMapping("/{movieId}")
     public BaseResponse<Long> addWishList(@RequestBody UserRequestDto userRequestDto, @PathVariable Long movieId) {

@@ -1,8 +1,10 @@
 package com.blackshirts.movieshelf.service;
 
+import com.blackshirts.movieshelf.dto.LikeResponseDto;
 import com.blackshirts.movieshelf.dto.UserRequestDto;
 import com.blackshirts.movieshelf.dto.WishListResponseDto;
 import com.blackshirts.movieshelf.entity.Movie;
+import com.blackshirts.movieshelf.entity.Review;
 import com.blackshirts.movieshelf.entity.User;
 import com.blackshirts.movieshelf.entity.WishList;
 import com.blackshirts.movieshelf.exception.BaseException;
@@ -25,6 +27,12 @@ public class WishListService {
     private final MovieRepository movieRepository;
     private final UserRepository userRepository;
 
+    public WishListResponseDto findWishList(UserRequestDto userRequestDto, Long movieId) {
+        User findUser = getUserByUserEmail(userRequestDto.getUserEmail());
+        Movie movie = getMovieByMovieId(movieId);
+        return new WishListResponseDto(findByUserAndMovie(findUser, movie));
+    }
+
     public Long createWish(UserRequestDto userRequestDto, Long movieId) {
 
         User findUser = getUserByUserEmail(userRequestDto.getUserEmail());
@@ -43,7 +51,13 @@ public class WishListService {
         }
 
 
-        return wishListRepository.findByUserAndMovie(findUser, movie).orElseThrow(() -> new BaseException(BaseResponseCode.DUPLICATE_SAVE_WISH)).getWishListId();
+        return findByUserAndMovie(findUser, movie).getWishListId();
+    }
+
+    public boolean validateWishList(UserRequestDto userRequestDto, Long movieId) {
+        User findUser = getUserByUserEmail(userRequestDto.getUserEmail());
+        Movie movie = getMovieByMovieId(movieId);
+        return isNotAlreadyWishList(findUser, movie);
     }
 
     //사용자가 이미 좋아요 한 게시물인지 체크
@@ -59,7 +73,7 @@ public class WishListService {
         boolean isWishListCheck = isNotAlreadyWishList(findUser, movie);
         Long wishId = null;
         if (isWishListCheck) {
-            wishId = wishListRepository.findByUserAndMovie(findUser, movie).orElseThrow(() -> new BaseException(BaseResponseCode.WISH_NOT_FOUND)).getWishListId();
+            wishId = findByUserAndMovie(findUser, movie).getWishListId();
             wishListRepository.deleteById(wishId);
         }
 
@@ -74,11 +88,15 @@ public class WishListService {
                 .collect(Collectors.toList());
     }
 
-    private User getUserByUserEmail(String userEmail){
+    private WishList findByUserAndMovie(User user, Movie movie) {
+        return wishListRepository.findByUserAndMovie(user, movie).orElseThrow(() -> new BaseException(BaseResponseCode.WISH_NOT_FOUND));
+    }
+
+    private User getUserByUserEmail(String userEmail) {
         return userRepository.findByUserEmail(userEmail).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
     }
 
-    private Movie getMovieByMovieId(Long movieId){
+    private Movie getMovieByMovieId(Long movieId) {
         return movieRepository.findById(movieId).orElseThrow(() -> new IllegalArgumentException("해당 위시리스트가 존재하지 않습니다."));
     }
 
