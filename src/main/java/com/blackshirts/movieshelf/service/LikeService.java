@@ -27,6 +27,12 @@ public class LikeService {
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
 
+    public LikeResponseDto findLike(UserRequestDto userRequestDto, Long reviewId){
+        User findUser = getUserByUserEmail(userRequestDto.getUserEmail());
+        Review review = getReviewByReviewId(reviewId);
+        return new LikeResponseDto(findByUserAndReview(findUser, review));
+    }
+
     public Long addLike(UserRequestDto userRequestDto, Long reviewId) {
 
         User findUser = getUserByUserEmail(userRequestDto.getUserEmail());
@@ -43,8 +49,7 @@ public class LikeService {
             throw new BaseException(BaseResponseCode.DUPLICATE_SAVE_LIKE);
         }
 
-
-        return likeRepository.findByUserAndReview(findUser, review).orElseThrow(() -> new BaseException(BaseResponseCode.DUPLICATE_SAVE_LIKE)).getLikeId();
+        return findByUserAndReview(findUser,review).getLikeId();
     }
 
     //사용자가 이미 좋아요 한 게시물인지 체크
@@ -59,10 +64,8 @@ public class LikeService {
         boolean isLikeCheck = isNotAlreadyLike(findUser, review);
         Long likeId = null;
         if (isLikeCheck) {
-
-            likeId = likeRepository.findByUserAndReview(findUser, review).orElseThrow(() -> new BaseException(BaseResponseCode.Like_NOT_FOUND)).getLikeId();
+            likeId = findByUserAndReview(findUser, review).getLikeId();
             likeRepository.deleteById(likeId);
-
         }
 
         return likeId;
@@ -74,6 +77,10 @@ public class LikeService {
         return likeRepository.findAllByUser(user).stream()
                 .map(LikeResponseDto::new)
                 .collect(Collectors.toList());
+    }
+
+    private Like findByUserAndReview(User user, Review review){
+        return likeRepository.findByUserAndReview(user, review).orElseThrow(() -> new BaseException(BaseResponseCode.Like_NOT_FOUND));
     }
 
     private User getUserByUserEmail(String userEmail){
