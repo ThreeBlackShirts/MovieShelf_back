@@ -2,14 +2,9 @@ package com.blackshirts.movieshelf.controller;
 
 import com.blackshirts.movieshelf.dto.UserRequestDto;
 import com.blackshirts.movieshelf.entity.Like;
-import com.blackshirts.movieshelf.entity.Review;
-import com.blackshirts.movieshelf.entity.User;
-import com.blackshirts.movieshelf.entity.WishList;
 import com.blackshirts.movieshelf.exception.BaseResponse;
 import com.blackshirts.movieshelf.exception.BaseResponseCode;
 import com.blackshirts.movieshelf.service.LikeService;
-import com.blackshirts.movieshelf.service.ReviewService;
-import com.blackshirts.movieshelf.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;

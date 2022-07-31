@@ -106,7 +106,7 @@ public class ReviewController {
     })
     @ApiOperation(value = "영화 후기 삭제", notes = "영화 후기를 삭제합니다.")
     @DeleteMapping("/review/{reviewId}")
-    public BaseResponse delete(@ApiParam(value = "reviewId", required = true) @PathVariable Long reviewId){
+    public BaseResponse delete(@ApiParam(value = "reviewId", required = true) @PathVariable Long reviewId) {
         reviewService.delete(reviewId);
         return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), BaseResponseCode.OK.getMessage());
     }

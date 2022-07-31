@@ -2,9 +2,7 @@ package com.blackshirts.movieshelf.service;
 
 import com.blackshirts.movieshelf.dto.LikeResponseDto;
 import com.blackshirts.movieshelf.dto.UserRequestDto;
-import com.blackshirts.movieshelf.dto.WishListResponseDto;
 import com.blackshirts.movieshelf.entity.Like;
-import com.blackshirts.movieshelf.entity.Movie;
 import com.blackshirts.movieshelf.entity.Review;
 import com.blackshirts.movieshelf.entity.User;
 import com.blackshirts.movieshelf.exception.BaseException;
