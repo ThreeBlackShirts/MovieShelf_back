@@ -45,7 +45,7 @@ public class WishListController {
                     required = true, dataType = "String", paramType = "header")
     })
     @ApiOperation(value = "위시리스트 존재 조회", notes = "userEmail, movieId로 위시 존재 조회 / True면 존재")
-    @GetMapping("/validate/{movieId}")
+    @PostMapping("/validate/{movieId}")
     public BaseResponse validateWishList(@RequestBody UserRequestDto userRequestDto, @PathVariable Long movieId) {
         return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), wishListService.validateWishList(userRequestDto, movieId));
     }
