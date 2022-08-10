@@ -44,7 +44,7 @@ public class LikeController {
                     required = true, dataType = "String", paramType = "header")
     })
     @ApiOperation(value = "좋아요 존재 조회", notes = "userEmail, reviewId로 좋아요 존재 조회 / True면 존재")
-    @GetMapping("/validate/{movieId}")
+    @PostMapping("/validate/{reviewId}")
     public BaseResponse validateWishList(@RequestBody UserRequestDto userRequestDto, @PathVariable Long reviewId) {
         return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), likeService.validateLike(userRequestDto, reviewId));
     }
@@ -60,7 +60,6 @@ public class LikeController {
     @PostMapping("/{reviewId}")
     public BaseResponse addLike(@RequestBody UserRequestDto userRequestDto, @PathVariable Long reviewId) {
         log.info("addLike() " + new Date());
-
         return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), likeService.addLike(userRequestDto, reviewId));
 
     }
@@ -74,6 +73,7 @@ public class LikeController {
     @ApiOperation(value = "좋아요 삭제", notes = "reviewId로 좋아요 삭제")
     @DeleteMapping("/{reviewId}")
     public BaseResponse deleteLike(@RequestBody UserRequestDto userRequestDto, @PathVariable Long reviewId) {
+        log.info("deleteLike() " + new Date());
         return new BaseResponse(BaseResponseCode.OK.getHttpStatus(), BaseResponseCode.OK.getMessage(), likeService.delete(userRequestDto, reviewId));
     }
 
