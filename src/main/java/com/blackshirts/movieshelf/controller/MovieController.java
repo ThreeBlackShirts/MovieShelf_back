@@ -72,4 +72,11 @@ public class MovieController {
     public BaseResponse<MovieDetailResponseDto> detailedMovie(@ApiParam(value = "타겟 영화", required = true) @PathVariable Long movieId) throws Exception {
         return new BaseResponse(HttpStatus.OK, "Return Movie contents", movieService.detailedMovie(movieId));
     }
+
+    @ApiOperation(value = "영화 목록 조회 top20", notes = "등록된 영화 중 top 20개를 조회합니다.")
+    @GetMapping("/rank")
+    public BaseResponse<List<MovieResponseDto>> findTop20() {
+        return new BaseResponse(HttpStatus.OK, "Top 20 Movies", movieService.findTop20());
+    }
+
 }

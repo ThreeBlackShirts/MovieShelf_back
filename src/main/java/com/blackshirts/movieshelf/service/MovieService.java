@@ -324,6 +324,14 @@ public class MovieService {
     }
 
     @Transactional(readOnly = true)
+    public List<MovieResponseDto> findTop20() {
+        return movieRepository.findTop20ByOrderByMovieRateDesc()
+                .stream()
+                .map(MovieResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
     public List<MovieSearchResponseDto> searchMovie(String input) {
         input = input.replace("\"", "");
         List<Movie> movies = movieRepository.findByMovieTitleContaining(input);
