@@ -33,7 +33,7 @@ public class JwtTokenProvider {
     private long tokenValidTime = 30 * 60 * 1000L;
 
     // 객체 초기화, secretKey를 Base64로 인코딩한다.
-    public JwtTokenProvider(@Value("&{security.jwt.token.secret-key}") String secretKey, UserDetailService userDetailService, @Value("${security.jwt.token.expire-length}") long tokenValidTime) {
+    public JwtTokenProvider(@Value("${security.jwt.token.secret-key}") String secretKey, UserDetailService userDetailService, @Value("${security.jwt.token.expire-length}") long tokenValidTime) {
         this.secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
         this.tokenValidTime = tokenValidTime;
         this.userDetailService = userDetailService;

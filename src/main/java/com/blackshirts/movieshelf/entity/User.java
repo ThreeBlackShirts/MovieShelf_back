@@ -46,6 +46,10 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Column(name = "user_filename")
     private String userFilename;
 
+    @ApiModelProperty(value = "카카오 로그인 유저 식별자")
+    @Column(name = "user_kakao_identifier")
+    private String userKakaoIdentifier;
+
 
     public void setUserPassword(String userPassword) {
         this.userPassword = userPassword;
@@ -64,22 +68,14 @@ public class User extends BaseTimeEntity implements UserDetails {
     }
 
     @Builder
-    public User(Long userId, String userEmail, String userName, String userPassword, String userNickname, String userFilename) {
+    public User(Long userId, String userEmail, String userName, String userPassword, String userNickname, String userFilename, String userKakaoIdentifier) {
         this.userId = userId;
         this.userEmail = userEmail;
         this.userName = userName;
         this.userPassword = userPassword;
         this.userNickname = userNickname;
         this.userFilename = userFilename;
-    }
-
-    @Builder
-    public User(String userEmail, String userName, String userPassword, String userNickname, String userFilename) {
-        this.userEmail = userEmail;
-        this.userName = userName;
-        this.userPassword = userPassword;
-        this.userNickname = userNickname;
-        this.userFilename = userFilename;
+        this.userKakaoIdentifier = userKakaoIdentifier;
     }
 
     @Override
