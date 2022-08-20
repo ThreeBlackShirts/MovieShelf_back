@@ -32,10 +32,10 @@ public class MovieRatingService {
 
     public Long create(MovieRatingRequestDto movieRatingDto) {
         Long movieId = movieRatingDto.getMovieId();
-        Long userId = movieRatingDto.getUserId();
+        String userEmail = movieRatingDto.getUserEmail();
 
-        User user = getUserByUserId(userId);
-        Movie movie = getMovieByMovieId(movieId);
+        User user = getUserByUserEmail(userEmail);
+        Long userId = user.getUserId();
 
         boolean isRateCheck = isNotAlreadyMovieRating(movieId, userId);
         if (!isRateCheck) {
@@ -62,8 +62,9 @@ public class MovieRatingService {
 
     private Optional<MovieRating> update(MovieRatingRequestDto movieRatingDto) throws BaseException {
         Long movieId = movieRatingDto.getMovieId();
-        Long userId = movieRatingDto.getUserId();
-        User user = getUserByUserId(userId);
+        String userEmail = movieRatingDto.getUserEmail();
+        User user = getUserByUserEmail(userEmail);
+        Long userId = user.getUserId();
         Movie movie = getMovieByMovieId(movieId);
         Optional<MovieRating> movieRating = movieRatingRepository.findMovieRatingByMovieIdAndAndUserId(movieId, userId);
         try {
@@ -77,8 +78,8 @@ public class MovieRatingService {
         return movieRating;
     }
 
-    private User getUserByUserId(Long userId) {
-        return userRepository.findById(userId).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
+    private User getUserByUserEmail(String userEmail) {
+        return userRepository.findByUserEmail(userEmail).orElseThrow(() -> new BaseException(BaseResponseCode.USER_NOT_FOUND));
     }
 
     private Movie getMovieByMovieId(Long movieId) {
