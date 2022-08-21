@@ -23,12 +23,6 @@ public class MovieRatingController {
 
     private static final Logger log = LoggerFactory.getLogger(MovieRatingController.class);
 
-    @ApiImplicitParams({
-            @ApiImplicitParam(
-                    name = "X-AUTH-TOKEN",
-                    value = "로그인 성공 후 AccessToken",
-                    required = true, dataType = "String", paramType = "header")
-    })
     @ApiOperation(value = "영화 평점 조회", notes = "MovieRatingRequestDto로 영화 평점 조회")
     @PostMapping("/find")
     public BaseResponse findMovieRate(@RequestBody MovieRatingRequestDto movieRatingRequestDto) {
