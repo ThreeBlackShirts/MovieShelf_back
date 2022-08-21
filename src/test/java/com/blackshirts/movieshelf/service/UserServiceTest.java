@@ -55,7 +55,7 @@ class UserServiceTest {
     @Test
     void findUserById() {
         //given
-        User user = new User("servicetest@email.com","TestMan","test","testNick","");
+        User user = new User("servicetest@email.com","TestMan","test","testNick","","");
 
         Long fakeUserId = 1l;
         ReflectionTestUtils.setField(user, "userId", fakeUserId);
