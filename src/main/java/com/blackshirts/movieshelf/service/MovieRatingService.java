@@ -1,6 +1,7 @@
 package com.blackshirts.movieshelf.service;
 
 import com.blackshirts.movieshelf.dto.MovieRatingRequestDto;
+import com.blackshirts.movieshelf.dto.MovieRatingResponseDto;
 import com.blackshirts.movieshelf.entity.*;
 import com.blackshirts.movieshelf.exception.BaseException;
 import com.blackshirts.movieshelf.exception.BaseResponseCode;
@@ -30,6 +31,16 @@ public class MovieRatingService {
         return movieRatingRepository.findMovieRatingByMovieIdAndAndUserId(movieId, userId).isPresent();
     }
 
+    public MovieRatingResponseDto findMovieRate(MovieRatingRequestDto movieRatingDto) {
+        Long movieId = movieRatingDto.getMovieId();
+        String userEmail = movieRatingDto.getUserEmail();
+
+        User user = getUserByUserEmail(userEmail);
+        Long userId = user.getUserId();
+
+        return new MovieRatingResponseDto(movieRatingRepository.findMovieRatingByMovieIdAndAndUserId(movieId, userId).orElseThrow(() -> new BaseException(BaseResponseCode.MOVIE_RATE_NOT_FOUND)), userEmail);
+    }
+
     public Long create(MovieRatingRequestDto movieRatingDto) {
         Long movieId = movieRatingDto.getMovieId();
         String userEmail = movieRatingDto.getUserEmail();
@@ -42,9 +53,7 @@ public class MovieRatingService {
             try {
                 movieRatingRepository.save(new MovieRating(movieId, userId, movieRatingDto.getMovieRate()));
 
-                List<Integer> findMovieRateList = findMovieRatingByMovieId(movieId);
-                double newMovieRate = MovieRankUtil.calculateRank(findMovieRateList);
-                setNewMovieRate(newMovieRate, movieId);
+                updateMovieRateAll(movieId);
             } catch (Exception e) {
                 throw new BaseException(BaseResponseCode.FAILED_TO_SAVE_MOVIE_RATE);
             }
@@ -60,6 +69,12 @@ public class MovieRatingService {
         return update(movieRatingDto).orElseThrow(() -> new BaseException(BaseResponseCode.MOVIE_RATE_NOT_FOUND)).getRateId();
     }
 
+    private void updateMovieRateAll(Long movieId) {
+        List<Integer> findMovieRateList = findMovieRatingByMovieId(movieId);
+        double newMovieRate = MovieRankUtil.calculateRank(findMovieRateList);
+        setNewMovieRate(newMovieRate, movieId);
+    }
+
     private Optional<MovieRating> update(MovieRatingRequestDto movieRatingDto) throws BaseException {
         Long movieId = movieRatingDto.getMovieId();
         String userEmail = movieRatingDto.getUserEmail();
@@ -72,6 +87,7 @@ public class MovieRatingService {
                 selectMovieRate.setMovieRate(movieRatingDto.getMovieRate());
                 movieRatingRepository.save(selectMovieRate);
             });
+            updateMovieRateAll(movieId);
         } catch (Exception e) {
             throw new BaseException(BaseResponseCode.METHOD_NOT_ALLOWED);
         }
@@ -111,5 +127,22 @@ public class MovieRatingService {
         }
         return movieRate;
     }
+
+    public Long deleteMovieRate(MovieRatingRequestDto movieRatingDto) {
+        Long movieId = movieRatingDto.getMovieId();
+        String userEmail = movieRatingDto.getUserEmail();
+        User user = getUserByUserEmail(userEmail);
+        Long userId = user.getUserId();
+        Movie movie = getMovieByMovieId(movieId);
+        Optional<MovieRating> movieRating = movieRatingRepository.findMovieRatingByMovieIdAndAndUserId(movieId, userId);
+        try {
+            movieRatingRepository.deleteById(movieRating.get().getRateId());
+            updateMovieRateAll(movieId);
+        } catch (Exception e) {
+            throw new BaseException(BaseResponseCode.METHOD_NOT_ALLOWED);
+        }
+        return movieRating.get().getRateId();
+    }
+
 
 }
